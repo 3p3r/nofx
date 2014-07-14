@@ -1,0 +1,11 @@
+ofxNode/bin
+ofxNode/ofxNode/Debug
+ofxNode/ofxNode/Release
+*.opensdf
+*.sdf
+*.user
+*.ipch
+*.suo
+*.exe
+*.dll
+*.node

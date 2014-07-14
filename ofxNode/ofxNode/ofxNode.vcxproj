@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A03FC266-793D-4228-945B-0CE27ECD9A33}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>ofxNode</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v110</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\..\OFXNODE_OF\openFrameworks\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="..\..\..\..\OFXNODE_OF\openFrameworks\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <TargetExt>.node</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(OFXNODE_OF)\openFrameworks\libs\openFrameworks;$(OFXNODE_OF)\openFrameworks\libs\openFrameworks\graphics;$(OFXNODE_OF)\openFrameworks\libs\openFrameworks\app;$(OFXNODE_OF)\openFrameworks\libs\openFrameworks\sound;$(OFXNODE_OF)\openFrameworks\libs\openFrameworks\utils;$(OFXNODE_OF)\openFrameworks\libs\openFrameworks\communication;$(OFXNODE_OF)\openFrameworks\libs\openFrameworks\video;$(OFXNODE_OF)\openFrameworks\libs\openFrameworks\types;$(OFXNODE_OF)\openFrameworks\libs\openFrameworks\math;$(OFXNODE_OF)\openFrameworks\libs\openFrameworks\3d;$(OFXNODE_OF)\openFrameworks\libs\openFrameworks\gl;$(OFXNODE_OF)\openFrameworks\libs\openFrameworks\events;$(OFXNODE_OF)\openFrameworks\libs\glut\include;$(OFXNODE_OF)\openFrameworks\libs\rtAudio\include;$(OFXNODE_OF)\openFrameworks\libs\quicktime\include;$(OFXNODE_OF)\openFrameworks\libs\freetype\include;$(OFXNODE_OF)\openFrameworks\libs\freetype\include\freetype2;$(OFXNODE_OF)\openFrameworks\libs\freeImage\include;$(OFXNODE_OF)\openFrameworks\libs\fmodex\include;$(OFXNODE_OF)\openFrameworks\libs\videoInput\include;$(OFXNODE_OF)\openFrameworks\libs\glew\include;$(OFXNODE_OF)\openFrameworks\libs\glu\include;$(OFXNODE_OF)\openFrameworks\libs\tess2\include;$(OFXNODE_OF)\openFrameworks\libs\cairo\include\cairo;$(OFXNODE_OF)\openFrameworks\libs\poco\include;$(OFXNODE_OF)\openFrameworks\libs\glfw\include;$(OFXNODE_OF)\openFrameworks\libs\openssl\include;$(OFXNODE_OF)\openFrameworks\libs\addons;$(OFXNODE_NODE)\node\src;$(OFXNODE_NODE)\node\deps\v8\include;$(OFXNODE_NODE)\node\deps\uv\include;$(OFXNODE_NAN)\nan</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(OFXNODE_OF)\openFrameworks\libs\glut\lib\vs;$(OFXNODE_OF)\openFrameworks\libs\glfw\lib\vs;$(OFXNODE_OF)\openFrameworks\libs\rtAudio\lib\vs;$(OFXNODE_OF)\openFrameworks\libs\FreeImage\lib\vs;$(OFXNODE_OF)\openFrameworks\libs\freetype\lib\vs;$(OFXNODE_OF)\openFrameworks\libs\quicktime\lib\vs;$(OFXNODE_OF)\openFrameworks\libs\fmodex\lib\vs;$(OFXNODE_OF)\openFrameworks\libs\videoInput\lib\vs;$(OFXNODE_OF)\openFrameworks\libs\cairo\lib\vs;$(OFXNODE_OF)\openFrameworks\libs\glew\lib\vs;$(OFXNODE_OF)\openFrameworks\libs\glu\lib\vs;$(OFXNODE_OF)\openFrameworks\libs\Poco\lib\vs;$(OFXNODE_OF)\openFrameworks\libs\openssl\lib\vs;$(OFXNODE_OF)\openFrameworks\libs\tess2\lib\vs;$(OFXNODE_NODE)\node\Debug;$(OFXNODE_NODE)\node\Debug\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>openssl.lib;http_parser.lib;libuv.lib;node.lib;cares.lib;zlib.lib;cairo-static.lib;pixman-1.lib;msimg32.lib;OpenGL32.lib;GLu32.lib;kernel32.lib;setupapi.lib;Vfw32.lib;comctl32.lib;glut32.lib;rtAudioD.lib;videoInputD.lib;libfreetype.lib;FreeImage.lib;qtmlClient.lib;dsound.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;glew32s.lib;fmodex_vc.lib;glu32.lib;ssleay32MD.lib;libeay32MD.lib;crypt32.lib;PocoFoundationmdd.lib;PocoNetmdd.lib;PocoUtilmdd.lib;PocoXMLmdd.lib;Ws2_32.lib;tess2.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /e /i /y "$(OFXNODE_OF)\openFrameworks\export\vs\*.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>
+      </Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>
+      </Message>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\OFXNODE_OF\openFrameworks\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
+      <Project>{5837595d-aca9-485c-8e76-729040ce4b0b}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="ofApp.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ofApp.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
