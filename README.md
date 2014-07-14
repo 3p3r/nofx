@@ -7,7 +7,7 @@ OpenFrameworks wrapped as a NodeJS module and beyond!
 ----------
 
 
-Before opening the project make sure you have following variables (texts in bold) on your path. The final folder structure for each environment variable should be as shown (assuming each project is cloned by Git):
+Before opening the project make sure you have following variables (texts in bold) defined on your environment. The final folder structure for each environment variable should be as shown (assuming each project is cloned by Git):
 
  - **OFXNODE_NAN**
   - nan
