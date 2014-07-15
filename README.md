@@ -10,19 +10,19 @@ OpenFrameworks wrapped as a NodeJS module and beyond!
 
 Before opening the project make sure you have following variables (texts in bold) defined on your environment. The final folder structure for each environment variable should be as shown (assuming each project is cloned by Git):
 
- - **OFXNODE_NAN**
+ - **[OFXNODE_NAN][1]**
   - nan
      - .git
      - ...
- - **OFXNODE_NODE**
+ - **[OFXNODE_NODE][2]**
   - node
      - .git
      - ...
- - **OFXNODE_OF**
+ - **[OFXNODE_OF][3]**
   - openFrameworks
      - .git
      - ...
- - **OFXNODE_GTEST**
+ - **[OFXNODE_GTEST][4]**
   - msvc \
   - include \
   - src \
@@ -49,11 +49,15 @@ After building Node, it's time for Googletest to be compiled:
  1. Navigate to %OFXNODE_GTEST%
  2. open up `msvc\gtest.sln` in a **Visual Studio that matches the version of Visual Studio your OpenFrameworks clone is using**
  3. Upgrade Gtest projects in visual studio if needed
- 4. Add Preprocessor definition _VARIADIC_MAX=10 (only if you get std::tuples build errors, [take a look at this entry on SO][1])
+ 4. Add Preprocessor definition _VARIADIC_MAX=10 (only if you get std::tuples build errors, [take a look at this entry on SO][5])
  5. Change all code generation flags to /MD or /MDd
  6. Build.
 
 The rest of the projects (OpenFrameworks, NaN, and ofxNode) will be built all together by builidng the **ofxNode.sln**.
 
 
-  [1]: http://stackoverflow.com/a/8274747/1055628
+  [1]: https://github.com/rvagg/nan
+  [2]: https://github.com/joyent/node
+  [3]: https://github.com/openframeworks/openFrameworks
+  [4]: https://code.google.com/p/googletest/
+  [5]: http://stackoverflow.com/a/8274747/1055628
