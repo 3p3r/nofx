@@ -68,12 +68,12 @@
       <Command>xcopy /e /i /y "$(OFXNODE_OF)\openFrameworks\export\vs\*.dll" "$(OutDir)"</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>
-      </Command>
+      <Command>IF DEFINED OFXNODE_NAN exit(0) ELSE exit(1)
+IF DEFINED OFXNODE_NODE exit(0) ELSE exit(1)
+IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
     </PreBuildEvent>
     <PreBuildEvent>
-      <Message>
-      </Message>
+      <Message>Checking if all ENV vars are defined...</Message>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
