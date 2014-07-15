@@ -10,6 +10,12 @@
       <Platform>Win32</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LocalDebuggerCommand>$(OFXNODE_NODE)\node\Debug\node.exe</LocalDebuggerCommand>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+    <LocalDebuggerWorkingDirectory>$(OutDir)</LocalDebuggerWorkingDirectory>
+    <LocalDebuggerCommandArguments>$(ProjectDir)ofApp.js</LocalDebuggerCommandArguments>
+  </PropertyGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{A03FC266-793D-4228-945B-0CE27ECD9A33}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
