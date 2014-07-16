@@ -26,13 +26,6 @@
 v8::Persistent<v8::Object> self_;
 
 namespace ofxNode {
-
-	NAN_METHOD(Draw) {
-		NanScope();
-		//to be overridden at user's will
-		NanReturnUndefined();
-	}
-
 	void Initialize(v8::Handle<v8::Object> target,
 		v8::Handle<v8::Value> unused,
 		v8::Handle<v8::Context> context) {
@@ -56,7 +49,7 @@ namespace ofxNode {
 			target->Set(NanNew<v8::String>("ofClear"), NanNew<v8::FunctionTemplate>(ofxNode_ofClear)->GetFunction());
 			target->Set(NanNew<v8::String>("ofGetElapsedTimeMillis"), NanNew<v8::FunctionTemplate>(ofxNode_ofGetElapsedTimeMillis)->GetFunction());
 			target->Set(NanNew<v8::String>("ofSetColor"), NanNew<v8::FunctionTemplate>(ofxNode_ofSetColor)->GetFunction());
-			target->Set(NanNew<v8::String>("draw"), NanNew<v8::FunctionTemplate>(Draw)->GetFunction());
+			//target->Set(NanNew<v8::String>("draw"), NanNew<v8::FunctionTemplate>(Draw)->GetFunction());
 	}
 
 }

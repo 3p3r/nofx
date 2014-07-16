@@ -70,6 +70,14 @@ ofxNode.launch = function () {
     ofxNode.ofSetupOpenGL(i, j).ofRunApp();
 }
 
+ofxNode.mouseMoved = function (x, y) {
+    //console.log("mouse moved: x="+x+" y="+y);
+}
+
+ofxNode.mouseDragged = function (x, y, button) {
+    console.log("mouse dragged: x=" + x + " y=" + y+" button="+button);
+}
+
 ofxNode.draw = function () {
     ofxNode.ofClear(0, 0, 0);
     var a, b, c, h, D, u;

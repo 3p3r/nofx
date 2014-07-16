@@ -24,5 +24,7 @@ public:
 	void dragEvent(ofDragInfo dragInfo);
 	void gotMessage(ofMessage msg);
 private:
+	typedef ofBaseApp inherited;
 	v8::Persistent<v8::Object> &moduleHandle_;
+	v8::Handle<v8::Object> mModuleObject;
 };
