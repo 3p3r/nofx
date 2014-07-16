@@ -107,13 +107,53 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
   <ItemGroup>
     <ClCompile Include="main.cc" />
     <ClCompile Include="ofApp.cc" />
+    <ClCompile Include="ofxNode_ofCircle.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofClear.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofFill.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofGetElapsedTimeMillis.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="ofxNode_ofRunApp.cc" />
+    <ClCompile Include="ofxNode_ofSetColor.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="ofxNode_ofSetupOpenGL.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="globals.h" />
     <ClInclude Include="ofApp.h" />
+    <ClInclude Include="ofxNode_ofCircle.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofClear.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofFill.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofGetElapsedTimeMillis.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="ofxNode_ofRunApp.h" />
+    <ClInclude Include="ofxNode_ofSetColor.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="ofxNode_ofSetupOpenGL.h" />
   </ItemGroup>
   <ItemGroup>

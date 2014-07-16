@@ -11,7 +11,5 @@
 
 // Global externs
 extern v8::Persistent<v8::Object> self_;
-extern bool ofxNodeAppIsRunning;
-extern bool ofxOpenGLIsReady;
 
 #endif // !_OFXNODE_GLOBALS_H_

@@ -16,56 +16,20 @@
 
 #include "ofxNode_ofRunApp.h"
 #include "ofxNode_ofSetupOpenGL.h"
+#include "ofxNode_ofCircle.h"
+#include "ofxNode_ofFill.h"
+#include "ofxNode_ofClear.h"
+#include "ofxNode_ofGetElapsedTimeMillis.h"
+#include "ofxNode_ofSetColor.h"
 
 // self_ is a reference to the loaded module across all ported API's
 v8::Persistent<v8::Object> self_;
-// other global externs...
-bool ofxNodeAppIsRunning = false;
-bool ofxOpenGLIsReady = false;
 
 namespace ofxNode {
 
 	NAN_METHOD(Draw) {
 		NanScope();
 		//to be overridden at user's will
-		NanReturnUndefined();
-	}
-
-	NAN_METHOD(OfCircle) {
-		NanScope();
-		if (args.Length() > 2 && args[0]->IsNumber() && args[1]->IsNumber() && args[2]->IsNumber())
-		{
-			ofCircle(args[0]->NumberValue(), args[1]->NumberValue(), args[2]->NumberValue());
-		}
-		NanReturnUndefined();
-	}
-
-	NAN_METHOD(OfFill) {
-		NanScope();
-		ofFill();
-		NanReturnUndefined();
-	}
-
-	NAN_METHOD(OfClear) {
-		NanScope();
-		if (args.Length() > 2 && args[0]->IsNumber() && args[1]->IsNumber() && args[2]->IsNumber())
-		{
-			ofClear(args[0]->NumberValue(), args[1]->NumberValue(), args[2]->NumberValue());
-		}
-		NanReturnUndefined();
-	}
-
-	NAN_METHOD(OfGetElapsedTimeMillis) {
-		NanScope();
-		NanReturnValue((int)ofGetElapsedTimeMillis());
-	}
-
-	NAN_METHOD(OfSetColor) {
-		NanScope();
-		if (args.Length() > 2 && args[0]->IsNumber() && args[1]->IsNumber() && args[2]->IsNumber())
-		{
-			ofSetColor(args[0]->NumberValue(), args[1]->NumberValue(), args[2]->NumberValue());
-		}
 		NanReturnUndefined();
 	}
 
@@ -87,12 +51,12 @@ namespace ofxNode {
 			// Assertions are passed, let's initialize the module with assigning its methods
 			target->Set(NanNew<v8::String>("ofSetupOpenGL"), NanNew<v8::FunctionTemplate>(ofxNode_ofSetupOpenGL)->GetFunction());
 			target->Set(NanNew<v8::String>("ofRunApp"), NanNew<v8::FunctionTemplate>(ofxNode_ofRunApp)->GetFunction());
+			target->Set(NanNew<v8::String>("ofCircle"), NanNew<v8::FunctionTemplate>(ofxNode_ofCircle)->GetFunction());
+			target->Set(NanNew<v8::String>("ofFill"), NanNew<v8::FunctionTemplate>(ofxNode_ofFill)->GetFunction());
+			target->Set(NanNew<v8::String>("ofClear"), NanNew<v8::FunctionTemplate>(ofxNode_ofClear)->GetFunction());
+			target->Set(NanNew<v8::String>("ofGetElapsedTimeMillis"), NanNew<v8::FunctionTemplate>(ofxNode_ofGetElapsedTimeMillis)->GetFunction());
+			target->Set(NanNew<v8::String>("ofSetColor"), NanNew<v8::FunctionTemplate>(ofxNode_ofSetColor)->GetFunction());
 			target->Set(NanNew<v8::String>("draw"), NanNew<v8::FunctionTemplate>(Draw)->GetFunction());
-			target->Set(NanNew<v8::String>("ofCircle"), NanNew<v8::FunctionTemplate>(OfCircle)->GetFunction());
-			target->Set(NanNew<v8::String>("ofFill"), NanNew<v8::FunctionTemplate>(OfFill)->GetFunction());
-			target->Set(NanNew<v8::String>("ofClear"), NanNew<v8::FunctionTemplate>(OfClear)->GetFunction());
-			target->Set(NanNew<v8::String>("ofGetElapsedTimeMillis"), NanNew<v8::FunctionTemplate>(OfGetElapsedTimeMillis)->GetFunction());
-			target->Set(NanNew<v8::String>("ofSetColor"), NanNew<v8::FunctionTemplate>(OfSetColor)->GetFunction());
 	}
 
 }

@@ -9,22 +9,9 @@ namespace ofxNode
 	// currently multiple calls to this function should not happen.
 	NAN_METHOD(ofxNode_ofRunApp) {
 		ASSERT_FALSE(self_.IsEmpty());
-		EXPECT_FALSE(ofxNodeAppIsRunning);
-
-		NanScope();
-		
-		if (!ofxNodeAppIsRunning)
-		{
-			// prevent multiple calls
-			ofxNodeAppIsRunning = true;
-			// Attempting to run the OF app
-			ofRunApp(new ofApp(self_));
-			// From this point on, OF is in charge of the application's main thread
-			NanReturnValue(args.This());
-		}
-		else
-		{
-			NanThrowError("You can call ofRunApp only once!");
-		}
+		// Attempting to run the OF app
+		ofRunApp(new ofApp(self_));
+		// From this point on, OF is in charge of the application's main thread
+		NanReturnUndefined();
 	} // ofxNode_ofRunApp
 } // namespace ofxNode
