@@ -1,5 +1,5 @@
-#ifndef _OFXNODE_OFSETUPOPENGL_H_
-#define _OFXNODE_OFSETUPOPENGL_H_
+#ifndef _ofxNode_ofSetupOpenGL_H_
+#define _ofxNode_ofSetupOpenGL_H_
 
 #include "globals.h"
 
@@ -8,4 +8,4 @@ namespace ofxNode
 	NAN_METHOD(ofxNode_ofSetupOpenGL);
 } // !namespace ofxNode
 
-#endif // !_OFXNODE_OFSETUPOPENGL_H_
+#endif // !_ofxNode_ofSetupOpenGL_H_

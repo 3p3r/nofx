@@ -1,0 +1,5 @@
+1- Copy templates to the templates path of MSVC*
+2- run:
+	devenv.exe /InstallVSTemplates
+
+* If you have troubles finding the template path take a look at: http://msdn.microsoft.com/en-us/library/ms241279.aspx
