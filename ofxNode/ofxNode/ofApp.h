@@ -1,7 +1,6 @@
 #pragma once
 
 #include "ofMain.h"
-#include "ofThread.h"
 #include "v8.h"
 
 class ofApp
@@ -25,6 +24,8 @@ public:
 	void gotMessage(ofMessage msg);
 private:
 	typedef ofBaseApp inherited;
+	void callHiddenJavascriptFunction_(std::string);
+	void callHiddenJavascriptFunction_(std::string, int, v8::Local<v8::Value>*);
 	v8::Persistent<v8::Object> &moduleHandle_;
 	v8::Handle<v8::Object> mModuleObject;
 };

@@ -9,3 +9,4 @@ ofxNode/ofxNode/Release
 *.exe
 *.dll
 *.node
+*.psess

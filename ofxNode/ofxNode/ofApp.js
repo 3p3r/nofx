@@ -12,6 +12,9 @@ w = false,
 x = 0,
 g = 0;
 
+var delay = 5;
+var timer = 0;
+
 function Particle() {
     this.size = 0.5 + Math.random() * 3.5;
     this.position = {
@@ -70,82 +73,93 @@ ofxNode.launch = function () {
     ofxNode.ofSetupOpenGL(i, j).ofRunApp();
 }
 
-ofxNode.mouseMoved = function (x, y) {
-    //console.log("mouse moved: x="+x+" y="+y);
-}
+ofxNode.dragEvent(function (dragInfo) {
+    console.log("position x: " + dragInfo.position.x);
+    console.log("position y: " + dragInfo.position.y);
+    console.log("position z: " + dragInfo.position.z);
+    console.log("files     : " + dragInfo.files);
+})
+.mouseMoved(function (x, y) {
+    console.log("mouseX: " + x + " mouseY: " + y);
+})
 
-ofxNode.mouseDragged = function (x, y, button) {
-    console.log("mouse dragged: x=" + x + " y=" + y+" button="+button);
-}
-
-ofxNode.draw = function () {
-    ofxNode.ofClear(0, 0, 0);
-    var a, b, c, h, D, u;
-    a = -1;
-    h = 0;
-    for (u = f.length; h < u; h++) {
-        b = f[h];
-        if (b.dragging) {
-            b.position.x += (n - b.position.x) * 0.2;
-            b.position.y += (o - b.position.y) * 0.2
-        } else if (b.position.x < 0 || b.position.y < 0 || b.position.x > i || b.position.y > j) a = h;
-        b.size += (b.connections / 3 - b.size) * 0.05;
-        b.size = Math.max(b.size, 2);
-        //            c = d.createRadialGradient(b.position.x, b.position.y, 0, b.position.x, b.position.y, b.size * 10);
-        //            c.addColorStop(0, k[g].glowA);
-        //            c.addColorStop(1, k[g].glowB);
-        //            d.beginPath();
-        //            d.fillStyle = c;
-        //            d.arc(b.position.x, b.position.y, b.size * 10, 0, Math.PI * 2, true);
-        //            d.fill();
-        //            d.beginPath();
-        //            d.fillStyle = c;
-        //            d.arc(b.position.x, b.position.y, b.size, 0, Math.PI * 2, true);
-        //            d.fill();
-        b.connections = 0
-    }
-    a != -1 && f.length > 1 && f.splice(a, 1);
-    c = 0;
-    for (D = q.length; c < D; c++) {
-        a = q[c];
-        var y = -1,
-        E = -1,
-        l = null,
-        v = {
-            x: 0,
-            y: 0
-        };
+.draw(function () {
+    this.ofClear(0, 0, 0);
+    this.ofBackgroundGradient(
+        { r: 240, g: 240, b: 240 },
+        { r: 255, g: 255, b: 255 });
+    if (ofxNode.ofGetElapsedTimeMillis() - timer > delay) {
+        var a, b, c, h, D, u;
+        a = -1;
         h = 0;
         for (u = f.length; h < u; h++) {
             b = f[h];
-            y = ofxNode.B(a.position,
-                b.position) - b.orbit * 0.5;
-            if (a.magnet != b) {
-                var m = b.position.x - a.position.x;
-                if (m > -p && m < p) v.x += m / p;
-                m = b.position.y - a.position.y;
-                if (m > -p && m < p) v.y += m / p
-            }
-            if (l == null || y < E) {
-                E = y;
-                l = b
-            }
+            if (b.dragging) {
+                b.position.x += (n - b.position.x) * 0.2;
+                b.position.y += (o - b.position.y) * 0.2
+            } else if (b.position.x < 0 || b.position.y < 0 || b.position.x > i || b.position.y > j) a = h;
+            b.size += (b.connections / 3 - b.size) * 0.05;
+            b.size = Math.max(b.size, 2);
+            //            c = d.createRadialGradient(b.position.x, b.position.y, 0, b.position.x, b.position.y, b.size * 10);
+            //            c.addColorStop(0, k[g].glowA);
+            //            c.addColorStop(1, k[g].glowB);
+            //            d.beginPath();
+            //            d.fillStyle = c;
+            //            d.arc(b.position.x, b.position.y, b.size * 10, 0, Math.PI * 2, true);
+            //            d.fill();
+            //            d.beginPath();
+            //            d.fillStyle = c;
+            //            d.arc(b.position.x, b.position.y, b.size, 0, Math.PI * 2, true);
+            //            d.fill();
+            b.connections = 0
         }
-        if (a.magnet == null || a.magnet != l) a.magnet = l;
-        l.connections += 1;
-        a.angle += a.speed;
-        a.shift.x += (l.position.x + v.x * 6 - a.shift.x) * a.speed;
-        a.shift.y += (l.position.y + v.y * 6 - a.shift.y) * a.speed;
-        a.position.x = a.shift.x + Math.cos(c + a.angle) * a.orbit * a.force;
-        a.position.y = a.shift.y + Math.sin(c + a.angle) * a.orbit * a.force;
-        a.position.x = Math.max(Math.min(a.position.x,
-            i - a.size / 2), a.size / 2);
-        a.position.y = Math.max(Math.min(a.position.y, j - a.size / 2), a.size / 2);
-        a.orbit += (l.orbit - a.orbit) * 0.1;
+        a != -1 && f.length > 1 && f.splice(a, 1);
+        c = 0;
+        for (D = q.length; c < D; c++) {
+            a = q[c];
+            var y = -1,
+            E = -1,
+            l = null,
+            v = {
+                x: 0,
+                y: 0
+            };
+            h = 0;
+            for (u = f.length; h < u; h++) {
+                b = f[h];
+                y = ofxNode.B(a.position,
+                    b.position) - b.orbit * 0.5;
+                if (a.magnet != b) {
+                    var m = b.position.x - a.position.x;
+                    if (m > -p && m < p) v.x += m / p;
+                    m = b.position.y - a.position.y;
+                    if (m > -p && m < p) v.y += m / p
+                }
+                if (l == null || y < E) {
+                    E = y;
+                    l = b
+                }
+            }
+            if (a.magnet == null || a.magnet != l) a.magnet = l;
+            l.connections += 1;
+            a.angle += a.speed;
+            a.shift.x += (l.position.x + v.x * 6 - a.shift.x) * a.speed;
+            a.shift.y += (l.position.y + v.y * 6 - a.shift.y) * a.speed;
+            a.position.x = a.shift.x + Math.cos(c + a.angle) * a.orbit * a.force;
+            a.position.y = a.shift.y + Math.sin(c + a.angle) * a.orbit * a.force;
+            a.position.x = Math.max(Math.min(a.position.x,
+                i - a.size / 2), a.size / 2);
+            a.position.y = Math.max(Math.min(a.position.y, j - a.size / 2), a.size / 2);
+            a.orbit += (l.orbit - a.orbit) * 0.1;
+            q[c] = a;
+        }
+
+        timer = ofxNode.ofGetElapsedTimeMillis();
+    }
+    q.forEach(function (a) {
         //drawing particles
-        ofxNode.ofSetColor(255, 0, 0);
+        ofxNode.ofSetColor(10, 10, 10);
         ofxNode.ofFill();
         ofxNode.ofCircle(a.position.x, a.position.y, a.size / 2);
-    }
-};
-ofxNode.launch();
+    })
+}).launch();

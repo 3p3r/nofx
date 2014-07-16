@@ -107,6 +107,58 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
   <ItemGroup>
     <ClCompile Include="main.cc" />
     <ClCompile Include="ofApp.cc" />
+    <ClCompile Include="ofxNode_dragEvent.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_draw.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_exit.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_gotMessage.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_keyPressed.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_keyReleased.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_mouseDragged.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_mouseMoved.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_mousePressed.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_mouseReleased.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_noop.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofBackground.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofBackgroundGradient.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="ofxNode_ofCircle.cc">
       <SubType>
       </SubType>
@@ -129,10 +181,74 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       </SubType>
     </ClCompile>
     <ClCompile Include="ofxNode_ofSetupOpenGL.cc" />
+    <ClCompile Include="ofxNode_setup.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_update.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_windowResized.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="globals.h" />
     <ClInclude Include="ofApp.h" />
+    <ClInclude Include="ofxNode_dragEvent.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_draw.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_exit.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_gotMessage.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_keyPressed.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_keyReleased.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_mouseDragged.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_mouseMoved.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_mousePressed.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_mouseReleased.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_noop.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofBackground.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofBackgroundGradient.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="ofxNode_ofCircle.h">
       <SubType>
       </SubType>
@@ -155,6 +271,18 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       </SubType>
     </ClInclude>
     <ClInclude Include="ofxNode_ofSetupOpenGL.h" />
+    <ClInclude Include="ofxNode_setup.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_update.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_windowResized.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="ofApp.js">
