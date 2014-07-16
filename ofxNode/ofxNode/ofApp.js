@@ -1,2 +1,3 @@
 var ofxNode = require("../bin/ofxNode");
-ofxNode.init();
+ofxNode.draw = function() {console.log("drawing!");}
+ofxNode.ofSetupOpenGL(800, 400).ofRunApp();

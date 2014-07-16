@@ -105,11 +105,22 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="ofApp.cpp" />
+    <ClCompile Include="main.cc" />
+    <ClCompile Include="ofApp.cc" />
+    <ClCompile Include="ofxNode_ofRunApp.cc" />
+    <ClCompile Include="ofxNode_ofSetupOpenGL.cc" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="globals.h" />
     <ClInclude Include="ofApp.h" />
+    <ClInclude Include="ofxNode_ofRunApp.h" />
+    <ClInclude Include="ofxNode_ofSetupOpenGL.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="ofApp.js">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </ExcludedFromBuild>
+    </None>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
