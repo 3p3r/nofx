@@ -59,12 +59,19 @@ lengthSquared = function (a, b) {
 }
 
 ofxNode.setup(function () {
+    console.log(process.cwd());
     for (var a = 0; a < 4; a++) {
         ParticleSystemInit({
             x: (winW - randomNess) * 0.5 + Math.random() * randomNess,
             y: (winH - randomNess) * 0.5 + Math.random() * randomNess
         });
     }
+})
+.dragEvent(function(dragInfo) {
+    console.log(dragInfo);
+})
+.mouseMoved(function(x, y) {
+    console.log(x,y);
 })
 .draw(function () {
     this.ofClear(0, 0, 0);
