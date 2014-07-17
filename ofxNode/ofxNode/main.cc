@@ -52,7 +52,7 @@ namespace ofxNode {
 			NanAssignPersistent(self_, target);
 			// Checking if it happened successfully
 			ASSERT_TRUE(!self_.IsEmpty());
-
+			
 			//setting hidden field values. These are implemented as hidden for future security implementations
 			auto lNoop = NanNew<v8::FunctionTemplate>(ofxNode_noop)->GetFunction();
 			target->SetHiddenValue(NanNew<v8::String>("setup_")			, lNoop);

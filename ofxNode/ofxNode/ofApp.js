@@ -1,22 +1,17 @@
 var ofxNode = require("../bin/ofxNode");
 
-var i = 800,
-j = 550,
-F = 20,
-p = 300,
-e, d, t, q = [],
-f = [],
-n = 0,
-o = 0,
-w = false,
-x = 0,
-g = 0;
+var winW = 800,
+winH = 550,
+particlesNum = 20,
+randomNess = 250,
+particles = [],
+magnets = [];
 
 var delay = 5;
 var timer = 0;
 
-function Particle() {
-    this.size = 0.5 + Math.random() * 3.5;
+Particle = function() {
+    this.size = 0.5 + Math.random() * 8.5;
     this.position = {
         x: 0,
         y: 0
@@ -32,57 +27,45 @@ function Particle() {
     this.magnet = null
 }
 
-function Magnet() {
+Magnet = function() {
     this.orbit = 100;
     this.position = {
         x: 0,
         y: 0
     };
-    this.dragging = false;
     this.connections = 0;
     this.size = 1
 }
 
-ofxNode.z = function (a) {
-    var b = new Magnet;
-    b.position.x = a.x;
-    b.position.y = a.y;
-    f.push(b);
-    a = b.position;
-    for (b = 0; b < F; b++) {
-        var c = new Particle;
-        c.position.x = a.x;
-        c.position.y = a.y;
-        c.shift.x = a.x;
-        c.shift.y = a.y;
-        q.push(c)
+ParticleSystemInit = function(magnetPos) {
+    var lMagnet = new Magnet;
+    lMagnet.position.x = magnetPos.x;
+    lMagnet.position.y = magnetPos.y;
+    magnets.push(lMagnet);
+    for (var i = 0; i < particlesNum; ++i) {
+        var p = new Particle;
+        p.position.x = magnetPos.x;
+        p.position.y = magnetPos.y;
+        p.shift.x = magnetPos.x;
+        p.shift.y = magnetPos.y;
+        particles.push(p)
     }
 }
 
-ofxNode.B = function (a, b) {
+lengthSquared = function (a, b) {
     var c = b.x - a.x,
     h = b.y - a.y;
     return Math.sqrt(c * c + h * h)
 }
 
-ofxNode.launch = function () {
-    for (var a = 0; a < 4; a++) ofxNode.z({
-        x: (i - 300) * 0.5 + Math.random() * 300,
-        y: (j - 300) * 0.5 + Math.random() * 300
-    });
-    ofxNode.ofSetupOpenGL(i, j).ofRunApp();
-}
-
-ofxNode.dragEvent(function (dragInfo) {
-    console.log("position x: " + dragInfo.position.x);
-    console.log("position y: " + dragInfo.position.y);
-    console.log("position z: " + dragInfo.position.z);
-    console.log("files     : " + dragInfo.files);
+ofxNode.setup(function () {
+    for (var a = 0; a < 4; a++) {
+        ParticleSystemInit({
+            x: (winW - randomNess) * 0.5 + Math.random() * randomNess,
+            y: (winH - randomNess) * 0.5 + Math.random() * randomNess
+        });
+    }
 })
-.mouseMoved(function (x, y) {
-    console.log("mouseX: " + x + " mouseY: " + y);
-})
-
 .draw(function () {
     this.ofClear(0, 0, 0);
     this.ofBackgroundGradient(
@@ -92,31 +75,17 @@ ofxNode.dragEvent(function (dragInfo) {
         var a, b, c, h, D, u;
         a = -1;
         h = 0;
-        for (u = f.length; h < u; h++) {
-            b = f[h];
-            if (b.dragging) {
-                b.position.x += (n - b.position.x) * 0.2;
-                b.position.y += (o - b.position.y) * 0.2
-            } else if (b.position.x < 0 || b.position.y < 0 || b.position.x > i || b.position.y > j) a = h;
+        for (u = magnets.length; h < u; h++) {
+            b = magnets[h];
+            if (b.position.x < 0 || b.position.y < 0 || b.position.x > winW || b.position.y > winH) a = h;
             b.size += (b.connections / 3 - b.size) * 0.05;
             b.size = Math.max(b.size, 2);
-            //            c = d.createRadialGradient(b.position.x, b.position.y, 0, b.position.x, b.position.y, b.size * 10);
-            //            c.addColorStop(0, k[g].glowA);
-            //            c.addColorStop(1, k[g].glowB);
-            //            d.beginPath();
-            //            d.fillStyle = c;
-            //            d.arc(b.position.x, b.position.y, b.size * 10, 0, Math.PI * 2, true);
-            //            d.fill();
-            //            d.beginPath();
-            //            d.fillStyle = c;
-            //            d.arc(b.position.x, b.position.y, b.size, 0, Math.PI * 2, true);
-            //            d.fill();
             b.connections = 0
         }
         a != -1 && f.length > 1 && f.splice(a, 1);
         c = 0;
-        for (D = q.length; c < D; c++) {
-            a = q[c];
+        for (D = particles.length; c < D; c++) {
+            a = particles[c];
             var y = -1,
             E = -1,
             l = null,
@@ -125,15 +94,14 @@ ofxNode.dragEvent(function (dragInfo) {
                 y: 0
             };
             h = 0;
-            for (u = f.length; h < u; h++) {
-                b = f[h];
-                y = ofxNode.B(a.position,
-                    b.position) - b.orbit * 0.5;
+            for (u = magnets.length; h < u; h++) {
+                b = magnets[h];
+                y = lengthSquared(a.position, b.position) - b.orbit * 0.5;
                 if (a.magnet != b) {
                     var m = b.position.x - a.position.x;
-                    if (m > -p && m < p) v.x += m / p;
+                    if (m > -randomNess && m < randomNess) v.x += m / randomNess;
                     m = b.position.y - a.position.y;
-                    if (m > -p && m < p) v.y += m / p
+                    if (m > -randomNess && m < randomNess) v.y += m / randomNess
                 }
                 if (l == null || y < E) {
                     E = y;
@@ -147,19 +115,26 @@ ofxNode.dragEvent(function (dragInfo) {
             a.shift.y += (l.position.y + v.y * 6 - a.shift.y) * a.speed;
             a.position.x = a.shift.x + Math.cos(c + a.angle) * a.orbit * a.force;
             a.position.y = a.shift.y + Math.sin(c + a.angle) * a.orbit * a.force;
-            a.position.x = Math.max(Math.min(a.position.x,
-                i - a.size / 2), a.size / 2);
-            a.position.y = Math.max(Math.min(a.position.y, j - a.size / 2), a.size / 2);
+            a.position.x = Math.max(Math.min(a.position.x, winW - a.size / 2), a.size / 2);
+            a.position.y = Math.max(Math.min(a.position.y, winH - a.size / 2), a.size / 2);
             a.orbit += (l.orbit - a.orbit) * 0.1;
-            q[c] = a;
+            particles[c] = a;
         }
 
         timer = ofxNode.ofGetElapsedTimeMillis();
     }
-    q.forEach(function (a) {
+    magnets.forEach(function(b) {
+        //drawing magnets
+        ofxNode.ofSetColor(230, 230, 230);
+        ofxNode.ofFill();
+        ofxNode.ofCircle(b.position.x, b.position.y, b.size * 2);
+    });
+    particles.forEach(function (a) {
         //drawing particles
         ofxNode.ofSetColor(10, 10, 10);
         ofxNode.ofFill();
         ofxNode.ofCircle(a.position.x, a.position.y, a.size / 2);
     })
-}).launch();
+})
+.ofSetupOpenGL(winW, winH)
+.ofRunApp();
