@@ -33,6 +33,10 @@
 #include "ofxNode_ofSetColor.h"
 #include "ofxNode_ofBackground.h"
 #include "ofxNode_ofBackgroundGradient.h"
+#include "ofxNode_ofBackgroundHex.h"
+#include "ofxNode_ofBeginSaveScreenAsPDF.h"
+#include "ofxNode_ofBeginShape.h"
+#include "ofxNode_ofEndShape.h"
 
 // self_ is a reference to the loaded module across all ported API's
 v8::Persistent<v8::Object> self_;
@@ -93,6 +97,11 @@ namespace ofxNode {
 			target->Set(NanNew<v8::String>("ofSetColor")				, NanNew<v8::FunctionTemplate>(ofxNode_ofSetColor)->GetFunction());
 			target->Set(NanNew<v8::String>("ofBackground")				, NanNew<v8::FunctionTemplate>(ofxNode_ofBackground)->GetFunction());
 			target->Set(NanNew<v8::String>("ofBackgroundGradient")		, NanNew<v8::FunctionTemplate>(ofxNode_ofBackgroundGradient)->GetFunction());
+			target->Set(NanNew<v8::String>("ofBackgroundHex")			, NanNew<v8::FunctionTemplate>(ofxNode_ofBackgroundHex)->GetFunction());
+			target->Set(NanNew<v8::String>("ofxNode_ofBeginShape")		, NanNew<v8::FunctionTemplate>(ofxNode_ofBeginShape)->GetFunction());
+			target->Set(NanNew<v8::String>("ofxNode_ofEndShape")		, NanNew<v8::FunctionTemplate>(ofxNode_ofEndShape)->GetFunction());
+			target->Set(NanNew<v8::String>("ofxNode_ofBeginSaveScreenAsPDF") ,
+				NanNew<v8::FunctionTemplate>(ofxNode_ofBeginSaveScreenAsPDF)->GetFunction());
 	}
 
 }

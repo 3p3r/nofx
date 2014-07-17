@@ -93,6 +93,18 @@
     <ClCompile Include="ofxNode_noop.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ofxNode_ofBackgroundHex.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofBeginSaveScreenAsPDF.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofBeginShape.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofEndShape.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ofApp.h">
@@ -168,6 +180,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ofxNode_noop.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofBackgroundHex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofBeginSaveScreenAsPDF.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofBeginShape.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofEndShape.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

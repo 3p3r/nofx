@@ -159,11 +159,27 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ofxNode_ofBackgroundHex.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofBeginSaveScreenAsPDF.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofBeginShape.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="ofxNode_ofCircle.cc">
       <SubType>
       </SubType>
     </ClCompile>
     <ClCompile Include="ofxNode_ofClear.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofEndShape.cc">
       <SubType>
       </SubType>
     </ClCompile>
@@ -249,11 +265,27 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ofxNode_ofBackgroundHex.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofBeginSaveScreenAsPDF.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofBeginShape.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="ofxNode_ofCircle.h">
       <SubType>
       </SubType>
     </ClInclude>
     <ClInclude Include="ofxNode_ofClear.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofEndShape.h">
       <SubType>
       </SubType>
     </ClInclude>
