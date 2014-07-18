@@ -2,7 +2,7 @@ var ofxNode = require("../bin/ofxNode");
 
 var winW = 800,
 winH = 550,
-particlesNum = 20,
+particlesNum = 250,
 randomNess = 250,
 particles = [],
 magnets = [];
@@ -59,7 +59,6 @@ lengthSquared = function (a, b) {
 }
 
 ofxNode.setup(function () {
-    console.log(process.cwd());
     for (var a = 0; a < 4; a++) {
         ParticleSystemInit({
             x: (winW - randomNess) * 0.5 + Math.random() * randomNess,
@@ -68,20 +67,32 @@ ofxNode.setup(function () {
     }
 })
 .dragEvent(function(dragInfo) {
-    console.log(dragInfo);
+    
 })
 .mouseMoved(function(x, y) {
-    console.log(x,y);
+    
+});
+var vec1 = new ofxNode.ofVec2f(10, 10);
+ofxNode.mousePressed(function (x, y, button) {
+    var vec2 = new this.ofVec2f(10, 20);
+    var vec3 = new this.ofVec2f(20, 10);
+    console.log(vec1.length(), vec2.length(), vec3.length());
+    vec1.average([vec1, vec2, vec3]);
+    console.log(vec1.length(), vec2.length(), vec3.length());
+    console.log(vec1.average([vec1, vec2, vec3]).length());
 })
 .draw(function () {
-    this.ofClear(0, 0, 0);
-    this.ofBackgroundGradient(
+    this.ofClear(0, 0, 0)
+    .ofBackgroundGradient(
         { r: 240, g: 240, b: 240 },
-        { r: 255, g: 255, b: 255 });
+        { r: 255, g: 255, b: 255 })
+    .ofDrawBitmapString("ofxNode sample script.", 10, 20)
+    .ofDrawBitmapStringHighlight("ofxNode sample script.", {x:10, y:40}, { r: 0, g: 0, b: 0 }, { r: 255, g: 255, b: 255 });
     if (ofxNode.ofGetElapsedTimeMillis() - timer > delay) {
         var a, b, c, h, D, u;
         a = -1;
         h = 0;
+		c = 0;
         for (u = magnets.length; h < u; h++) {
             b = magnets[h];
             if (b.position.x < 0 || b.position.y < 0 || b.position.x > winW || b.position.y > winH) a = h;
@@ -89,8 +100,6 @@ ofxNode.setup(function () {
             b.size = Math.max(b.size, 2);
             b.connections = 0
         }
-        a != -1 && f.length > 1 && f.splice(a, 1);
-        c = 0;
         for (D = particles.length; c < D; c++) {
             a = particles[c];
             var y = -1,

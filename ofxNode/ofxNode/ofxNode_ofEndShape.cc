@@ -8,7 +8,12 @@ namespace ofxNode
 
 		NanScope();
 		
-		ofEndShape();
+		bool lClose = false;
+		if (args.Length() > 0 && args[0]->IsBoolean())
+		{
+			lClose = args[0]->BooleanValue();
+		}
+		ofEndShape(lClose);
 
 		NanReturnValue(args.This());
 	} // !ofxNode_ofEndShape

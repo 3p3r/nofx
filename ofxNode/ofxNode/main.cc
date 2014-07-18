@@ -9,6 +9,7 @@
 // domain one can do "this dot that dot this" kinda
 // routines (aka chaining). Like jQuery.
 
+//Internal methods
 #include "ofxNode_draw.h"
 #include "ofxNode_setup.h"
 #include "ofxNode_update.h"
@@ -23,6 +24,10 @@
 #include "ofxNode_gotMessage.h"
 #include "ofxNode_dragEvent.h"
 
+//Classes and data type wrappers
+#include "ofxNode_wrapper_ofVec2f.h"
+
+//Global functions
 #include "ofxNode_noop.h"
 #include "ofxNode_ofRunApp.h"
 #include "ofxNode_ofSetupOpenGL.h"
@@ -37,6 +42,33 @@
 #include "ofxNode_ofBeginSaveScreenAsPDF.h"
 #include "ofxNode_ofBeginShape.h"
 #include "ofxNode_ofEndShape.h"
+#include "ofxNode_ofBezier.h"
+#include "ofxNode_ofBezierVertex.h"
+#include "ofxNode_ofBgColorPtr.h"
+#include "ofxNode_ofClearAlpha.h"
+#include "ofxNode_ofCurve.h"
+#include "ofxNode_ofCurveVertex.h"
+#include "ofxNode_ofCurveVertices.h"
+#include "ofxNode_ofDisableAlphaBlending.h"
+#include "ofxNode_ofDisableAntiAliasing.h"
+#include "ofxNode_ofDisableBlendMode.h"
+#include "ofxNode_ofDisableDepthTest.h"
+#include "ofxNode_ofDisablePointSprites.h"
+#include "ofxNode_ofDisableSmoothing.h"
+#include "ofxNode_ofDrawBitmapString.h"
+#include "ofxNode_ofDrawBitmapStringHighlight.h"
+#include "ofxNode_ofEllipse.h"
+#include "ofxNode_ofEnableAlphaBlending.h"
+#include "ofxNode_ofEnableAntiAliasing.h"
+#include "ofxNode_ofEnableBlendMode.h"
+#include "ofxNode_ofEnableDepthTest.h"
+#include "ofxNode_ofEnablePointSprites.h"
+#include "ofxNode_ofEnableSmoothing.h"
+#include "ofxNode_ofEndSaveScreenAsPDF.h"
+#include "ofxNode_ofEndShape.h"
+#include "ofxNode_ofFill.h"
+#include "ofxNode_ofGetBackground.h"
+#include "ofxNode_ofGetCoordHandedness.h"
 
 // self_ is a reference to the loaded module across all ported API's
 v8::Persistent<v8::Object> self_;
@@ -72,6 +104,9 @@ namespace ofxNode {
 			target->SetHiddenValue(NanNew<v8::String>("windowResized_")	, lNoop);
 			target->SetHiddenValue(NanNew<v8::String>("gotMessage_")	, lNoop);
 			target->SetHiddenValue(NanNew<v8::String>("dragEvent_")		, lNoop);
+
+			//initializing basic data types
+			ofxNode_ofVec2f::Init(target);
 			
 			// Assertions are passed, let's initialize the module with assigning its methods
 			target->Set(NanNew<v8::String>("draw")			, NanNew<v8::FunctionTemplate>(ofxNode_draw)->GetFunction());
@@ -88,20 +123,45 @@ namespace ofxNode {
 			target->Set(NanNew<v8::String>("gotMessage")	, NanNew<v8::FunctionTemplate>(ofxNode_gotMessage)->GetFunction());
 			target->Set(NanNew<v8::String>("dragEvent")		, NanNew<v8::FunctionTemplate>(ofxNode_dragEvent)->GetFunction());
 			
-			target->Set(NanNew<v8::String>("ofSetupOpenGL")				, NanNew<v8::FunctionTemplate>(ofxNode_ofSetupOpenGL)->GetFunction());
-			target->Set(NanNew<v8::String>("ofRunApp")					, NanNew<v8::FunctionTemplate>(ofxNode_ofRunApp)->GetFunction());
-			target->Set(NanNew<v8::String>("ofCircle")					, NanNew<v8::FunctionTemplate>(ofxNode_ofCircle)->GetFunction());
-			target->Set(NanNew<v8::String>("ofFill")					, NanNew<v8::FunctionTemplate>(ofxNode_ofFill)->GetFunction());
-			target->Set(NanNew<v8::String>("ofClear")					, NanNew<v8::FunctionTemplate>(ofxNode_ofClear)->GetFunction());
-			target->Set(NanNew<v8::String>("ofGetElapsedTimeMillis")	, NanNew<v8::FunctionTemplate>(ofxNode_ofGetElapsedTimeMillis)->GetFunction());
-			target->Set(NanNew<v8::String>("ofSetColor")				, NanNew<v8::FunctionTemplate>(ofxNode_ofSetColor)->GetFunction());
-			target->Set(NanNew<v8::String>("ofBackground")				, NanNew<v8::FunctionTemplate>(ofxNode_ofBackground)->GetFunction());
-			target->Set(NanNew<v8::String>("ofBackgroundGradient")		, NanNew<v8::FunctionTemplate>(ofxNode_ofBackgroundGradient)->GetFunction());
-			target->Set(NanNew<v8::String>("ofBackgroundHex")			, NanNew<v8::FunctionTemplate>(ofxNode_ofBackgroundHex)->GetFunction());
-			target->Set(NanNew<v8::String>("ofxNode_ofBeginShape")		, NanNew<v8::FunctionTemplate>(ofxNode_ofBeginShape)->GetFunction());
-			target->Set(NanNew<v8::String>("ofxNode_ofEndShape")		, NanNew<v8::FunctionTemplate>(ofxNode_ofEndShape)->GetFunction());
-			target->Set(NanNew<v8::String>("ofxNode_ofBeginSaveScreenAsPDF") ,
-				NanNew<v8::FunctionTemplate>(ofxNode_ofBeginSaveScreenAsPDF)->GetFunction());
+			target->Set(NanNew<v8::String>("ofSetupOpenGL")					, NanNew<v8::FunctionTemplate>(ofxNode_ofSetupOpenGL)->GetFunction());
+			target->Set(NanNew<v8::String>("ofRunApp")						, NanNew<v8::FunctionTemplate>(ofxNode_ofRunApp)->GetFunction());
+			target->Set(NanNew<v8::String>("ofCircle")						, NanNew<v8::FunctionTemplate>(ofxNode_ofCircle)->GetFunction());
+			target->Set(NanNew<v8::String>("ofFill")						, NanNew<v8::FunctionTemplate>(ofxNode_ofFill)->GetFunction());
+			target->Set(NanNew<v8::String>("ofClear")						, NanNew<v8::FunctionTemplate>(ofxNode_ofClear)->GetFunction());
+			target->Set(NanNew<v8::String>("ofGetElapsedTimeMillis")		, NanNew<v8::FunctionTemplate>(ofxNode_ofGetElapsedTimeMillis)->GetFunction());
+			target->Set(NanNew<v8::String>("ofSetColor")					, NanNew<v8::FunctionTemplate>(ofxNode_ofSetColor)->GetFunction());
+			target->Set(NanNew<v8::String>("ofBackground")					, NanNew<v8::FunctionTemplate>(ofxNode_ofBackground)->GetFunction());
+			target->Set(NanNew<v8::String>("ofBackgroundGradient")			, NanNew<v8::FunctionTemplate>(ofxNode_ofBackgroundGradient)->GetFunction());
+			target->Set(NanNew<v8::String>("ofBackgroundHex")				, NanNew<v8::FunctionTemplate>(ofxNode_ofBackgroundHex)->GetFunction());
+			target->Set(NanNew<v8::String>("ofBeginShape")					, NanNew<v8::FunctionTemplate>(ofxNode_ofBeginShape)->GetFunction());
+			target->Set(NanNew<v8::String>("ofEndShape")					, NanNew<v8::FunctionTemplate>(ofxNode_ofEndShape)->GetFunction());
+			target->Set(NanNew<v8::String>("ofBezier")						, NanNew<v8::FunctionTemplate>(ofxNode_ofBezier)->GetFunction());
+			target->Set(NanNew<v8::String>("ofBezierVertex")				, NanNew<v8::FunctionTemplate>(ofxNode_ofBezierVertex)->GetFunction());
+			target->Set(NanNew<v8::String>("ofBgColorPtr")					, NanNew<v8::FunctionTemplate>(ofxNode_ofBgColorPtr)->GetFunction());
+			target->Set(NanNew<v8::String>("ofBeginSaveScreenAsPDF")		, NanNew<v8::FunctionTemplate>(ofxNode_ofBeginSaveScreenAsPDF)->GetFunction());
+			target->Set(NanNew<v8::String>("ofClearAlpha")					, NanNew<v8::FunctionTemplate>(ofxNode_ofClearAlpha)->GetFunction());
+			target->Set(NanNew<v8::String>("ofCurve")						, NanNew<v8::FunctionTemplate>(ofxNode_ofCurve)->GetFunction());
+			target->Set(NanNew<v8::String>("ofCurveVertex")					, NanNew<v8::FunctionTemplate>(ofxNode_ofCurveVertex)->GetFunction());
+			target->Set(NanNew<v8::String>("ofCurveVertices")				, NanNew<v8::FunctionTemplate>(ofxNode_ofCurveVertices)->GetFunction());
+			target->Set(NanNew<v8::String>("ofDisableAlphaBlending")		, NanNew<v8::FunctionTemplate>(ofxNode_ofDisableAlphaBlending)->GetFunction());
+			target->Set(NanNew<v8::String>("ofDisableAntiAliasing")			, NanNew<v8::FunctionTemplate>(ofxNode_ofDisableAntiAliasing)->GetFunction());
+			target->Set(NanNew<v8::String>("ofDisableBlendMode")			, NanNew<v8::FunctionTemplate>(ofxNode_ofDisableBlendMode)->GetFunction());
+			target->Set(NanNew<v8::String>("ofDisableDepthTest")			, NanNew<v8::FunctionTemplate>(ofxNode_ofDisableDepthTest)->GetFunction());
+			target->Set(NanNew<v8::String>("ofDisablePointSprites")			, NanNew<v8::FunctionTemplate>(ofxNode_ofDisablePointSprites)->GetFunction());
+			target->Set(NanNew<v8::String>("ofDisableSmoothing")			, NanNew<v8::FunctionTemplate>(ofxNode_ofDisableSmoothing)->GetFunction());
+			target->Set(NanNew<v8::String>("ofDrawBitmapString")			, NanNew<v8::FunctionTemplate>(ofxNode_ofDrawBitmapString)->GetFunction());
+			target->Set(NanNew<v8::String>("ofDrawBitmapStringHighlight")	, NanNew<v8::FunctionTemplate>(ofxNode_ofDrawBitmapStringHighlight)->GetFunction());
+			target->Set(NanNew<v8::String>("ofEllipse")						, NanNew<v8::FunctionTemplate>(ofxNode_ofEllipse)->GetFunction());
+			target->Set(NanNew<v8::String>("ofEnableAlphaBlending")			, NanNew<v8::FunctionTemplate>(ofxNode_ofEnableAlphaBlending)->GetFunction());
+			target->Set(NanNew<v8::String>("ofEnableAntiAliasing")			, NanNew<v8::FunctionTemplate>(ofxNode_ofEnableAntiAliasing)->GetFunction());
+			target->Set(NanNew<v8::String>("ofEnableBlendMode")				, NanNew<v8::FunctionTemplate>(ofxNode_ofEnableBlendMode)->GetFunction());
+			target->Set(NanNew<v8::String>("ofEnableDepthTest")				, NanNew<v8::FunctionTemplate>(ofxNode_ofEnableDepthTest)->GetFunction());
+			target->Set(NanNew<v8::String>("ofEnablePointSprites")			, NanNew<v8::FunctionTemplate>(ofxNode_ofEnablePointSprites)->GetFunction());
+			target->Set(NanNew<v8::String>("ofEnableSmoothing")				, NanNew<v8::FunctionTemplate>(ofxNode_ofEnableSmoothing)->GetFunction());
+			target->Set(NanNew<v8::String>("ofEndSaveScreenAsPDF")			, NanNew<v8::FunctionTemplate>(ofxNode_ofEndSaveScreenAsPDF)->GetFunction());
+			target->Set(NanNew<v8::String>("ofEndShape")					, NanNew<v8::FunctionTemplate>(ofxNode_ofEndShape)->GetFunction());
+			target->Set(NanNew<v8::String>("ofGetBackground")				, NanNew<v8::FunctionTemplate>(ofxNode_ofGetBackground)->GetFunction());
+			target->Set(NanNew<v8::String>("ofGetCoordHandedness")			, NanNew<v8::FunctionTemplate>(ofxNode_ofGetCoordHandedness)->GetFunction());
 	}
 
 }

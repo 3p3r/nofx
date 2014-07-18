@@ -171,6 +171,18 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ofxNode_ofBezier.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofBezierVertex.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofBgColorPtr.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="ofxNode_ofCircle.cc">
       <SubType>
       </SubType>
@@ -179,11 +191,99 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ofxNode_ofClearAlpha.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofCurve.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofCurveVertex.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofCurveVertices.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofDisableAlphaBlending.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofDisableAntiAliasing.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofDisableBlendMode.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofDisableDepthTest.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofDisablePointSprites.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofDisableSmoothing.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofDrawBitmapString.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofDrawBitmapStringHighlight.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofEllipse.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofEnableAlphaBlending.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofEnableAntiAliasing.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofEnableBlendMode.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofEnableDepthTest.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofEnablePointSprites.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofEnableSmoothing.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofEndSaveScreenAsPDF.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="ofxNode_ofEndShape.cc">
       <SubType>
       </SubType>
     </ClCompile>
     <ClCompile Include="ofxNode_ofFill.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofGetBackground.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofGetCoordHandedness.cc">
       <SubType>
       </SubType>
     </ClCompile>
@@ -206,6 +306,10 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       </SubType>
     </ClCompile>
     <ClCompile Include="ofxNode_windowResized.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_wrapper_ofVec2f.cc">
       <SubType>
       </SubType>
     </ClCompile>
@@ -277,6 +381,18 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ofxNode_ofBezier.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofBezierVertex.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofBgColorPtr.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="ofxNode_ofCircle.h">
       <SubType>
       </SubType>
@@ -285,11 +401,99 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ofxNode_ofClearAlpha.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofCurve.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofCurveVertex.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofCurveVertices.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofDisableAlphaBlending.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofDisableAntiAliasing.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofDisableBlendMode.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofDisableDepthTest.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofDisablePointSprites.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofDisableSmoothing.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofDrawBitmapString.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofDrawBitmapStringHighlight.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofEllipse.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofEnableAlphaBlending.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofEnableAntiAliasing.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofEnableBlendMode.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofEnableDepthTest.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofEnablePointSprites.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofEnableSmoothing.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofEndSaveScreenAsPDF.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="ofxNode_ofEndShape.h">
       <SubType>
       </SubType>
     </ClInclude>
     <ClInclude Include="ofxNode_ofFill.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofGetBackground.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofGetCoordHandedness.h">
       <SubType>
       </SubType>
     </ClInclude>
@@ -312,6 +516,10 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       </SubType>
     </ClInclude>
     <ClInclude Include="ofxNode_windowResized.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_wrapper_ofVec2f.h">
       <SubType>
       </SubType>
     </ClInclude>

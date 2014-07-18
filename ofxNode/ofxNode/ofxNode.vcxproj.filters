@@ -16,6 +16,9 @@
     <Filter Include="Javascript Files">
       <UniqueIdentifier>{54f9980a-0a2a-4568-90c8-5be8e4574e8f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Wrappers">
+      <UniqueIdentifier>{1597d81e-1fdd-4b4d-a4ef-587c31ecd18e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ofxNode_ofSetupOpenGL.cc">
@@ -105,6 +108,84 @@
     <ClCompile Include="ofxNode_ofEndShape.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ofxNode_ofBezier.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofBezierVertex.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofBgColorPtr.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofClearAlpha.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofCurve.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofCurveVertex.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofCurveVertices.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofDisableAlphaBlending.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofDisableAntiAliasing.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofDisableBlendMode.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofDisableDepthTest.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofDisablePointSprites.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofDisableSmoothing.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofDrawBitmapString.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofDrawBitmapStringHighlight.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofEllipse.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofEnableAlphaBlending.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofEnableAntiAliasing.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofEnableBlendMode.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofEnableDepthTest.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofEnablePointSprites.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofEnableSmoothing.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofEndSaveScreenAsPDF.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofGetBackground.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofGetCoordHandedness.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_wrapper_ofVec2f.cc">
+      <Filter>Wrappers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ofApp.h">
@@ -193,6 +274,84 @@
     </ClInclude>
     <ClInclude Include="ofxNode_ofEndShape.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofBezier.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofBezierVertex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofBgColorPtr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofClearAlpha.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofCurve.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofCurveVertex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofCurveVertices.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofDisableAlphaBlending.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofDisableAntiAliasing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofDisableBlendMode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofDisableDepthTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofDisablePointSprites.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofDisableSmoothing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofDrawBitmapString.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofDrawBitmapStringHighlight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofEllipse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofEnableAlphaBlending.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofEnableAntiAliasing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofEnableBlendMode.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofEnableDepthTest.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofEnablePointSprites.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofEnableSmoothing.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofEndSaveScreenAsPDF.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofGetBackground.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofGetCoordHandedness.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_wrapper_ofVec2f.h">
+      <Filter>Wrappers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
