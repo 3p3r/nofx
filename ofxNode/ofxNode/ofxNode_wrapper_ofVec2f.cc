@@ -14,20 +14,37 @@ namespace ofxNode
 	void ofxNode_ofVec2f::Init(v8::Handle<v8::Object> exports)
 	{
 		// Prepare constructor template
-		v8::Local<v8::FunctionTemplate> tpl = v8::FunctionTemplate::New(v8::Isolate::GetCurrent(), New);
+		auto tpl = NanNew<v8::FunctionTemplate>(New);
 		tpl->SetClassName(NanNew("ofVec2f"));
 		tpl->InstanceTemplate()->SetInternalFieldCount(5);
+
+		tpl->PrototypeTemplate()->SetAccessor(NanNew("x") , ofxNode_ofVec2f::GetX , ofxNode_ofVec2f::SetX);
 		
 		// Prototype
-		tpl->PrototypeTemplate()->Set(NanNew("align") , v8::FunctionTemplate::New(v8::Isolate::GetCurrent(), Align)->GetFunction());
-		tpl->PrototypeTemplate()->Set(NanNew("alignRad") , v8::FunctionTemplate::New(v8::Isolate::GetCurrent(), AlignRad)->GetFunction());
-		tpl->PrototypeTemplate()->Set(NanNew("angle") , v8::FunctionTemplate::New(v8::Isolate::GetCurrent(), Angle)->GetFunction());
-		tpl->PrototypeTemplate()->Set(NanNew("angleRad") , v8::FunctionTemplate::New(v8::Isolate::GetCurrent(), AngleRad)->GetFunction());
-		tpl->PrototypeTemplate()->Set(NanNew("average") , v8::FunctionTemplate::New(v8::Isolate::GetCurrent(), Average)->GetFunction());
-		tpl->PrototypeTemplate()->Set(NanNew("length") , v8::FunctionTemplate::New(v8::Isolate::GetCurrent(), Length)->GetFunction());
+		NanSetPrototypeTemplate(tpl, NanNew("align")	, NanNew<v8::FunctionTemplate>(Align)	, v8::ReadOnly);
+		NanSetPrototypeTemplate(tpl, NanNew("alignRad")	, NanNew<v8::FunctionTemplate>(AlignRad), v8::ReadOnly);
+		NanSetPrototypeTemplate(tpl, NanNew("angle")	, NanNew<v8::FunctionTemplate>(Angle)	, v8::ReadOnly);
+		NanSetPrototypeTemplate(tpl, NanNew("angleRad")	, NanNew<v8::FunctionTemplate>(AngleRad), v8::ReadOnly);
+		NanSetPrototypeTemplate(tpl, NanNew("average")	, NanNew<v8::FunctionTemplate>(Average)	, v8::ReadOnly);
+		NanSetPrototypeTemplate(tpl, NanNew("length")	, NanNew<v8::FunctionTemplate>(Length)	, v8::ReadOnly);
 		
 		NanAssignPersistent(constructor, tpl->GetFunction());
-		exports->Set(NanNew<v8::String>("ofVec2f"), NanNew<v8::Function>(constructor));
+		exports->Set(NanNew<v8::String>("ofVec2f"), tpl->GetFunction());
+	}
+
+	NAN_GETTER(ofxNode_ofVec2f::GetX)
+	{
+		NanReturnValue(ObjectWrap::Unwrap<ofxNode_ofVec2f>(args.This())->x);
+	}
+
+	NAN_SETTER(ofxNode_ofVec2f::SetX)
+	{
+		ObjectWrap::Unwrap<ofxNode_ofVec2f>(args.This())->x = value->NumberValue();
+	}
+
+	NAN_PROPERTY_GETTER(ofxNode_ofVec2f)
+	{
+
 	}
 
 	NAN_METHOD(ofxNode_ofVec2f::New)
@@ -69,19 +86,8 @@ namespace ofxNode
 			lPoints.push_back(ObjectWrap::Unwrap<ofxNode_ofVec2f>(lVal->ToObject())->getScaled(1));
 		}
 
-		const ofVec2f* lPointsArr = &lPoints[0];
-		const int lPointsArrSize = lPoints.size();
-
-		ofVec2f lAverageResult = ObjectWrap::Unwrap<ofxNode_ofVec2f>(args.This())->average(lPointsArr, lPointsArrSize);
-
-		const int argc = 2;
-		v8::Local<v8::Value> argv[argc] = { 
-			NanNew(lAverageResult.x) ,
-			NanNew(lAverageResult.y)
-		};
-
+		ObjectWrap::Unwrap<ofxNode_ofVec2f>(args.This())->average(&lPoints[0], lPoints.size());
 		NanReturnValue(args.This());
-
 	}
 
 	NAN_METHOD(ofxNode_ofVec2f::Angle)

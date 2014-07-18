@@ -21,6 +21,12 @@ namespace ofxNode
 		static v8::Persistent<v8::Function> constructor;
 		static NAN_METHOD(New);
 
+		// setters
+		static NAN_SETTER(SetX);
+
+		// getters
+		static NAN_GETTER(GetX);
+
 		//public methods
 		static NAN_METHOD(Align);
 		static NAN_METHOD(AlignRad);

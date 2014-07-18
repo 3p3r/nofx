@@ -71,15 +71,11 @@ ofxNode.setup(function () {
 })
 .mouseMoved(function(x, y) {
     
-});
-var vec1 = new ofxNode.ofVec2f(10, 10);
-ofxNode.mousePressed(function (x, y, button) {
-    var vec2 = new this.ofVec2f(10, 20);
-    var vec3 = new this.ofVec2f(20, 10);
-    console.log(vec1.length(), vec2.length(), vec3.length());
-    vec1.average([vec1, vec2, vec3]);
-    console.log(vec1.length(), vec2.length(), vec3.length());
-    console.log(vec1.average([vec1, vec2, vec3]).length());
+})
+.mousePressed(function (x, y, button) {
+    var vec1 = new this.ofVec2f(10, 10);
+    vec1.x = 20;
+    console.log(vec1.align(this.ofVec2f(20, 20)));
 })
 .draw(function () {
     this.ofClear(0, 0, 0)
