@@ -4,9 +4,6 @@
 namespace ofxNode
 {
 	NAN_METHOD(ofxNode_ofSetupOpenGL) {
-		// self_ should not be empty (module must be initialized)
-		ASSERT_TRUE(!self_.IsEmpty());
-
 		NanScope();
 		// We need at least two arguments for this function
 		if (args.Length() < 2)

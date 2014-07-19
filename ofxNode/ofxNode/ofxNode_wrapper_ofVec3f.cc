@@ -69,7 +69,7 @@ namespace ofxNode
 		NanSetPrototypeTemplate(tpl, NanNew("minus")			, NanNew<v8::FunctionTemplate>(Minus)			, v8::ReadOnly);
 		NanSetPrototypeTemplate(tpl, NanNew("equals")			, NanNew<v8::FunctionTemplate>(Equals)			, v8::ReadOnly);
 
-		NanSetPrototypeTemplate(tpl, NanNew("OFXNODE_TYPE")		, NanNew(OFXNODE_TYPES::VEC3F)					, v8::DontEnum);
+		NanSetPrototypeTemplate(tpl, NanNew("OFXNODE_TYPE")		, NanNew(OFXNODE_TYPES::OFVEC3F)					, v8::DontEnum);
 		NanAssignPersistent(constructor, tpl->GetFunction());
 		exports->Set(NanNew<v8::String>("ofVec3f"), tpl->GetFunction());
 	}
@@ -101,7 +101,7 @@ namespace ofxNode
 				const auto lKey = lProps->Get(i);
 				const auto lVal = args[0]->ToObject()->Get(i);
 
-				if(lVal->ToObject()->Has(NanNew("OFXNODE_TYPE")) && lVal->ToObject()->Get(NanNew("OFXNODE_TYPE"))->Uint32Value() == OFXNODE_TYPES::VEC3F)
+				if(lVal->ToObject()->Has(NanNew("OFXNODE_TYPE")) && lVal->ToObject()->Get(NanNew("OFXNODE_TYPE"))->Uint32Value() == OFXNODE_TYPES::OFVEC3F)
 				{
 					ranAtLeastOnce = true;
 					result = result && (self == ObjectWrap::Unwrap<ofxNode_ofVec3f>(lVal->ToObject())->internal_);
@@ -210,7 +210,7 @@ namespace ofxNode
 		if (args.Length() == 1 &&
 			args[0]->IsObject() &&
 			args[0]->ToObject()->Has(NanNew("OFXNODE_TYPE")) &&
-			args[0]->ToObject()->Get(NanNew("OFXNODE_TYPE"))->Uint32Value() == OFXNODE_TYPES::VEC3F)
+			args[0]->ToObject()->Get(NanNew("OFXNODE_TYPE"))->Uint32Value() == OFXNODE_TYPES::OFVEC3F)
 		{
 			ObjectWrap::Unwrap<ofxNode_ofVec3f>(args.This())->internal_.set(ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->internal_);
 		}

@@ -3,8 +3,6 @@
 namespace ofxNode
 {
 	NAN_METHOD(ofxNode_update) {
-		ASSERT_FALSE(self_.IsEmpty());
-
 		NanScope();
 		
 		if (args.Length() == 1 && args[0]->IsFunction())

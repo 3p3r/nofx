@@ -5,8 +5,6 @@
 namespace ofxNode
 {
 	NAN_METHOD(ofxNode_ofDrawBitmapString) {
-		ASSERT_FALSE(self_.IsEmpty());
-
 		NanScope();
 		
 		if (args.Length() == 2 &&

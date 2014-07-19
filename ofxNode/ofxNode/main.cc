@@ -28,6 +28,7 @@
 #include "ofxNode_wrapper_ofVec2f.h"
 #include "ofxNode_wrapper_ofVec3f.h"
 #include "ofxNode_wrapper_ofVec4f.h"
+#include "ofxNode_wrapper_ofColor.h"
 
 //Global functions
 #include "ofxNode_noop.h"
@@ -79,17 +80,9 @@ namespace ofxNode {
 	void Initialize(v8::Handle<v8::Object> target,
 		v8::Handle<v8::Value> unused,
 		v8::Handle<v8::Context> context) {
-			// First let's check if these two elements exist.
-			// We absolutely require these two variables.
-			ASSERT_TRUE(!target.IsEmpty());
-			ASSERT_TRUE(!context.IsEmpty());
-			// We also have to make sure self_ is empty by now
-			ASSERT_TRUE(self_.IsEmpty());
 			// Assigning target (what's being returned by Node's "require") to self_
 			// for future reference.
 			NanAssignPersistent(self_, target);
-			// Checking if it happened successfully
-			ASSERT_TRUE(!self_.IsEmpty());
 			
 			//setting hidden field values. These are implemented as hidden for future security implementations
 			auto lNoop = NanNew<v8::FunctionTemplate>(ofxNode_noop)->GetFunction();
@@ -111,6 +104,7 @@ namespace ofxNode {
 			ofxNode_ofVec2f::Init(target);
 			ofxNode_ofVec3f::Init(target);
 			ofxNode_ofVec4f::Init(target);
+			ofxNode_ofColor::Init(target);
 			
 			// Assertions are passed, let's initialize the module with assigning its methods
 			target->Set(NanNew<v8::String>("draw")			, NanNew<v8::FunctionTemplate>(ofxNode_draw)->GetFunction());

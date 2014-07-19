@@ -4,8 +4,6 @@
 namespace ofxNode
 {
 	NAN_METHOD(ofxNode_ofEnableAlphaBlending) {
-		ASSERT_FALSE(self_.IsEmpty());
-
 		NanScope();
 		
 		ofEnableAlphaBlending();

@@ -7,18 +7,18 @@
 #include "node.h"
 #include "v8.h"
 #include "nan.h"
-#include "gtest\gtest.h"
 
 // Global externs
 extern v8::Persistent<v8::Object> self_;
 
 // Internal ofxNode types
-
 enum OFXNODE_TYPES
 {
-	VEC2F = 0 ,
-	VEC3F ,
-	VEC4F
+	OFVEC2F = 1,
+	OFVEC3F = 1 << 1,
+	OFVEC4F = 1 << 2,
+	OFCOLOR = 1 << 3,
+	OFPOINT = 1 << 4
 };
 
 // v8 <-> OF <-> Node Goodies

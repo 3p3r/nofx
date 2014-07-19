@@ -5,8 +5,6 @@
 namespace ofxNode
 {
 	NAN_METHOD(ofxNode_ofBeginSaveScreenAsPDF) {
-		ASSERT_FALSE(self_.IsEmpty());
-
 		NanScope();
 		
 		//void ofBeginSaveScreenAsPDF(string filename, bool bMultipage=false, bool b3D=false, ofRectangle viewport=ofRectangle(0, 0, 0, 0))

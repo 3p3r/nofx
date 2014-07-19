@@ -309,6 +309,7 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ofxNode_wrapper_ofColor.cc" />
     <ClCompile Include="ofxNode_wrapper_ofVec2f.cc">
       <SubType>
       </SubType>
@@ -521,6 +522,7 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ofxNode_wrapper_ofColor.h" />
     <ClInclude Include="ofxNode_wrapper_ofVec2f.h">
       <SubType>
       </SubType>

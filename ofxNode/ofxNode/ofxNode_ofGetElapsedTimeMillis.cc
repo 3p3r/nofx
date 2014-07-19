@@ -4,8 +4,6 @@
 namespace ofxNode
 {
 	NAN_METHOD(ofxNode_ofGetElapsedTimeMillis) {
-		ASSERT_FALSE(self_.IsEmpty());
-
 		NanScope();
 		NanReturnValue((double)ofGetElapsedTimeMillis());
 	} // !ofxNode_ofGetElapsedTimeMillis

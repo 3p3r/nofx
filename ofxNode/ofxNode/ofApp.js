@@ -73,11 +73,10 @@ ofxNode.setup(function () {
     
 })
 .mousePressed(function (x, y, button) {
-    var v1 = this.ofVec3f.prototype.one();
-    var v2 = this.ofVec3f(2, 1, 0);
-    v2.set(v1.plus(v1).plus(v1).plus(v1).plus(v1).plus(v1).plus(v1));
-
-    console.log(v2.toString());
+    var color1 = this.ofColor(1,1,1,1);
+    var color2 = color1.aqua;
+    var color3 = color1.aqua;
+    console.log(color2.equals(color3));
 })
 .draw(function () {
     this.ofClear(0, 0, 0)

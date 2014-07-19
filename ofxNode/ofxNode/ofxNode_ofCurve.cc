@@ -4,8 +4,6 @@
 namespace ofxNode
 {
 	NAN_METHOD(ofxNode_ofCurve) {
-		ASSERT_FALSE(self_.IsEmpty());
-
 		NanScope();
 		
 		//void ofCurve(float x0, float y0, float x1, float y1, float x2, float y2, float x3, float y3)

@@ -4,8 +4,6 @@
 namespace ofxNode
 {
 	NAN_METHOD(ofxNode_ofBackground) {
-		ASSERT_FALSE(self_.IsEmpty());
-
 		NanScope();
 		if (args.Length() == 1 && args[0]->IsNumber())
 		{

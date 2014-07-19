@@ -5,8 +5,6 @@
 namespace ofxNode
 {
 	NAN_METHOD(ofxNode_ofDrawBitmapStringHighlight) {
-		ASSERT_FALSE(self_.IsEmpty());
-
 		NanScope();
 		
 		//TODO(sepehr) implement all the methods overloads of ofDrawBitmapStringHighlight

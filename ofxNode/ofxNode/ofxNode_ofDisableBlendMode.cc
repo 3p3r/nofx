@@ -4,8 +4,6 @@
 namespace ofxNode
 {
 	NAN_METHOD(ofxNode_ofDisableBlendMode) {
-		ASSERT_FALSE(self_.IsEmpty());
-
 		NanScope();
 		
 		ofDisableBlendMode();

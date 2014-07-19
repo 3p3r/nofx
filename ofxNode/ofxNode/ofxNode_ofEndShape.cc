@@ -4,8 +4,6 @@
 namespace ofxNode
 {
 	NAN_METHOD(ofxNode_ofEndShape) {
-		ASSERT_FALSE(self_.IsEmpty());
-
 		NanScope();
 		
 		bool lClose = false;

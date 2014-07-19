@@ -4,8 +4,6 @@
 namespace ofxNode
 {
 	NAN_METHOD(ofxNode_ofEnablePointSprites) {
-		ASSERT_FALSE(self_.IsEmpty());
-
 		NanScope();
 		
 		ofEnablePointSprites();

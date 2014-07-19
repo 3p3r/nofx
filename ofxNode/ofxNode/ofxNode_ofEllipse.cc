@@ -4,8 +4,6 @@
 namespace ofxNode
 {
 	NAN_METHOD(ofxNode_ofEllipse) {
-		ASSERT_FALSE(self_.IsEmpty());
-
 		NanScope();
 		
 		if (args.Length() == 3 &&

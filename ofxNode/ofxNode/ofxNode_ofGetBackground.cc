@@ -5,8 +5,6 @@
 namespace ofxNode
 {
 	NAN_METHOD(ofxNode_ofGetBackground) {
-		ASSERT_FALSE(self_.IsEmpty());
-
 		NanScope();
 		
 		const auto lOfColor = ofGetBackground();
