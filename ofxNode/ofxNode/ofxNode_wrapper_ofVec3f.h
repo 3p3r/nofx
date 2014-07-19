@@ -11,6 +11,7 @@ namespace ofxNode
 	{
 	public:
 		static void Init(v8::Handle<v8::Object> exports);
+		ofVec3f self() {return internal_;}
 	private:
 		// will be used to initialize native OF datatype
 		ofVec3f internal_;

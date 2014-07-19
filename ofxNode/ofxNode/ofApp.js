@@ -10,6 +10,9 @@ magnets = [];
 var delay = 5;
 var timer = 0;
 
+var p1 = ofxNode.ofVec3f(1, 1, 1);
+var p2 = ofxNode.ofVec3f(100, 100, 100);
+
 Particle = function() {
     this.size = 0.5 + Math.random() * 8.5;
     this.position = {
@@ -84,6 +87,7 @@ ofxNode.setup(function () {
         { r: 240, g: 240, b: 240 },
         { r: 255, g: 255, b: 255 })
     .ofDrawBitmapString("ofxNode sample script.", 10, 20)
+    .ofLine(p1, p2)
     .ofDrawBitmapStringHighlight("ofxNode sample script.", {x:10, y:40}, { r: 0, g: 0, b: 0 }, { r: 255, g: 255, b: 255 });
     if (ofxNode.ofGetElapsedTimeMillis() - timer > delay) {
         var a, b, c, h, D, u;

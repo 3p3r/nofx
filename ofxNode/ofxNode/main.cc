@@ -72,6 +72,14 @@
 #include "ofxNode_ofFill.h"
 #include "ofxNode_ofGetBackground.h"
 #include "ofxNode_ofGetCoordHandedness.h"
+#include "ofxNode_ofLine.h"
+#include "ofxNode_ofSetFrameRate.h"
+#include "ofxNode_ofSetWindowTitle.h"
+#include "ofxNode_ofSetCircleResolution.h"
+#include "ofxNode_ofRandom.h"
+#include "ofxNode_ofNoFill.h"
+#include "ofxNode_ofSetHexColor.h"
+#include "ofxNode_ofRect.h"
 
 // self_ is a reference to the loaded module across all ported API's
 v8::Persistent<v8::Object> self_;
@@ -160,12 +168,20 @@ namespace ofxNode {
 			target->Set(NanNew<v8::String>("ofEndShape")					, NanNew<v8::FunctionTemplate>(ofxNode_ofEndShape)->GetFunction());
 			target->Set(NanNew<v8::String>("ofGetBackground")				, NanNew<v8::FunctionTemplate>(ofxNode_ofGetBackground)->GetFunction());
 			target->Set(NanNew<v8::String>("ofGetCoordHandedness")			, NanNew<v8::FunctionTemplate>(ofxNode_ofGetCoordHandedness)->GetFunction());
+			target->Set(NanNew<v8::String>("ofLine")						, NanNew<v8::FunctionTemplate>(ofxNode_ofLine)->GetFunction());
+			target->Set(NanNew<v8::String>("ofSetFrameRate")				, NanNew<v8::FunctionTemplate>(ofxNode_ofSetFrameRate)->GetFunction());
+			target->Set(NanNew<v8::String>("ofSetCircleResolution")			, NanNew<v8::FunctionTemplate>(ofxNode_ofSetCircleResolution)->GetFunction());
+			target->Set(NanNew<v8::String>("ofSetWindowTitle")				, NanNew<v8::FunctionTemplate>(ofxNode_ofSetWindowTitle)->GetFunction());
+			target->Set(NanNew<v8::String>("ofRandom")						, NanNew<v8::FunctionTemplate>(ofxNode_ofRandom)->GetFunction());
+			target->Set(NanNew<v8::String>("ofNoFill")						, NanNew<v8::FunctionTemplate>(ofxNode_ofNoFill)->GetFunction());
+			target->Set(NanNew<v8::String>("ofSetHexColor")					, NanNew<v8::FunctionTemplate>(ofxNode_ofSetHexColor)->GetFunction());
+			target->Set(NanNew<v8::String>("ofRect")						, NanNew<v8::FunctionTemplate>(ofxNode_ofRect)->GetFunction());
 	}
 
 }
 
 // We're using Context Aware initializer, for forward compatibility with Node 0.10+
-// Although at the time it's not possible to have multiple instacnces of OF
+// Although at the time it's not possible to have multiple instances of OF
 // On the same Node instance due to OF's internals. Maybe this requires a patch to OF
 // Will look at this later. TODO(sepehr)
 // Consult http://strongloop.com/strongblog/whats-new-node-js-v0-12-multiple-context-execution/

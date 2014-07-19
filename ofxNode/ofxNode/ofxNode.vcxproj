@@ -291,12 +291,44 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ofxNode_ofLine.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofNoFill.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofRandom.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofRect.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="ofxNode_ofRunApp.cc" />
+    <ClCompile Include="ofxNode_ofSetCircleResolution.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="ofxNode_ofSetColor.cc">
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ofxNode_ofSetFrameRate.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofSetHexColor.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="ofxNode_ofSetupOpenGL.cc" />
+    <ClCompile Include="ofxNode_ofSetWindowTitle.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="ofxNode_setup.cc">
       <SubType>
       </SubType>
@@ -504,12 +536,44 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ofxNode_ofLine.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofNoFill.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofRandom.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofRect.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="ofxNode_ofRunApp.h" />
+    <ClInclude Include="ofxNode_ofSetCircleResolution.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="ofxNode_ofSetColor.h">
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ofxNode_ofSetFrameRate.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofSetHexColor.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="ofxNode_ofSetupOpenGL.h" />
+    <ClInclude Include="ofxNode_ofSetWindowTitle.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="ofxNode_setup.h">
       <SubType>
       </SubType>

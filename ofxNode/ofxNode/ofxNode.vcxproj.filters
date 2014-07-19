@@ -195,6 +195,30 @@
     <ClCompile Include="ofxNode_wrapper_ofColor.cc">
       <Filter>Wrappers</Filter>
     </ClCompile>
+    <ClCompile Include="ofxNode_ofLine.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofRandom.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofSetCircleResolution.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofSetWindowTitle.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofSetFrameRate.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofNoFill.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofSetHexColor.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofRect.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ofApp.h">
@@ -370,6 +394,30 @@
     </ClInclude>
     <ClInclude Include="ofxNode_wrapper_ofColor.h">
       <Filter>Wrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofLine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofRandom.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofSetCircleResolution.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofSetWindowTitle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofSetFrameRate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofNoFill.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofSetHexColor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofRect.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
