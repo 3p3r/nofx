@@ -73,9 +73,11 @@ ofxNode.setup(function () {
     
 })
 .mousePressed(function (x, y, button) {
-    var vec1 = new this.ofVec2f(10, 10);
-    vec1.x = 20;
-    console.log(vec1.align(this.ofVec2f(20, 20)));
+    var v1 = this.ofVec3f.prototype.one();
+    var v2 = this.ofVec3f(2, 1, 0);
+    v2.set(v1.plus(v1).plus(v1).plus(v1).plus(v1).plus(v1).plus(v1));
+
+    console.log(v2.toString());
 })
 .draw(function () {
     this.ofClear(0, 0, 0)

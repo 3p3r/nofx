@@ -313,6 +313,8 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ofxNode_wrapper_ofVec3f.cc" />
+    <ClCompile Include="ofxNode_wrapper_ofVec4f.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="globals.h" />
@@ -523,6 +525,8 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ofxNode_wrapper_ofVec3f.h" />
+    <ClInclude Include="ofxNode_wrapper_ofVec4f.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ofApp.js">

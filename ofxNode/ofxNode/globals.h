@@ -12,6 +12,15 @@
 // Global externs
 extern v8::Persistent<v8::Object> self_;
 
+// Internal ofxNode types
+
+enum OFXNODE_TYPES
+{
+	VEC2F = 0 ,
+	VEC3F ,
+	VEC4F
+};
+
 // v8 <-> OF <-> Node Goodies
 
 // Checks to see if a v8 argument is string

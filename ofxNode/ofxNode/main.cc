@@ -26,6 +26,8 @@
 
 //Classes and data type wrappers
 #include "ofxNode_wrapper_ofVec2f.h"
+#include "ofxNode_wrapper_ofVec3f.h"
+#include "ofxNode_wrapper_ofVec4f.h"
 
 //Global functions
 #include "ofxNode_noop.h"
@@ -107,6 +109,8 @@ namespace ofxNode {
 
 			//initializing basic data types
 			ofxNode_ofVec2f::Init(target);
+			ofxNode_ofVec3f::Init(target);
+			ofxNode_ofVec4f::Init(target);
 			
 			// Assertions are passed, let's initialize the module with assigning its methods
 			target->Set(NanNew<v8::String>("draw")			, NanNew<v8::FunctionTemplate>(ofxNode_draw)->GetFunction());

@@ -186,6 +186,12 @@
     <ClCompile Include="ofxNode_wrapper_ofVec2f.cc">
       <Filter>Wrappers</Filter>
     </ClCompile>
+    <ClCompile Include="ofxNode_wrapper_ofVec3f.cc">
+      <Filter>Wrappers</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_wrapper_ofVec4f.cc">
+      <Filter>Wrappers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ofApp.h">
@@ -351,6 +357,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ofxNode_wrapper_ofVec2f.h">
+      <Filter>Wrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_wrapper_ofVec3f.h">
+      <Filter>Wrappers</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_wrapper_ofVec4f.h">
       <Filter>Wrappers</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,23 +1,23 @@
-#ifndef _ofxNode_wrapper_ofVec2f_H_
-#define _ofxNode_wrapper_ofVec2f_H_
+#ifndef _ofxNode_wrapper_ofVec3f_H_
+#define _ofxNode_wrapper_ofVec3f_H_
 
 #include "globals.h"
-#include "ofVec2f.h"
+#include "ofVec3f.h"
 
 namespace ofxNode
 {
-	class ofxNode_ofVec2f
+	class ofxNode_ofVec3f
 		: public node::ObjectWrap
 	{
 	public:
 		static void Init(v8::Handle<v8::Object> exports);
 	private:
 		// will be used to initialize native OF datatype
-		ofVec2f internal_;
+		ofVec3f internal_;
 
 		// C++ constructors
-		explicit ofxNode_ofVec2f(ofVec2f);
-		~ofxNode_ofVec2f();
+		explicit ofxNode_ofVec3f(ofVec3f);
+		~ofxNode_ofVec3f();
 
 		// JS constructors
 		static v8::Persistent<v8::Function> constructor;
@@ -26,11 +26,13 @@ namespace ofxNode
 		// setters
 		static NAN_SETTER(SetX);
 		static NAN_SETTER(SetY);
+		static NAN_SETTER(SetZ);
 
 		// getters
 		static NAN_GETTER(GetDIM);
 		static NAN_GETTER(GetX);
 		static NAN_GETTER(GetY);
+		static NAN_GETTER(GetZ);
 
 		//public methods
 		static NAN_METHOD(Align);
@@ -38,8 +40,10 @@ namespace ofxNode
 		static NAN_METHOD(Angle);
 		static NAN_METHOD(AngleRad);
 		static NAN_METHOD(Average);
+		static NAN_METHOD(Cross);
 		static NAN_METHOD(Distance);
 		static NAN_METHOD(Dot);
+		static NAN_METHOD(GetCrossed);
 		static NAN_METHOD(GetInterpolated);
 		static NAN_METHOD(GetLimited);
 		static NAN_METHOD(GetMiddle);
@@ -78,4 +82,4 @@ namespace ofxNode
 	
 } // !namespace ofxNode
 
-#endif // !_ofxNode_wrapper_ofVec2f_H_
+#endif // !_ofxNode_wrapper_ofVec3f_H_
