@@ -219,6 +219,9 @@
     <ClCompile Include="ofxNode_ofRect.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ofxNode_wrapper_ofQuaternion.cc">
+      <Filter>Wrappers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ofApp.h">
@@ -418,6 +421,9 @@
     </ClInclude>
     <ClInclude Include="ofxNode_ofRect.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_wrapper_ofQuaternion.h">
+      <Filter>Wrappers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

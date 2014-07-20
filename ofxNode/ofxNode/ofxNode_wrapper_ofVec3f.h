@@ -10,7 +10,9 @@ namespace ofxNode
 		: public node::ObjectWrap
 	{
 	public:
+		friend class ofxNode_ofQuaternion;
 		static void Init(v8::Handle<v8::Object> exports);
+		static const v8::Persistent<v8::Function>& factory() {return constructor;}
 		ofVec3f self() {return internal_;}
 	private:
 		// will be used to initialize native OF datatype

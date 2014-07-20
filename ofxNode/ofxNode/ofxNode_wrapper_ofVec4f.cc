@@ -23,7 +23,7 @@ namespace ofxNode
 		tpl->InstanceTemplate()->SetAccessor(NanNew("x")	, ofxNode_ofVec4f::GetX , ofxNode_ofVec4f::SetX);
 		tpl->InstanceTemplate()->SetAccessor(NanNew("y")	, ofxNode_ofVec4f::GetY , ofxNode_ofVec4f::SetY);
 		tpl->InstanceTemplate()->SetAccessor(NanNew("z")	, ofxNode_ofVec4f::GetZ , ofxNode_ofVec4f::SetZ);
-		tpl->InstanceTemplate()->SetAccessor(NanNew("w")	, ofxNode_ofVec4f::GetZ , ofxNode_ofVec4f::SetW);
+		tpl->InstanceTemplate()->SetAccessor(NanNew("w")	, ofxNode_ofVec4f::GetW , ofxNode_ofVec4f::SetW);
 
 		// Prototype
 		NanSetPrototypeTemplate(tpl, NanNew("average")			, NanNew<v8::FunctionTemplate>(Average)			, v8::ReadOnly);

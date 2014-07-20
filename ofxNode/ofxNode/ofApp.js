@@ -76,10 +76,8 @@ ofxNode.setup(function () {
     
 })
 .mousePressed(function (x, y, button) {
-    var color1 = this.ofColor(1,1,1,1);
-    var color2 = color1.aqua;
-    var color3 = color1.aqua;
-    console.log(color2.equals(color3));
+    var v = this.ofQuaternion(1, 2, 4, 6);
+    console.log(v);
 })
 .draw(function () {
     this.ofClear(0, 0, 0)
