@@ -11,6 +11,8 @@ namespace ofxNode
 	{
 	public:
 		static void Init(v8::Handle<v8::Object> exports);
+		static const v8::Persistent<v8::Function>& factory() {return constructor;}
+		ofColor& self() {return internal_;}
 	private:
 		// will be used to initialize native OF datatype
 		ofColor internal_;

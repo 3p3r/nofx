@@ -14,13 +14,15 @@ extern v8::Persistent<v8::Object> self_;
 // Internal ofxNode types
 enum OFXNODE_TYPES
 {
-	OFVEC2F = 1,
-	OFVEC3F = 1 << 1,
-	OFVEC4F = 1 << 2,
-	OFCOLOR = 1 << 3,
-	OFPOINT = 1 << 4,
-	OFQUATERNION = 1 << 5,
-	OFMATRIX4X4 = 1 << 6
+	OFVEC2F			= 1,
+	OFVEC3F			= 1 << 1,
+	OFVEC4F			= 1 << 2,
+	OFCOLOR			= 1 << 3,
+	OFPOINT			= 1 << 4,
+	OFQUATERNION	= 1 << 5,
+	OFMATRIX4X4		= 1 << 6,
+	OFSTYLE			= 1 << 7,
+	OFRECTANGLE		= 1 << 8
 };
 
 // v8 <-> OF <-> Node Goodies

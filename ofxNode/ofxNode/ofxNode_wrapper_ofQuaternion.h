@@ -13,14 +13,14 @@ namespace ofxNode
 	{
 	public:
 		static void Init(v8::Handle<v8::Object> exports);
-		ofQuaternion self() {return internal_;}
+		ofQuaternion& self() {return internal_;}
 		static const v8::Persistent<v8::Function>& factory() {return constructor;}
 	private:
 		// will be used to initialize native OF datatype
 		ofQuaternion internal_;
 
 		// C++ constructors
-		explicit ofxNode_ofQuaternion(ofQuaternion);
+		explicit ofxNode_ofQuaternion(ofQuaternion&);
 		~ofxNode_ofQuaternion();
 
 		// JS constructors

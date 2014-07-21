@@ -76,14 +76,23 @@ ofxNode.setup(function () {
     
 })
 .mousePressed(function (x, y, button) {
-    var v1 = this.ofVec3f(1,2,0.5);
-    var v2 = this.ofVec3f(2,2,2);
-    var q1 = this.ofQuaternion(3, 3, 33, 3);
-    var q2 = this.ofQuaternion(4, 45, 4, 4);
-    var m = this.ofMatrix4x4();
-    console.log(m.getLookAt(99));
+    var c = this.ofStyle();
+    console.log(c);
+    c.sphereResolution = 30;
+    c.smoothing = true;
+    c.rectMode++;
+    c.polyMode++;
+    c.lineWidth++;
+    c.drawBitmapMode++;
+    c.circleResolution++;
+    c.blendingMode++;
+    c.color = this.ofColor(100, 99, 98, 97);
+    c.bgColor = this.ofColor(100, 99, 98, 97);
+    c.bFill = false;
+    console.log(c);
 })
 .draw(function () {
+/*
     this.ofClear(0, 0, 0)
     .ofBackgroundGradient(
         { r: 240, g: 240, b: 240 },
@@ -154,6 +163,7 @@ ofxNode.setup(function () {
         ofxNode.ofFill();
         ofxNode.ofCircle(a.position.x, a.position.y, a.size / 2);
     })
+*/
 })
 .ofSetupOpenGL(winW, winH)
 .ofRunApp();

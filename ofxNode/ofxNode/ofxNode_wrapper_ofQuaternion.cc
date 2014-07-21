@@ -6,7 +6,7 @@ namespace ofxNode
 {
 	v8::Persistent<v8::Function> ofxNode_ofQuaternion::constructor;
 
-	ofxNode_ofQuaternion::ofxNode_ofQuaternion(ofQuaternion aOfQuaternion)
+	ofxNode_ofQuaternion::ofxNode_ofQuaternion(ofQuaternion& aOfQuaternion)
 		: internal_(aOfQuaternion)
 	{}
 
@@ -81,7 +81,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofQuaternion::Slerp)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self();
+		auto &self = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self();
 		self.slerp(
 			V8_ARG_NUMBER(args[0]),
 			node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args[1]->ToObject())->self(),
@@ -92,7 +92,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofQuaternion::Set)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self();
+		auto &self = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self();
 		if (args.Length() == 4)
 		{
 			self.set(
@@ -121,7 +121,7 @@ namespace ofxNode
 
 	NAN_GETTER(ofxNode_ofQuaternion::GetV) {
 		NanScope();
-		const ofVec4f lAsVec4 = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self()._v;
+		const auto& lAsVec4 = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self()._v;
 		v8::Local<v8::Value> lArgv[] = {NanNew(lAsVec4.x), NanNew(lAsVec4.y), NanNew(lAsVec4.z), NanNew(lAsVec4.w)};
 		NanReturnValue(NanNew(ofxNode_ofVec4f::factory())->CallAsConstructor(4, lArgv));
 	}
@@ -132,27 +132,27 @@ namespace ofxNode
 	
 	NAN_SETTER(ofxNode_ofQuaternion::SetV)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self();
 		self._v = node::ObjectWrap::Unwrap<ofxNode_ofVec4f>(value->ToObject())->self();
 	}
 	NAN_SETTER(ofxNode_ofQuaternion::SetW)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self();
 		self._v.w = value->NumberValue();
 	}
 	NAN_SETTER(ofxNode_ofQuaternion::SetX)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self();
 		self._v.x = value->NumberValue();
 	}
 	NAN_SETTER(ofxNode_ofQuaternion::SetY)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self();
 		self._v.y = value->NumberValue();
 	}
 	NAN_SETTER(ofxNode_ofQuaternion::SetZ)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self();
 		self._v.z = value->NumberValue();
 	}
 
@@ -160,10 +160,10 @@ namespace ofxNode
 	
 	NAN_METHOD(ofxNode_ofQuaternion::MakeRotate)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This());
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self();
 		if (args.Length() == 4)
 		{
-			self->internal_.makeRotate(
+			self.makeRotate(
 				V8_ARG_NUMBER(args[0]),
 				V8_ARG_NUMBER(args[1]),
 				V8_ARG_NUMBER(args[2]),
@@ -172,21 +172,21 @@ namespace ofxNode
 		}
 		else if (args.Length() == 2 && args[0]->IsNumber())
 		{
-			self->internal_.makeRotate(
+			self.makeRotate(
 				V8_ARG_NUMBER(args[0]),
 				node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[1]->ToObject())->self()
 				);
 		}
 		else if (args.Length() == 2 && args[0]->IsObject())
 		{
-			self->internal_.makeRotate(
+			self.makeRotate(
 				node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->self(),
 				node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[1]->ToObject())->self()
 				);
 		}
 		else
 		{
-			self->internal_.makeRotate(
+			self.makeRotate(
 				V8_ARG_NUMBER(args[0]),
 				node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[1]->ToObject())->self(),
 				V8_ARG_NUMBER(args[2]),
@@ -234,7 +234,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofQuaternion::Equals)
 	{
-		const auto self = ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self();
+		const auto& self = ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self();
 		if (args[0]->IsArray())
 		{
 			bool result = true;
@@ -263,7 +263,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofQuaternion::Over)
 	{
-		const auto self = ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->internal_;
+		const auto& self = ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->internal_;
 		const int lArgc = 4;
 		if(args[0]->IsNumber())
 		{
@@ -283,7 +283,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofQuaternion::Times)
 	{
-		const auto self = ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->internal_;
+		const auto& self = ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->internal_;
 		const int lArgc = 4;
 		if(args[0]->IsNumber())
 		{
@@ -303,7 +303,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofQuaternion::Minus)
 	{
-		const auto self = ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->internal_;
+		const auto& self = ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->internal_;
 		const int lArgc = 4;
 		if(args[0]->IsNumber())
 		{
@@ -323,7 +323,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofQuaternion::Plus)
 	{
-		const auto self = ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->internal_;
+		const auto& self = ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->internal_;
 		const int lArgc = 4;
 		const auto lArgVec = ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args[0]->ToObject())->internal_;
 		const auto result = self + lArgVec;
@@ -333,7 +333,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofQuaternion::ToString)
 	{
-		const auto self = ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->internal_._v;
+		const auto& self = ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->internal_._v;
 		std::ostringstream out;
 		out << self;
 		NanReturnValue( NanNew(out.str().c_str()) );
