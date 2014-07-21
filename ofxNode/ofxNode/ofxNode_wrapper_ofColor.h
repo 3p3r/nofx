@@ -33,7 +33,8 @@ namespace ofxNode
 		static NAN_GETTER(GetR);
 		static NAN_GETTER(GetG);
 		static NAN_GETTER(GetB);
-		static NAN_GETTER(GetA);
+		static NAN_GETTER(GetA);
+
 		static NAN_PROPERTY_GETTER(GetAliceBlue);
 		static NAN_PROPERTY_GETTER(GetAntiqueWhite);
 		static NAN_PROPERTY_GETTER(GetAqua);
@@ -181,7 +182,8 @@ namespace ofxNode
 		static NAN_PROPERTY_GETTER(GetWhite);
 		static NAN_PROPERTY_GETTER(GetWhiteSmoke);
 		static NAN_PROPERTY_GETTER(GetYellow);
-		static NAN_PROPERTY_GETTER(GetYellowGreen);
+		static NAN_PROPERTY_GETTER(GetYellowGreen);
+
 		//public methods
 		static NAN_METHOD(SetSaturation);
 		static NAN_METHOD(SetHue);

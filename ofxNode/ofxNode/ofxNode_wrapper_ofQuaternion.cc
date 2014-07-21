@@ -41,10 +41,37 @@ namespace ofxNode
 		NanSetPrototypeTemplate(tpl, NanNew("set"), NanNew<v8::FunctionTemplate>(Set), v8::ReadOnly);
 		NanSetPrototypeTemplate(tpl, NanNew("slerp"), NanNew<v8::FunctionTemplate>(Slerp), v8::ReadOnly);
 		NanSetPrototypeTemplate(tpl, NanNew("zeroRotation"), NanNew<v8::FunctionTemplate>(ZeroRotation), v8::ReadOnly);
+		NanSetPrototypeTemplate(tpl, NanNew("get"), NanNew<v8::FunctionTemplate>(Get), v8::ReadOnly);
 
 		NanSetPrototypeTemplate(tpl, NanNew("OFXNODE_TYPE"), NanNew(OFXNODE_TYPES::OFQUATERNION), v8::DontEnum);
 		NanAssignPersistent(constructor, tpl->GetFunction());
 		exports->Set(NanNew<v8::String>("ofQuaternion"), tpl->GetFunction());
+	}
+
+	NAN_METHOD(ofxNode_ofQuaternion::Get)
+	{
+		auto self = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self();
+		ofMatrix4x4 toRet;
+		self.get(toRet);
+		v8::Local<v8::Value> lArgv[] = {
+			NanNew(toRet._mat[0][0]),
+			NanNew(toRet._mat[0][1]),
+			NanNew(toRet._mat[0][2]),
+			NanNew(toRet._mat[0][3]),
+			NanNew(toRet._mat[1][0]),
+			NanNew(toRet._mat[1][1]),
+			NanNew(toRet._mat[1][2]),
+			NanNew(toRet._mat[1][3]),
+			NanNew(toRet._mat[2][0]),
+			NanNew(toRet._mat[2][1]),
+			NanNew(toRet._mat[2][2]),
+			NanNew(toRet._mat[2][3]),
+			NanNew(toRet._mat[3][0]),
+			NanNew(toRet._mat[3][1]),
+			NanNew(toRet._mat[3][2]),
+			NanNew(toRet._mat[3][3])
+		};
+		NanReturnValue(NanNew(constructor)->CallAsConstructor(16, lArgv));
 	}
 
 	NAN_METHOD(ofxNode_ofQuaternion::ZeroRotation)
@@ -81,8 +108,7 @@ namespace ofxNode
 		}
 		else
 		{
-			NanThrowError("set ofxNode_ofQuaternion not implemented.");
-			//TODO(sepehr)
+			self.set(node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args[0]->ToObject())->self());
 		}
 		NanReturnValue(args.This());
 	}

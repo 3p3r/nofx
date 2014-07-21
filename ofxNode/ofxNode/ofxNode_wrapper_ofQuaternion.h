@@ -3,6 +3,8 @@
 
 #include "globals.h"
 #include "ofQuaternion.h"
+#include "ofMatrix4x4.h"
+#include "ofxNode_wrapper_ofMatrix4x4.h"
 
 namespace ofxNode
 {
@@ -53,8 +55,7 @@ namespace ofxNode
 		static NAN_METHOD(Set);
 		static NAN_METHOD(Slerp);
 		static NAN_METHOD(ZeroRotation);
-		//SET TODO(sepehr)
-		//GET TODO(sepehr)
+		static NAN_METHOD(Get);
 
 		// Primitives
 		static NAN_METHOD(ToString);

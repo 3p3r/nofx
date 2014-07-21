@@ -30,6 +30,7 @@
 #include "ofxNode_wrapper_ofVec4f.h"
 #include "ofxNode_wrapper_ofColor.h"
 #include "ofxNode_wrapper_ofQuaternion.h"
+#include "ofxNode_wrapper_ofMatrix4x4.h"
 
 //Global functions
 #include "ofxNode_noop.h"
@@ -115,6 +116,7 @@ namespace ofxNode {
 			ofxNode_ofVec4f::Init(target);
 			ofxNode_ofColor::Init(target);
 			ofxNode_ofQuaternion::Init(target);
+			ofxNode_ofMatrix4x4::Init(target);
 			
 			// Assertions are passed, let's initialize the module with assigning its methods
 			target->Set(NanNew<v8::String>("draw")			, NanNew<v8::FunctionTemplate>(ofxNode_draw)->GetFunction());

@@ -2467,7 +2467,7 @@ namespace ofxNode
 			// Invoked as plain function, forwarding to construct call.
 			std::vector<v8::Handle<v8::Value>> lArgvVec;
 			for (int i = 0; i < args.Length(); ++i) {lArgvVec.push_back(args[i]);}
-			NanReturnValue(NanNew<v8::Function>(constructor)->NewInstance(lArgvVec.size(), &lArgvVec[0]));
+			NanReturnValue(NanNew<v8::Function>(constructor)->NewInstance(lArgvVec.size(), (lArgvVec.size()==0)? nullptr: &lArgvVec[0]));
 		}
 	}
 

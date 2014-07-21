@@ -76,8 +76,12 @@ ofxNode.setup(function () {
     
 })
 .mousePressed(function (x, y, button) {
-    var v = this.ofQuaternion(1, 2, 4, 6);
-    console.log(v);
+    var v1 = this.ofVec3f(1,2,0.5);
+    var v2 = this.ofVec3f(2,2,2);
+    var q1 = this.ofQuaternion(3, 3, 33, 3);
+    var q2 = this.ofQuaternion(4, 45, 4, 4);
+    var m = this.ofMatrix4x4();
+    console.log(m.getLookAt(99));
 })
 .draw(function () {
     this.ofClear(0, 0, 0)
