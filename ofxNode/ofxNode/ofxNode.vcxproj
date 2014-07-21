@@ -163,6 +163,7 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ofxNode_ofbClearBg.cc" />
     <ClCompile Include="ofxNode_ofBeginSaveScreenAsPDF.cc">
       <SubType>
       </SubType>
@@ -287,18 +288,39 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ofxNode_ofGetCurrentMatrix.cc" />
+    <ClCompile Include="ofxNode_ofGetCurrentRenderer.cc" />
+    <ClCompile Include="ofxNode_ofGetCurrentViewport.cc" />
     <ClCompile Include="ofxNode_ofGetElapsedTimeMillis.cc">
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ofxNode_ofGetFill.cc" />
+    <ClCompile Include="ofxNode_ofGetNativeViewport.cc" />
+    <ClCompile Include="ofxNode_ofGetRectMode.cc" />
+    <ClCompile Include="ofxNode_ofGetStyle.cc" />
+    <ClCompile Include="ofxNode_ofGetViewportHeight.cc" />
+    <ClCompile Include="ofxNode_ofGetViewportWidth.cc" />
+    <ClCompile Include="ofxNode_ofIsVFlipped.cc" />
     <ClCompile Include="ofxNode_ofLine.cc">
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ofxNode_ofLoadIdentityMatrix.cc" />
+    <ClCompile Include="ofxNode_ofLoadMatrix.cc" />
+    <ClCompile Include="ofxNode_ofMultMatrix.cc" />
+    <ClCompile Include="ofxNode_ofNextContour.cc" />
     <ClCompile Include="ofxNode_ofNoFill.cc">
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ofxNode_ofOrientationToDegrees.cc" />
+    <ClCompile Include="ofxNode_ofPopMatrix.cc" />
+    <ClCompile Include="ofxNode_ofPopStyle.cc" />
+    <ClCompile Include="ofxNode_ofPopView.cc" />
+    <ClCompile Include="ofxNode_ofPushMatrix.cc" />
+    <ClCompile Include="ofxNode_ofPushStyle.cc" />
+    <ClCompile Include="ofxNode_ofPushView.cc" />
     <ClCompile Include="ofxNode_ofRandom.cc">
       <SubType>
       </SubType>
@@ -307,7 +329,16 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ofxNode_ofRectRounded.cc" />
+    <ClCompile Include="ofxNode_ofRotate.cc" />
+    <ClCompile Include="ofxNode_ofRotateX.cc" />
+    <ClCompile Include="ofxNode_ofRotateY.cc" />
+    <ClCompile Include="ofxNode_ofRotateZ.cc" />
     <ClCompile Include="ofxNode_ofRunApp.cc" />
+    <ClCompile Include="ofxNode_ofScale.cc" />
+    <ClCompile Include="ofxNode_ofSetBackgroundAuto.cc" />
+    <ClCompile Include="ofxNode_ofSetBackgroundColor.cc" />
+    <ClCompile Include="ofxNode_ofSetBackgroundColorHex.cc" />
     <ClCompile Include="ofxNode_ofSetCircleResolution.cc">
       <SubType>
       </SubType>
@@ -316,6 +347,11 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ofxNode_ofSetCoordHandedness.cc" />
+    <ClCompile Include="ofxNode_ofSetCurrentRenderer.cc" />
+    <ClCompile Include="ofxNode_ofSetCurveResolution.cc" />
+    <ClCompile Include="ofxNode_ofSetDepthTest.cc" />
+    <ClCompile Include="ofxNode_ofSetDrawBitmapMode.cc" />
     <ClCompile Include="ofxNode_ofSetFrameRate.cc">
       <SubType>
       </SubType>
@@ -324,11 +360,24 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ofxNode_ofSetLineWidth.cc" />
+    <ClCompile Include="ofxNode_ofSetMatrixMode.cc" />
+    <ClCompile Include="ofxNode_ofSetPolyMode.cc" />
+    <ClCompile Include="ofxNode_ofSetRectMode.cc" />
+    <ClCompile Include="ofxNode_ofSetStyle.cc" />
     <ClCompile Include="ofxNode_ofSetupOpenGL.cc" />
+    <ClCompile Include="ofxNode_ofSetupScreen.cc" />
+    <ClCompile Include="ofxNode_ofSetupScreenOrtho.cc" />
+    <ClCompile Include="ofxNode_ofSetupScreenPerspective.cc" />
     <ClCompile Include="ofxNode_ofSetWindowTitle.cc">
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ofxNode_ofTranslate.cc" />
+    <ClCompile Include="ofxNode_ofTriangle.cc" />
+    <ClCompile Include="ofxNode_ofVertex.cc" />
+    <ClCompile Include="ofxNode_ofVertices.cc" />
+    <ClCompile Include="ofxNode_ofViewport.cc" />
     <ClCompile Include="ofxNode_setup.cc">
       <SubType>
       </SubType>
@@ -412,6 +461,7 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ofxNode_ofbClearBg.h" />
     <ClInclude Include="ofxNode_ofBeginSaveScreenAsPDF.h">
       <SubType>
       </SubType>
@@ -536,18 +586,39 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ofxNode_ofGetCurrentMatrix.h" />
+    <ClInclude Include="ofxNode_ofGetCurrentRenderer.h" />
+    <ClInclude Include="ofxNode_ofGetCurrentViewport.h" />
     <ClInclude Include="ofxNode_ofGetElapsedTimeMillis.h">
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ofxNode_ofGetFill.h" />
+    <ClInclude Include="ofxNode_ofGetNativeViewport.h" />
+    <ClInclude Include="ofxNode_ofGetRectMode.h" />
+    <ClInclude Include="ofxNode_ofGetStyle.h" />
+    <ClInclude Include="ofxNode_ofGetViewportHeight.h" />
+    <ClInclude Include="ofxNode_ofGetViewportWidth.h" />
+    <ClInclude Include="ofxNode_ofIsVFlipped.h" />
     <ClInclude Include="ofxNode_ofLine.h">
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ofxNode_ofLoadIdentityMatrix.h" />
+    <ClInclude Include="ofxNode_ofLoadMatrix.h" />
+    <ClInclude Include="ofxNode_ofMultMatrix.h" />
+    <ClInclude Include="ofxNode_ofNextContour.h" />
     <ClInclude Include="ofxNode_ofNoFill.h">
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ofxNode_ofOrientationToDegrees.h" />
+    <ClInclude Include="ofxNode_ofPopMatrix.h" />
+    <ClInclude Include="ofxNode_ofPopStyle.h" />
+    <ClInclude Include="ofxNode_ofPopView.h" />
+    <ClInclude Include="ofxNode_ofPushMatrix.h" />
+    <ClInclude Include="ofxNode_ofPushStyle.h" />
+    <ClInclude Include="ofxNode_ofPushView.h" />
     <ClInclude Include="ofxNode_ofRandom.h">
       <SubType>
       </SubType>
@@ -556,7 +627,16 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ofxNode_ofRectRounded.h" />
+    <ClInclude Include="ofxNode_ofRotate.h" />
+    <ClInclude Include="ofxNode_ofRotateX.h" />
+    <ClInclude Include="ofxNode_ofRotateY.h" />
+    <ClInclude Include="ofxNode_ofRotateZ.h" />
     <ClInclude Include="ofxNode_ofRunApp.h" />
+    <ClInclude Include="ofxNode_ofScale.h" />
+    <ClInclude Include="ofxNode_ofSetBackgroundAuto.h" />
+    <ClInclude Include="ofxNode_ofSetBackgroundColor.h" />
+    <ClInclude Include="ofxNode_ofSetBackgroundColorHex.h" />
     <ClInclude Include="ofxNode_ofSetCircleResolution.h">
       <SubType>
       </SubType>
@@ -565,6 +645,11 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ofxNode_ofSetCoordHandedness.h" />
+    <ClInclude Include="ofxNode_ofSetCurrentRenderer.h" />
+    <ClInclude Include="ofxNode_ofSetCurveResolution.h" />
+    <ClInclude Include="ofxNode_ofSetDepthTest.h" />
+    <ClInclude Include="ofxNode_ofSetDrawBitmapMode.h" />
     <ClInclude Include="ofxNode_ofSetFrameRate.h">
       <SubType>
       </SubType>
@@ -573,11 +658,24 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ofxNode_ofSetLineWidth.h" />
+    <ClInclude Include="ofxNode_ofSetMatrixMode.h" />
+    <ClInclude Include="ofxNode_ofSetPolyMode.h" />
+    <ClInclude Include="ofxNode_ofSetRectMode.h" />
+    <ClInclude Include="ofxNode_ofSetStyle.h" />
     <ClInclude Include="ofxNode_ofSetupOpenGL.h" />
+    <ClInclude Include="ofxNode_ofSetupScreen.h" />
+    <ClInclude Include="ofxNode_ofSetupScreenOrtho.h" />
+    <ClInclude Include="ofxNode_ofSetupScreenPerspective.h" />
     <ClInclude Include="ofxNode_ofSetWindowTitle.h">
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ofxNode_ofTranslate.h" />
+    <ClInclude Include="ofxNode_ofTriangle.h" />
+    <ClInclude Include="ofxNode_ofVertex.h" />
+    <ClInclude Include="ofxNode_ofVertices.h" />
+    <ClInclude Include="ofxNode_ofViewport.h" />
     <ClInclude Include="ofxNode_setup.h">
       <SubType>
       </SubType>

@@ -76,19 +76,7 @@ ofxNode.setup(function () {
     
 })
 .mousePressed(function (x, y, button) {
-    var c = this.ofStyle();
-    console.log(c);
-    c.sphereResolution = 30;
-    c.smoothing = true;
-    c.rectMode++;
-    c.polyMode++;
-    c.lineWidth++;
-    c.drawBitmapMode++;
-    c.circleResolution++;
-    c.blendingMode++;
-    c.color = this.ofColor(100, 99, 98, 97);
-    c.bgColor = this.ofColor(100, 99, 98, 97);
-    c.bFill = false;
+    var c = this.ofRectangle();
     console.log(c);
 })
 .draw(function () {
