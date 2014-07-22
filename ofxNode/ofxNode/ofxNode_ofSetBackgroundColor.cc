@@ -5,8 +5,6 @@
 namespace ofxNode
 {
     NAN_METHOD(ofxNode_ofSetBackgroundColor) {
-        NanScope();
-
         if (args.Length() > 2)
         {
 			const auto alpha = args[3]->IsUndefined() ? ofColor::limit() : V8_ARG_NUMBER(args[3]);

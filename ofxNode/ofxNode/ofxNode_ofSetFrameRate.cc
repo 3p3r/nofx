@@ -4,17 +4,7 @@
 namespace ofxNode
 {
 	NAN_METHOD(ofxNode_ofSetFrameRate) {
-		NanScope();
-
-		if (args.Length() == 1)
-		{
-			ofSetFrameRate(args[0]->NumberValue());
-		}
-		else
-		{
-			NanThrowError("bad args passed to ofSetFrameRate.");
-		}
-
+		ofSetFrameRate(args[0]->NumberValue());
 		NanReturnValue(args.This());
 	} // !ofxNode_ofSetFrameRate
 } // !namespace ofxNode

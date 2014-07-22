@@ -43,6 +43,13 @@ namespace ofxNode
 		NanSetPrototypeTemplate(tpl, NanNew("zeroRotation"), NanNew<v8::FunctionTemplate>(ZeroRotation), v8::ReadOnly);
 		NanSetPrototypeTemplate(tpl, NanNew("get"), NanNew<v8::FunctionTemplate>(Get), v8::ReadOnly);
 
+		NanSetPrototypeTemplate(tpl, NanNew("toString"), NanNew<v8::FunctionTemplate>(ToString), v8::ReadOnly);
+		NanSetPrototypeTemplate(tpl, NanNew("plus"), NanNew<v8::FunctionTemplate>(Plus), v8::ReadOnly);
+		NanSetPrototypeTemplate(tpl, NanNew("equals"), NanNew<v8::FunctionTemplate>(Equals), v8::ReadOnly);
+		NanSetPrototypeTemplate(tpl, NanNew("minus"), NanNew<v8::FunctionTemplate>(Minus), v8::ReadOnly);
+		NanSetPrototypeTemplate(tpl, NanNew("times"), NanNew<v8::FunctionTemplate>(Times), v8::ReadOnly);
+		NanSetPrototypeTemplate(tpl, NanNew("over"), NanNew<v8::FunctionTemplate>(Over), v8::ReadOnly);
+
 		NanSetPrototypeTemplate(tpl, NanNew("OFXNODE_TYPE"), NanNew(OFXNODE_TYPES::OFQUATERNION), v8::DontEnum);
 		NanAssignPersistent(constructor, tpl->GetFunction());
 		exports->Set(NanNew<v8::String>("ofQuaternion"), tpl->GetFunction());
@@ -50,28 +57,11 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofQuaternion::Get)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self();
 		ofMatrix4x4 toRet;
-		self.get(toRet);
-		v8::Local<v8::Value> lArgv[] = {
-			NanNew(toRet._mat[0][0]),
-			NanNew(toRet._mat[0][1]),
-			NanNew(toRet._mat[0][2]),
-			NanNew(toRet._mat[0][3]),
-			NanNew(toRet._mat[1][0]),
-			NanNew(toRet._mat[1][1]),
-			NanNew(toRet._mat[1][2]),
-			NanNew(toRet._mat[1][3]),
-			NanNew(toRet._mat[2][0]),
-			NanNew(toRet._mat[2][1]),
-			NanNew(toRet._mat[2][2]),
-			NanNew(toRet._mat[2][3]),
-			NanNew(toRet._mat[3][0]),
-			NanNew(toRet._mat[3][1]),
-			NanNew(toRet._mat[3][2]),
-			NanNew(toRet._mat[3][3])
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(16, lArgv));
+		auto toRetMat = NanNew(ofxNode_ofMatrix4x4::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self().get(toRet);
+		node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(toRetMat)->self() = toRet;
+		NanReturnValue(toRetMat);
 	}
 
 	NAN_METHOD(ofxNode_ofQuaternion::ZeroRotation)
@@ -81,8 +71,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofQuaternion::Slerp)
 	{
-		auto &self = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self();
-		self.slerp(
+		node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self().slerp(
 			V8_ARG_NUMBER(args[0]),
 			node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args[1]->ToObject())->self(),
 			node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args[2]->ToObject())->self()
@@ -92,10 +81,9 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofQuaternion::Set)
 	{
-		auto &self = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self();
 		if (args.Length() == 4)
 		{
-			self.set(
+			node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self().set(
 				V8_ARG_NUMBER(args[0]),
 				V8_ARG_NUMBER(args[1]),
 				V8_ARG_NUMBER(args[2]),
@@ -104,11 +92,11 @@ namespace ofxNode
 		}
 		else if ( args.Length() == 1 && (args[0]->ToObject()->Get(NanNew("OFXNODE_TYPE"))->Uint32Value() & OFXNODE_TYPES::OFVEC4F))
 		{
-			self.set(node::ObjectWrap::Unwrap<ofxNode_ofVec4f>(args[0]->ToObject())->self());
+			node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self().set(node::ObjectWrap::Unwrap<ofxNode_ofVec4f>(args[0]->ToObject())->self());
 		}
 		else
 		{
-			self.set(node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args[0]->ToObject())->self());
+			node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self().set(node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args[0]->ToObject())->self());
 		}
 		NanReturnValue(args.This());
 	}
@@ -120,10 +108,10 @@ namespace ofxNode
 	}
 
 	NAN_GETTER(ofxNode_ofQuaternion::GetV) {
-		NanScope();
 		const auto& lAsVec4 = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self()._v;
-		v8::Local<v8::Value> lArgv[] = {NanNew(lAsVec4.x), NanNew(lAsVec4.y), NanNew(lAsVec4.z), NanNew(lAsVec4.w)};
-		NanReturnValue(NanNew(ofxNode_ofVec4f::factory())->CallAsConstructor(4, lArgv));
+		auto toRet = NanNew(ofxNode_ofVec4f::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofVec4f>(toRet)->self() = lAsVec4;
+		NanReturnValue(toRet);
 	}
 	NAN_GETTER(ofxNode_ofQuaternion::GetW) {NanReturnValue(NanNew(node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self().w()));}
 	NAN_GETTER(ofxNode_ofQuaternion::GetX) {NanReturnValue(NanNew(node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self().x()));}
@@ -210,26 +198,23 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofQuaternion::Inverse)
 	{
-		NanScope();
-		const ofQuaternion lInverse = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self().inverse();
-		v8::Local<v8::Value> lArgv[] = {NanNew(lInverse.w()), NanNew(lInverse.x()), NanNew(lInverse.y()), NanNew(lInverse.z())};
-		NanReturnValue(NanNew(ofxNode_ofQuaternion::factory())->CallAsConstructor(4, lArgv));
+		auto toRet = NanNew(ofxNode_ofQuaternion::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(toRet)->self() = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self().inverse();
+		NanReturnValue(toRet);
 	}
 
 	NAN_METHOD(ofxNode_ofQuaternion::Conj)
 	{
-		NanScope();
-		const ofQuaternion lConj = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self().conj();
-		v8::Local<v8::Value> lArgv[] = {NanNew(lConj.w()), NanNew(lConj.x()), NanNew(lConj.y()), NanNew(lConj.z())};
-		NanReturnValue(NanNew(ofxNode_ofQuaternion::factory())->CallAsConstructor(4, lArgv));
+		auto toRet = NanNew(ofxNode_ofQuaternion::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(toRet)->self() = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self().conj();
+		NanReturnValue(toRet);
 	}
 
 	NAN_METHOD(ofxNode_ofQuaternion::AsVec4)
 	{
-		NanScope();
-		const ofVec4f lAsVec4 = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self().asVec4();
-		v8::Local<v8::Value> lArgv[] = {NanNew(lAsVec4.x), NanNew(lAsVec4.y), NanNew(lAsVec4.z), NanNew(lAsVec4.w)};
-		NanReturnValue(NanNew(ofxNode_ofVec4f::factory())->CallAsConstructor(4, lArgv));
+		auto toRet = NanNew(ofxNode_ofVec4f::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofVec4f>(toRet)->self() = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self().asVec4();
+		NanReturnValue(toRet);
 	}
 
 	NAN_METHOD(ofxNode_ofQuaternion::Equals)
@@ -242,7 +227,6 @@ namespace ofxNode
 			const auto lProps = args[0]->ToObject()->GetPropertyNames();
 			for (int i = 0; i < lProps->Length(); ++i)
 			{
-				const auto lKey = lProps->Get(i);
 				const auto lVal = args[0]->ToObject()->Get(i);
 
 				if(lVal->ToObject()->Has(NanNew("OFXNODE_TYPE")) && lVal->ToObject()->Get(NanNew("OFXNODE_TYPE"))->Uint32Value() == OFXNODE_TYPES::OFQUATERNION)
@@ -263,72 +247,58 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofQuaternion::Over)
 	{
-		const auto& self = ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->internal_;
-		const int lArgc = 4;
-		if(args[0]->IsNumber())
+		const auto &self = ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self();
+		if ((args[0]->IsNumber()))
 		{
-			const auto lArgVec = args[0]->NumberValue();
-			const auto result = self / lArgVec;
-			v8::Handle<v8::Value> lArgv[] = {NanNew(result._v.x), NanNew(result._v.y), NanNew(result._v.z), NanNew(result._v.w)};
-			NanReturnValue( (NanNew(constructor))->CallAsConstructor(lArgc, lArgv) );
-		}
+			const auto rhs = args[0]->NumberValue();
+			auto lToRet = NanNew(constructor)->NewInstance();
+			node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(lToRet)->self() = self / rhs;
+			NanReturnValue(lToRet);
+		} 
 		else
 		{
-			const auto lArgVec = ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args[0]->ToObject())->internal_;
-			const auto result = self / lArgVec;
-			v8::Handle<v8::Value> lArgv[] = {NanNew(result._v.x), NanNew(result._v.y), NanNew(result._v.z), NanNew(result._v.w)};
-			NanReturnValue( (NanNew(constructor))->CallAsConstructor(lArgc, lArgv) );
+			const auto rhs = ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args[0]->ToObject())->self();
+			auto lToRet = NanNew(constructor)->NewInstance();
+			node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(lToRet)->self() = self / rhs;
+			NanReturnValue(lToRet);
 		}
 	}
 
 	NAN_METHOD(ofxNode_ofQuaternion::Times)
 	{
-		const auto& self = ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->internal_;
-		const int lArgc = 4;
-		if(args[0]->IsNumber())
+		const auto &self = ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self();
+		if ((args[0]->IsNumber()))
 		{
-			const auto lArgVec = args[0]->NumberValue();
-			const auto result = self * lArgVec;
-			v8::Handle<v8::Value> lArgv[] = {NanNew(result.x()), NanNew(result.y()), NanNew(result.z()), NanNew(result.w())};
-			NanReturnValue( (NanNew(constructor))->CallAsConstructor(lArgc, lArgv) );
-		}
+			const auto rhs = args[0]->NumberValue();
+			auto lToRet = NanNew(constructor)->NewInstance();
+			node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(lToRet)->self() = self * rhs;
+			NanReturnValue(lToRet);
+		} 
 		else
 		{
-			const auto lArgVec = ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args[0]->ToObject())->internal_;
-			const auto result = self * lArgVec;
-			v8::Handle<v8::Value> lArgv[] = {NanNew(result.x()), NanNew(result.y()), NanNew(result.z()), NanNew(result.w())};
-			NanReturnValue( (NanNew(constructor))->CallAsConstructor(lArgc, lArgv) );
+			const auto rhs = ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args[0]->ToObject())->self();
+			auto lToRet = NanNew(constructor)->NewInstance();
+			node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(lToRet)->self() = self * rhs;
+			NanReturnValue(lToRet);
 		}
 	}
 
 	NAN_METHOD(ofxNode_ofQuaternion::Minus)
 	{
-		const auto& self = ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->internal_;
-		const int lArgc = 4;
-		if(args[0]->IsNumber())
-		{
-			const auto lArgVec = ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args[0]->ToObject())->internal_;;
-			const auto result = self - lArgVec;
-			v8::Handle<v8::Value> lArgv[] = {NanNew(result.x()), NanNew(result.y()), NanNew(result.z()), NanNew(result.w())};
-			NanReturnValue( (NanNew(constructor))->CallAsConstructor(lArgc, lArgv) );
-		}
-		else
-		{
-			const auto lArgVec = ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args[0]->ToObject())->internal_;
-			const auto result = self - lArgVec;
-			v8::Handle<v8::Value> lArgv[] = {NanNew(result.x()), NanNew(result.y()), NanNew(result.z()), NanNew(result.w())};
-			NanReturnValue( (NanNew(constructor))->CallAsConstructor(lArgc, lArgv) );
-		}
+		const auto &self = ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self();
+		const auto rhs = ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args[0]->ToObject())->self();
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(lToRet)->self() = self - rhs;
+		NanReturnValue(lToRet);
 	}
 
 	NAN_METHOD(ofxNode_ofQuaternion::Plus)
 	{
-		const auto& self = ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->internal_;
-		const int lArgc = 4;
-		const auto lArgVec = ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args[0]->ToObject())->internal_;
-		const auto result = self + lArgVec;
-		v8::Handle<v8::Value> lArgv[] = {NanNew(result.x()), NanNew(result.y()), NanNew(result.z()), NanNew(result.w())};
-		NanReturnValue( (NanNew(constructor))->CallAsConstructor(lArgc, lArgv) );
+		const auto &self = ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self();
+		const auto rhs = ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args[0]->ToObject())->self();
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(lToRet)->self() = self + rhs;
+		NanReturnValue(lToRet);
 	}
 
 	NAN_METHOD(ofxNode_ofQuaternion::ToString)
@@ -341,7 +311,6 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofQuaternion::GetRotate)
 	{
-		NanScope();
 		float angle = 0, x = 0, y = 0, z = 0;
 		node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self().getRotate(angle, x, y, z);
 		v8::Local<v8::Value> lArgv[] = {NanNew(x), NanNew(y), NanNew(z)};
@@ -354,18 +323,16 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofQuaternion::GetEuler)
 	{
-		NanScope();
-		const ofVec3f lAsVec3 = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self().getEuler();
-		v8::Local<v8::Value> lArgv[] = {NanNew(lAsVec3.x), NanNew(lAsVec3.y), NanNew(lAsVec3.z)};
-		NanReturnValue(NanNew(ofxNode_ofVec3f::factory())->CallAsConstructor(3, lArgv));
+		auto toRet = NanNew(ofxNode_ofVec3f::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(toRet)->self() = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self().getEuler();
+		NanReturnValue(toRet);
 	}
 
 	NAN_METHOD(ofxNode_ofQuaternion::AsVec3)
 	{
-		NanScope();
-		const ofVec3f lAsVec3 = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self().asVec3();
-		v8::Local<v8::Value> lArgv[] = {NanNew(lAsVec3.x), NanNew(lAsVec3.y), NanNew(lAsVec3.z)};
-		NanReturnValue(NanNew(ofxNode_ofVec3f::factory())->CallAsConstructor(3, lArgv));
+		auto toRet = NanNew(ofxNode_ofVec3f::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(toRet)->self() = node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args.This())->self().asVec3();
+		NanReturnValue(toRet);
 	}
 
 	NAN_METHOD(ofxNode_ofQuaternion::New)

@@ -4,7 +4,6 @@
 namespace ofxNode
 {
     NAN_METHOD(ofxNode_ofGetViewportHeight) {
-        NanScope();
 		NanReturnValue(NanNew(ofGetViewportHeight()));
     } // !{ofxNode_ofGetViewportHeight}
 } // !namespace ofxNode

@@ -4,10 +4,7 @@
 namespace ofxNode
 {
     NAN_METHOD(ofxNode_ofRotateX) {
-        NanScope();
-
         ofRotateX(V8_ARG_NUMBER(args[0]));
-
         NanReturnValue(args.This());
     } // !{ofxNode_ofRotateX}
 } // !namespace ofxNode

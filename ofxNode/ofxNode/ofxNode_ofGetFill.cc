@@ -4,7 +4,6 @@
 namespace ofxNode
 {
     NAN_METHOD(ofxNode_ofGetFill) {
-        NanScope();
 		NanReturnValue(NanNew(ofGetFill()));
     } // !{ofxNode_ofGetFill}
 } // !namespace ofxNode

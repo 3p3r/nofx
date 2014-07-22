@@ -4,9 +4,6 @@
 namespace ofxNode
 {
 	NAN_METHOD(ofxNode_ofBezier) {
-		NanScope();
-		
-		//void ofBezier(float x0, float y0, float x1, float y1, float x2, float y2, float x3, float y3)
 		if (args.Length() == 8 &&
 			args[0]->IsNumber() &&
 			args[1]->IsNumber() &&
@@ -25,22 +22,7 @@ namespace ofxNode
 				args[5]->NumberValue() ,
 				args[6]->NumberValue() ,
 				args[7]->NumberValue());
-		}
-		else if (args.Length() == 12 &&
-			args[0]->IsNumber() &&
-			args[1]->IsNumber() &&
-			args[2]->IsNumber() &&
-			args[3]->IsNumber() &&
-			args[4]->IsNumber() &&
-			args[5]->IsNumber() &&
-			args[6]->IsNumber() &&
-			args[7]->IsNumber() &&
-			args[8]->IsNumber() &&
-			args[9]->IsNumber() &&
-			args[10]->IsNumber() &&
-			args[11]->IsNumber())
-		{
-			//void ofBezier(float x0, float y0, float z0, float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3)
+		} else {
 			ofBezier(args[0]->NumberValue() ,
 				args[1]->NumberValue() ,
 				args[2]->NumberValue() ,
@@ -54,11 +36,6 @@ namespace ofxNode
 				args[10]->NumberValue() ,
 				args[11]->NumberValue());
 		}
-		else
-		{
-			NanThrowError("wrong argument passed to ofBezier.");
-		}
-
 		NanReturnValue(args.This());
 	} // !ofxNode_ofBezier
 } // !namespace ofxNode

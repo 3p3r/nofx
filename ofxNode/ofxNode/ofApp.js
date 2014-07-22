@@ -73,21 +73,19 @@ ofxNode.setup(function () {
     
 })
 .mouseMoved(function(x, y) {
-    
+
 })
 .mousePressed(function (x, y, button) {
-    var c = this.ofGetStyle();
-    console.log(c);
+
 })
 .draw(function () {
-/*
+    //return;
     this.ofClear(0, 0, 0)
     .ofBackgroundGradient(
-        { r: 240, g: 240, b: 240 },
-        { r: 255, g: 255, b: 255 })
+        this.ofColor(240, 240, 240),
+        this.ofColor(255, 255, 255))
     .ofDrawBitmapString("ofxNode sample script.", 10, 20)
-    .ofLine(p1, p2)
-    .ofDrawBitmapStringHighlight("ofxNode sample script.", {x:10, y:40}, { r: 0, g: 0, b: 0 }, { r: 255, g: 255, b: 255 });
+    .ofDrawBitmapStringHighlight("ofxNode sample script.", this.ofVec3f(10, 40, 0), this.ofColor(0, 0, 0), this.ofColor(255, 255, 255));
     if (ofxNode.ofGetElapsedTimeMillis() - timer > delay) {
         var a, b, c, h, D, u;
         a = -1;
@@ -143,7 +141,7 @@ ofxNode.setup(function () {
         //drawing magnets
         ofxNode.ofSetColor(230, 230, 230);
         ofxNode.ofFill();
-        ofxNode.ofCircle(b.position.x, b.position.y, b.size * 2);
+        ofxNode.ofCircle(b.position.x, b.position.y, b.size);
     });
     particles.forEach(function (a) {
         //drawing particles
@@ -151,7 +149,7 @@ ofxNode.setup(function () {
         ofxNode.ofFill();
         ofxNode.ofCircle(a.position.x, a.position.y, a.size / 2);
     })
-*/
+
 })
 .ofSetupOpenGL(winW, winH)
 .ofRunApp();

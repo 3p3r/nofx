@@ -1,11 +1,10 @@
 #include "ofxNode_ofBezierVertex.h"
 #include "ofGraphics.h"
+#include "ofxNode_wrapper_ofVec3f.h"
 
 namespace ofxNode
 {
 	NAN_METHOD(ofxNode_ofBezierVertex) {
-		NanScope();
-		
 		//void ofBezierVertex(float x1, float y1, float x2, float y2, float x3, float y3)
 		if (args.Length() == 6 &&
 			args[0]->IsNumber() &&
@@ -46,12 +45,12 @@ namespace ofxNode
 		}
 		else
 		{
-			NanThrowError("wrong argument passed to ofBezierVertex.");
+			ofBezierVertex(
+				node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->self(),
+				node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[1]->ToObject())->self(),
+				node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[2]->ToObject())->self()
+				);
 		}
-
- 		//TODO(sepehr)
- 		//void ofBezierVertex(const ofPoint &p1, const ofPoint &p2, const ofPoint &p3)
-
 		NanReturnValue(args.This());
 	} // !ofxNode_ofBezierVertex
 } // !namespace ofxNode

@@ -4,8 +4,6 @@
 namespace ofxNode
 {
     NAN_METHOD(ofxNode_ofRotate) {
-        NanScope();
-
         if (args.Length() == 1)
         {
 			ofRotate(V8_ARG_NUMBER(args[0]));

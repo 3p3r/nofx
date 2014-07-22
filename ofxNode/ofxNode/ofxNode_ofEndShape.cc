@@ -4,15 +4,7 @@
 namespace ofxNode
 {
 	NAN_METHOD(ofxNode_ofEndShape) {
-		NanScope();
-		
-		bool lClose = false;
-		if (args.Length() > 0 && args[0]->IsBoolean())
-		{
-			lClose = args[0]->BooleanValue();
-		}
-		ofEndShape(lClose);
-
+		ofEndShape(args[0]->IsUndefined() ? false : args[0]->BooleanValue());
 		NanReturnValue(args.This());
 	} // !ofxNode_ofEndShape
 } // !namespace ofxNode

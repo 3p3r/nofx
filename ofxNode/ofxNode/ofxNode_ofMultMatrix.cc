@@ -5,10 +5,7 @@
 namespace ofxNode
 {
     NAN_METHOD(ofxNode_ofMultMatrix) {
-        NanScope();
-
         ofMultMatrix(node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args[0]->ToObject())->self());
-
         NanReturnValue(args.This());
     } // !{ofxNode_ofMultMatrix}
 } // !namespace ofxNode

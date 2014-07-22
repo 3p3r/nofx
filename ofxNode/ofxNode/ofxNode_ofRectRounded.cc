@@ -6,8 +6,6 @@
 namespace ofxNode
 {
     NAN_METHOD(ofxNode_ofRectRounded) {
-        NanScope();
-
         const auto lArgc = args.Length();
 		if (lArgc == 2)
         {
@@ -44,7 +42,7 @@ namespace ofxNode
 				V8_ARG_NUMBER(args[5]),
 				V8_ARG_NUMBER(args[6]));
 		}
-		else if (lArgc == 9)
+		else
 		{
 			ofRectRounded(V8_ARG_NUMBER(args[0]),
 				V8_ARG_NUMBER(args[1]),

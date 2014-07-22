@@ -11,12 +11,14 @@ namespace ofxNode
 	{
 	public:
 		static void Init(v8::Handle<v8::Object> exports);
+		ofVec2f& self() {return internal_;}
+		static const v8::Persistent<v8::Function>& factory() {return constructor;}
 	private:
 		// will be used to initialize native OF datatype
 		ofVec2f internal_;
 
 		// C++ constructors
-		explicit ofxNode_ofVec2f(ofVec2f);
+		explicit ofxNode_ofVec2f(ofVec2f&);
 		~ofxNode_ofVec2f();
 
 		// JS constructors

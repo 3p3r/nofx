@@ -1,53 +1,23 @@
 #include "ofxNode_ofDrawBitmapString.h"
 #include "ofGraphics.h"
-#include "ofPoint.h"
+#include "ofxNode_wrapper_ofVec3f.h"
 
 namespace ofxNode
 {
 	NAN_METHOD(ofxNode_ofDrawBitmapString) {
-		NanScope();
-		
-		if (args.Length() == 2 &&
-			args[0]->IsString() &&
-			args[1]->IsObject() &&
-			args[1]->ToObject()->Has(NanNew("x")) &&
-			args[1]->ToObject()->Get(NanNew("x"))->IsNumber() &&
-			args[1]->ToObject()->Has(NanNew("y")) &&
-			args[1]->ToObject()->Get(NanNew("y"))->IsNumber())
+		const auto textString = NanCString(args[0], nullptr);
+		if (args.Length() == 2)
 		{
-			float x = 0, y = 0, z = 0;
-
-			x = args[1]->ToObject()->Get(NanNew("x"))->NumberValue();
-			y = args[1]->ToObject()->Get(NanNew("y"))->NumberValue();
-
-			if (args[1]->ToObject()->Has(NanNew("z")) &&
-				args[1]->ToObject()->Get(NanNew("z"))->IsNumber())
-			{
-				z = args[1]->ToObject()->Get(NanNew("z"))->NumberValue();
-			}
-
-			ofDrawBitmapString(NanCString(args[0], nullptr), ofPoint(x, y, z));
+			ofDrawBitmapString(textString, node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[1]->ToObject())->self());
 		}
-		else if (args.Length() == 3 &&
-			args[0]->IsString() &&
-			args[1]->IsNumber() &&
-			args[2]->IsNumber())
+		else if (args.Length() == 3)
 		{
-			ofDrawBitmapString(NanCString(args[0], nullptr), args[1]->NumberValue(), args[2]->NumberValue());
-		}
-		else if (args.Length() == 4 &&
-			args[0]->IsString() &&
-			args[1]->IsNumber() &&
-			args[2]->IsNumber() &&
-			args[3]->IsNumber())
-		{
-			ofDrawBitmapString(NanCString(args[0], nullptr), args[1]->NumberValue(), args[2]->NumberValue(), args[3]->NumberValue());
+			ofDrawBitmapString(textString, args[1]->NumberValue(), args[2]->NumberValue());
 		}
 		else
 		{
-			NanThrowError("Bad arguments passed to ofDrawBitmapString.");
+			ofDrawBitmapString(textString, args[1]->NumberValue(), args[2]->NumberValue(), args[3]->NumberValue());
 		}
-
 		NanReturnValue(args.This());
 	} // !ofxNode_ofDrawBitmapString
 } // !namespace ofxNode

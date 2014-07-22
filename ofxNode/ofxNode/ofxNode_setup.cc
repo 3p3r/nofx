@@ -3,8 +3,6 @@
 namespace ofxNode
 {
 	NAN_METHOD(ofxNode_setup) {
-		NanScope();
-		
 		if (args.Length() == 1 && args[0]->IsFunction())
 		{
 			args.This()->SetHiddenValue(NanNew<v8::String>("setup_"), v8::Local<v8::Function>::Cast(args[0]));

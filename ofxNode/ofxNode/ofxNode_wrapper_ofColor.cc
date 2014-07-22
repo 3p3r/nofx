@@ -225,131 +225,20 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofColor::FromHex)
 	{
-		NanScope();
-		
-		if(args.Length() == 1)
-		{
-			if (args[0]->IsNumber())
-			{
-				const auto toRet = node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->internal_.fromHex(args[0]->Uint32Value());
-				v8::Handle<v8::Value> lArgv[] = {
-					NanNew(toRet.r),
-					NanNew(toRet.g),
-					NanNew(toRet.b),
-					NanNew(toRet.a)
-				};
-				NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
-			}
-			else if (args[0]->IsString())
-			{
-				size_t lStrLen = 0;
-				std::string lColorStr = NanCString(args[0], &lStrLen);
-				if (lStrLen == 4 || lStrLen == 7 || lColorStr.at(0) != '#')
-				{
-					unsigned int r = 0, g = 0, b = 0;
-					if (lStrLen == 4)
-					{
-						r = atoi(lColorStr.substr(1, 1).c_str());
-						g = atoi(lColorStr.substr(2, 1).c_str());
-						b = atoi(lColorStr.substr(3, 1).c_str());
-					}
-					else if (lStrLen == 7)
-					{
-						r = atoi(lColorStr.substr(1, 2).c_str());
-						g = atoi(lColorStr.substr(3, 2).c_str());
-						b = atoi(lColorStr.substr(5, 2).c_str());
-					}
-					const auto toRet = ofColor(r, g, b);
-					v8::Handle<v8::Value> lArgv[] = {
-						NanNew(toRet.r),
-						NanNew(toRet.g),
-						NanNew(toRet.b),
-						NanNew(toRet.a)
-					};
-					NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
-				}
-				else
-				{
-					NanThrowTypeError("bad arguments passed to ofBackgroundHex.");
-				}
-			}
-			else
-			{
-				NanThrowTypeError("bad arguments passed to ofBackgroundHex.");
-			}
-		}
-		else if(args.Length() == 2)
-		{
-			if (args[0]->IsNumber() && args[1]->IsNumber())
-			{
-				const auto toRet = node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->internal_.fromHex(args[0]->Uint32Value(), args[1]->Uint32Value());
-				v8::Handle<v8::Value> lArgv[] = {
-					NanNew(toRet.r),
-					NanNew(toRet.g),
-					NanNew(toRet.b),
-					NanNew(toRet.a)
-				};
-				NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
-			}
-			else if (args[0]->IsString() && args[1]->IsNumber())
-			{
-				size_t lStrLen = 0;
-				std::string lColorStr = NanCString(args[0], &lStrLen);
-				if (lStrLen == 5 || lStrLen == 9 || lColorStr.at(0) != '#')
-				{
-					unsigned int r = 0, g = 0, b = 0;
-					if (lStrLen == 5)
-					{
-						r = atoi(lColorStr.substr(1, 1).c_str());
-						g = atoi(lColorStr.substr(2, 1).c_str());
-						b = atoi(lColorStr.substr(3, 1).c_str());
-					}
-					else if (lStrLen == 9)
-					{
-						r = atoi(lColorStr.substr(1, 2).c_str());
-						g = atoi(lColorStr.substr(3, 2).c_str());
-						b = atoi(lColorStr.substr(5, 2).c_str());
-					}
-					
-					const auto toRet = ofColor(r, g, b, args[1]->NumberValue());
-					v8::Handle<v8::Value> lArgv[] = {
-						NanNew(toRet.r),
-						NanNew(toRet.g),
-						NanNew(toRet.b),
-						NanNew(toRet.a)
-					};
-					NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
-				}
-				else
-				{
-					NanThrowTypeError("bad arguments passed to ofBackgroundHex.");
-				}
-			}
-			else
-			{
-				NanThrowTypeError("bad arguments passed to ofBackgroundHex.");
-			}
-		}
-		else
-		{
-			NanThrowTypeError("bad arguments passed to ofBackgroundHex.");
-		}
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::fromHex(args[0]->Uint32Value(), args[1]->IsUndefined() ? ofColor::limit() : args[1]->NumberValue());
+		NanReturnValue(lToRet);
 	}
 
 	NAN_METHOD(ofxNode_ofColor::FromHsb)
 	{
-		const auto toRet = node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->internal_.fromHsb(
-			args[0]->NumberValue(),
-			args[1]->NumberValue(),
-			args[2]->NumberValue()
-			);
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(toRet.r),
-			NanNew(toRet.g),
-			NanNew(toRet.b),
-			NanNew(toRet.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::fromHsb(
+			V8_ARG_NUMBER(args[0]),
+			V8_ARG_NUMBER(args[1]),
+			V8_ARG_NUMBER(args[2]),
+			args[3]->IsUndefined() ? ofColor::limit() : args[1]->NumberValue());
+		NanReturnValue(lToRet);
 	}
 
 	NAN_METHOD(ofxNode_ofColor::GetHsb)
@@ -365,78 +254,74 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofColor::GetClamped)
 	{
-		const auto lClamped = node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->internal_.getClamped();
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lClamped.r),
-			NanNew(lClamped.g),
-			NanNew(lClamped.b),
-			NanNew(lClamped.a)};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4,lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->self().getClamped();
+		NanReturnValue(lToRet);
 	}
 
 	NAN_METHOD(ofxNode_ofColor::Clamp)
 	{
-		node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->internal_.clamp();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->self().clamp();
 		NanReturnValue(args.This());
 	}
 
 	NAN_METHOD(ofxNode_ofColor::GetSaturation)
 	{
-		NanReturnValue(NanNew(node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->internal_.getSaturation()));
+		NanReturnValue(NanNew(node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->self().getSaturation()));
 	}
 
 	NAN_METHOD(ofxNode_ofColor::GetLightness)
 	{
-		NanReturnValue(NanNew(node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->internal_.getLightness()));
+		NanReturnValue(NanNew(node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->self().getLightness()));
 	}
 
 	NAN_METHOD(ofxNode_ofColor::GetHueAngle)
 	{
-		NanReturnValue(NanNew(node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->internal_.getHueAngle()));
+		NanReturnValue(NanNew(node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->self().getHueAngle()));
 	}
 
 	NAN_METHOD(ofxNode_ofColor::GetHue)
 	{
-		NanReturnValue(NanNew(node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->internal_.getHue()));
+		NanReturnValue(NanNew(node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->self().getHue()));
 	}
 
 	NAN_METHOD(ofxNode_ofColor::GetHex)
 	{
-		NanReturnValue(NanNew(node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->internal_.getHex()));
+		NanReturnValue(NanNew(node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->self().getHex()));
 	}
 
 	NAN_METHOD(ofxNode_ofColor::GetBrightness)
 	{
-		NanReturnValue(NanNew(node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->internal_.getBrightness()));
+		NanReturnValue(NanNew(node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->self().getBrightness()));
 	}
 
 	NAN_METHOD(ofxNode_ofColor::GetInverted)
 	{
-		const auto lInverted = node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->internal_.getInverted();
-		v8::Handle<v8::Value> lArgv[] = {NanNew(lInverted.r), NanNew(lInverted.g), NanNew(lInverted.b), NanNew(lInverted.a)};
-		NanReturnValue(NanNew<v8::Function>(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->self().getInverted();
+		NanReturnValue(lToRet);
 	}
 	
 	NAN_METHOD(ofxNode_ofColor::Invert)
 	{
-		node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->internal_.invert();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->self().invert();
 		NanReturnValue(args.This());
 	}
 
 	NAN_METHOD(ofxNode_ofColor::GetLerped)
 	{
-		const auto lLerped = node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->internal_.getLerped(
-			node::ObjectWrap::Unwrap<ofxNode_ofColor>(args[0]->ToObject())->internal_,
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->self().getLerped(
+			node::ObjectWrap::Unwrap<ofxNode_ofColor>(args[0]->ToObject())->self(),
 			args[1]->NumberValue()
 			);
-		v8::Handle<v8::Value> lArgv[] = {NanNew(lLerped.r), NanNew(lLerped.g), NanNew(lLerped.b), NanNew(lLerped.a)};
-		NanReturnValue(NanNew<v8::Function>(constructor)->CallAsConstructor(4, lArgv));
+		NanReturnValue(lToRet);
 	}
 
 	NAN_METHOD(ofxNode_ofColor::Lerp)
 	{
-		node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->internal_.lerp(
-			node::ObjectWrap::Unwrap<ofxNode_ofColor>(args[0]->ToObject())->internal_,
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->self().lerp(
+			node::ObjectWrap::Unwrap<ofxNode_ofColor>(args[0]->ToObject())->self(),
 			args[1]->NumberValue()
 			);
 		NanReturnValue(args.This());
@@ -444,12 +329,12 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofColor::Limit)
 	{
-		NanReturnValue(NanNew(node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->internal_.limit()));
+		NanReturnValue(NanNew(ofColor::limit()));
 	}
 
 	NAN_METHOD(ofxNode_ofColor::Equals)
 	{
-		const auto self = ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->internal_;
+		const auto& self = ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->self();
 		if (args[0]->IsArray())
 		{
 			bool result = true;
@@ -457,14 +342,13 @@ namespace ofxNode
 			const auto lProps = args[0]->ToObject()->GetPropertyNames();
 			for (int i = 0; i < lProps->Length(); ++i)
 			{
-				const auto lKey = lProps->Get(i);
 				const auto lVal = args[0]->ToObject()->Get(i);
 
 				if(lVal->ToObject()->Has(NanNew("OFXNODE_TYPE")) &&
 					lVal->ToObject()->Get(NanNew("OFXNODE_TYPE"))->Uint32Value() == OFXNODE_TYPES::OFCOLOR)
 				{
 					ranAtLeastOnce = true;
-					result = result && ((ofColor)self == (ofColor)ObjectWrap::Unwrap<ofxNode_ofColor>(lVal->ToObject())->internal_);
+					result = result && ((ofColor)self == (ofColor)ObjectWrap::Unwrap<ofxNode_ofColor>(lVal->ToObject())->self());
 				}
 			}
 
@@ -472,1897 +356,1264 @@ namespace ofxNode
 		}
 		else
 		{
-			const auto lArgVec = ObjectWrap::Unwrap<ofxNode_ofColor>(args[0]->ToObject())->internal_;
+			const auto lArgVec = ObjectWrap::Unwrap<ofxNode_ofColor>(args[0]->ToObject())->self();
 			NanReturnValue( (NanNew((ofColor)self == (ofColor)lArgVec)) );
 		}
 	}
 
 	NAN_METHOD(ofxNode_ofColor::Over)
 	{
-		const auto self = ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->internal_;
-		const int lArgc = 4;
-		if(args[0]->IsNumber())
-		{
-			const auto lArgVec = args[0]->NumberValue();
-			const auto result = self / lArgVec;
-			v8::Handle<v8::Value> lArgv[] = {NanNew(result.r), NanNew(result.g), NanNew(result.b), NanNew(result.a)};
-			NanReturnValue( (NanNew(constructor))->CallAsConstructor(lArgc, lArgv) );
-		}
-		else
-		{
-			const auto lArgVec = ObjectWrap::Unwrap<ofxNode_ofColor>(args[0]->ToObject())->internal_;
-			const auto result = self / lArgVec;
-			v8::Handle<v8::Value> lArgv[] = {NanNew(result.r), NanNew(result.g), NanNew(result.b), NanNew(result.a)};
-			NanReturnValue( (NanNew(constructor))->CallAsConstructor(lArgc, lArgv) );
-		}
+		const auto &self = ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->self();
+		const auto denom = ((args[0]->IsNumber()) ? args[0]->NumberValue() : ObjectWrap::Unwrap<ofxNode_ofColor>(args[0]->ToObject())->self());
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = self / denom;
+		NanReturnValue(lToRet);
 	}
 
 	NAN_METHOD(ofxNode_ofColor::Times)
 	{
-		const auto self = ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->internal_;
-		const int lArgc = 4;
-		if(args[0]->IsNumber())
-		{
-			const auto lArgVec = args[0]->NumberValue();
-			const auto result = self * lArgVec;
-			v8::Handle<v8::Value> lArgv[] = {NanNew(result.r), NanNew(result.g), NanNew(result.b), NanNew(result.a)};
-			NanReturnValue( (NanNew(constructor))->CallAsConstructor(lArgc, lArgv) );
-		}
-		else
-		{
-			const auto lArgVec = ObjectWrap::Unwrap<ofxNode_ofColor>(args[0]->ToObject())->internal_;
-			const auto result = self * lArgVec;
-			v8::Handle<v8::Value> lArgv[] = {NanNew(result.r), NanNew(result.g), NanNew(result.b), NanNew(result.a)};
-			NanReturnValue( (NanNew(constructor))->CallAsConstructor(lArgc, lArgv) );
-		}
+		const auto &self = ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->self();
+		const auto coeff = ((args[0]->IsNumber()) ? args[0]->NumberValue() : ObjectWrap::Unwrap<ofxNode_ofColor>(args[0]->ToObject())->self());
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = self * coeff;
+		NanReturnValue(lToRet);
 	}
 
 	NAN_METHOD(ofxNode_ofColor::Minus)
 	{
-		const auto self = ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->internal_;
-		const int lArgc = 4;
-		if(args[0]->IsNumber())
-		{
-			const auto lArgVec = args[0]->NumberValue();
-			const auto result = self - lArgVec;
-			v8::Handle<v8::Value> lArgv[] = {NanNew(result.r), NanNew(result.g), NanNew(result.b), NanNew(result.a)};
-			NanReturnValue( (NanNew(constructor))->CallAsConstructor(lArgc, lArgv) );
-		}
-		else
-		{
-			const auto lArgVec = ObjectWrap::Unwrap<ofxNode_ofColor>(args[0]->ToObject())->internal_;
-			const auto result = self - lArgVec;
-			v8::Handle<v8::Value> lArgv[] = {NanNew(result.r), NanNew(result.g), NanNew(result.b), NanNew(result.a)};
-			NanReturnValue( (NanNew(constructor))->CallAsConstructor(lArgc, lArgv) );
-		}
+		const auto &self = ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->self();
+		const auto rhs = ((args[0]->IsNumber()) ? args[0]->NumberValue() : ObjectWrap::Unwrap<ofxNode_ofColor>(args[0]->ToObject())->self());
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = self - rhs;
+		NanReturnValue(lToRet);
 	}
 
 	NAN_METHOD(ofxNode_ofColor::Plus)
 	{
-		const auto self = ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->internal_;
-		const int lArgc = 4;
-		if(args[0]->IsNumber())
-		{
-			const auto lArgVec = args[0]->NumberValue();
-			const auto result = self + lArgVec;
-			v8::Handle<v8::Value> lArgv[] = {NanNew(result.r), NanNew(result.g), NanNew(result.b), NanNew(result.a)};
-			NanReturnValue( (NanNew(constructor))->CallAsConstructor(lArgc, lArgv) );
-		}
-		else
-		{
-			const auto lArgVec = ObjectWrap::Unwrap<ofxNode_ofColor>(args[0]->ToObject())->internal_;
-			const auto result = self + lArgVec;
-			v8::Handle<v8::Value> lArgv[] = {NanNew(result.r), NanNew(result.g), NanNew(result.b), NanNew(result.a)};
-			NanReturnValue( (NanNew(constructor))->CallAsConstructor(lArgc, lArgv) );
-		}
+		const auto &self = ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->self();
+		const auto rhs = ((args[0]->IsNumber()) ? args[0]->NumberValue() : ObjectWrap::Unwrap<ofxNode_ofColor>(args[0]->ToObject())->self());
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = self + rhs;
+		NanReturnValue(lToRet);
 	}
 
 	NAN_METHOD(ofxNode_ofColor::ToString)
 	{
-		const auto self = ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->internal_;
+		const auto &self = ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->self();
 		std::ostringstream out;
 		out << self;
 		NanReturnValue( NanNew(out.str().c_str()) );
 	}
 
+
+	//------------------------------------------------------- Auto generated const color getters
+
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetAliceBlue)
 	{
-		const auto lReturnColor = ofColor::aliceBlue;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::aliceBlue;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetAntiqueWhite)
 	{
-		const auto lReturnColor = ofColor::antiqueWhite;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::antiqueWhite;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetAqua)
 	{
-		const auto lReturnColor = ofColor::aqua;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::aqua;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetAquamarine)
 	{
-		const auto lReturnColor = ofColor::aquamarine;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::aquamarine;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetAzure)
 	{
-		const auto lReturnColor = ofColor::azure;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::azure;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetBeige)
 	{
-		const auto lReturnColor = ofColor::beige;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::beige;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetBisque)
 	{
-		const auto lReturnColor = ofColor::bisque;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::bisque;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetBlack)
 	{
-		const auto lReturnColor = ofColor::black;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::black;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetBlanchedAlmond)
 	{
-		const auto lReturnColor = ofColor::blanchedAlmond;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::blanchedAlmond;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetBlue)
 	{
-		const auto lReturnColor = ofColor::blue;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::blue;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetBlueSteel)
 	{
-		const auto lReturnColor = ofColor::blueSteel;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::blueSteel;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetBlueViolet)
 	{
-		const auto lReturnColor = ofColor::blueViolet;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::blueViolet;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetBrown)
 	{
-		const auto lReturnColor = ofColor::brown;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::brown;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetBurlyWood)
 	{
-		const auto lReturnColor = ofColor::burlyWood;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::burlyWood;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetCadetBlue)
 	{
-		const auto lReturnColor = ofColor::cadetBlue;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::cadetBlue;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetChartreuse)
 	{
-		const auto lReturnColor = ofColor::chartreuse;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::chartreuse;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetChocolate)
 	{
-		const auto lReturnColor = ofColor::chocolate;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::chocolate;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetCoral)
 	{
-		const auto lReturnColor = ofColor::coral;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::coral;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetCornflowerBlue)
 	{
-		const auto lReturnColor = ofColor::cornflowerBlue;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::cornflowerBlue;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetCornsilk)
 	{
-		const auto lReturnColor = ofColor::cornsilk;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::cornsilk;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetCrimson)
 	{
-		const auto lReturnColor = ofColor::crimson;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::crimson;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetCyan)
 	{
-		const auto lReturnColor = ofColor::cyan;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::cyan;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetDarkBlue)
 	{
-		const auto lReturnColor = ofColor::darkBlue;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::darkBlue;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetDarkCyan)
 	{
-		const auto lReturnColor = ofColor::darkCyan;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::darkCyan;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetDarkGoldenRod)
 	{
-		const auto lReturnColor = ofColor::darkGoldenRod;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::darkGoldenRod;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetDarkGray)
 	{
-		const auto lReturnColor = ofColor::darkGray;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::darkGray;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetDarkGreen)
 	{
-		const auto lReturnColor = ofColor::darkGreen;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::darkGreen;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetDarkGrey)
 	{
-		const auto lReturnColor = ofColor::darkGrey;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::darkGrey;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetDarkKhaki)
 	{
-		const auto lReturnColor = ofColor::darkKhaki;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::darkKhaki;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetDarkMagenta)
 	{
-		const auto lReturnColor = ofColor::darkMagenta;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::darkMagenta;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetDarkOliveGreen)
 	{
-		const auto lReturnColor = ofColor::darkOliveGreen;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::darkOliveGreen;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetDarkOrchid)
 	{
-		const auto lReturnColor = ofColor::darkOrchid;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::darkOrchid;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetDarkRed)
 	{
-		const auto lReturnColor = ofColor::darkRed;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::darkRed;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetDarkSalmon)
 	{
-		const auto lReturnColor = ofColor::darkSalmon;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::darkSalmon;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetDarkSeaGreen)
 	{
-		const auto lReturnColor = ofColor::darkSeaGreen;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::darkSeaGreen;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetDarkSlateBlue)
 	{
-		const auto lReturnColor = ofColor::darkSlateBlue;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::darkSlateBlue;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetDarkSlateGray)
 	{
-		const auto lReturnColor = ofColor::darkSlateGray;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::darkSlateGray;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetDarkSlateGrey)
 	{
-		const auto lReturnColor = ofColor::darkSlateGrey;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::darkSlateGrey;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetDarkTurquoise)
 	{
-		const auto lReturnColor = ofColor::darkTurquoise;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::darkTurquoise;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetDarkViolet)
 	{
-		const auto lReturnColor = ofColor::darkViolet;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::darkViolet;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetDarkorange)
 	{
-		const auto lReturnColor = ofColor::darkorange;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::darkorange;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetDeepPink)
 	{
-		const auto lReturnColor = ofColor::deepPink;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::deepPink;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetDeepSkyBlue)
 	{
-		const auto lReturnColor = ofColor::deepSkyBlue;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::deepSkyBlue;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetDimGray)
 	{
-		const auto lReturnColor = ofColor::dimGray;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::dimGray;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetDimGrey)
 	{
-		const auto lReturnColor = ofColor::dimGrey;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::dimGrey;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetDodgerBlue)
 	{
-		const auto lReturnColor = ofColor::dodgerBlue;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::dodgerBlue;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetFireBrick)
 	{
-		const auto lReturnColor = ofColor::fireBrick;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::fireBrick;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetFloralWhite)
 	{
-		const auto lReturnColor = ofColor::floralWhite;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::floralWhite;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetForestGreen)
 	{
-		const auto lReturnColor = ofColor::forestGreen;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::forestGreen;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetFuchsia)
 	{
-		const auto lReturnColor = ofColor::fuchsia;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::fuchsia;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetGainsboro)
 	{
-		const auto lReturnColor = ofColor::gainsboro;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::gainsboro;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetGhostWhite)
 	{
-		const auto lReturnColor = ofColor::ghostWhite;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::ghostWhite;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetGold)
 	{
-		const auto lReturnColor = ofColor::gold;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::gold;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetGoldenRod)
 	{
-		const auto lReturnColor = ofColor::goldenRod;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::goldenRod;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetGray)
 	{
-		const auto lReturnColor = ofColor::gray;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::gray;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetGreen)
 	{
-		const auto lReturnColor = ofColor::green;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::green;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetGreenYellow)
 	{
-		const auto lReturnColor = ofColor::greenYellow;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::greenYellow;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetGrey)
 	{
-		const auto lReturnColor = ofColor::grey;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::grey;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetHoneyDew)
 	{
-		const auto lReturnColor = ofColor::honeyDew;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::honeyDew;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetHotPink)
 	{
-		const auto lReturnColor = ofColor::hotPink;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::hotPink;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetIndianRed)
 	{
-		const auto lReturnColor = ofColor::indianRed;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::indianRed;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetIndigo)
 	{
-		const auto lReturnColor = ofColor::indigo;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::indigo;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetIvory)
 	{
-		const auto lReturnColor = ofColor::ivory;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::ivory;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetKhaki)
 	{
-		const auto lReturnColor = ofColor::khaki;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::khaki;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetLavender)
 	{
-		const auto lReturnColor = ofColor::lavender;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::lavender;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetLavenderBlush)
 	{
-		const auto lReturnColor = ofColor::lavenderBlush;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::lavenderBlush;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetLawnGreen)
 	{
-		const auto lReturnColor = ofColor::lawnGreen;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::lawnGreen;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetLemonChiffon)
 	{
-		const auto lReturnColor = ofColor::lemonChiffon;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::lemonChiffon;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetLightBlue)
 	{
-		const auto lReturnColor = ofColor::lightBlue;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::lightBlue;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetLightCoral)
 	{
-		const auto lReturnColor = ofColor::lightCoral;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::lightCoral;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetLightCyan)
 	{
-		const auto lReturnColor = ofColor::lightCyan;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::lightCyan;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetLightGoldenRodYellow)
 	{
-		const auto lReturnColor = ofColor::lightGoldenRodYellow;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::lightGoldenRodYellow;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetLightGray)
 	{
-		const auto lReturnColor = ofColor::lightGray;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::lightGray;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetLightGreen)
 	{
-		const auto lReturnColor = ofColor::lightGreen;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::lightGreen;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetLightGrey)
 	{
-		const auto lReturnColor = ofColor::lightGrey;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::lightGrey;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetLightPink)
 	{
-		const auto lReturnColor = ofColor::lightPink;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::lightPink;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetLightSalmon)
 	{
-		const auto lReturnColor = ofColor::lightSalmon;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::lightSalmon;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetLightSeaGreen)
 	{
-		const auto lReturnColor = ofColor::lightSeaGreen;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::lightSeaGreen;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetLightSkyBlue)
 	{
-		const auto lReturnColor = ofColor::lightSkyBlue;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::lightSkyBlue;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetLightSlateGray)
 	{
-		const auto lReturnColor = ofColor::lightSlateGray;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::lightSlateGray;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetLightSlateGrey)
 	{
-		const auto lReturnColor = ofColor::lightSlateGrey;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::lightSlateGrey;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetLightSteelBlue)
 	{
-		const auto lReturnColor = ofColor::lightSteelBlue;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::lightSteelBlue;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetLightYellow)
 	{
-		const auto lReturnColor = ofColor::lightYellow;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::lightYellow;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetLime)
 	{
-		const auto lReturnColor = ofColor::lime;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::lime;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetLimeGreen)
 	{
-		const auto lReturnColor = ofColor::limeGreen;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::limeGreen;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetLinen)
 	{
-		const auto lReturnColor = ofColor::linen;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::linen;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetMagenta)
 	{
-		const auto lReturnColor = ofColor::magenta;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::magenta;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetMaroon)
 	{
-		const auto lReturnColor = ofColor::maroon;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::maroon;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetMediumAquaMarine)
 	{
-		const auto lReturnColor = ofColor::mediumAquaMarine;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::mediumAquaMarine;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetMediumBlue)
 	{
-		const auto lReturnColor = ofColor::mediumBlue;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::mediumBlue;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetMediumOrchid)
 	{
-		const auto lReturnColor = ofColor::mediumOrchid;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::mediumOrchid;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetMediumPurple)
 	{
-		const auto lReturnColor = ofColor::mediumPurple;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::mediumPurple;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetMediumSeaGreen)
 	{
-		const auto lReturnColor = ofColor::mediumSeaGreen;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::mediumSeaGreen;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetMediumSlateBlue)
 	{
-		const auto lReturnColor = ofColor::mediumSlateBlue;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::mediumSlateBlue;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetMediumSpringGreen)
 	{
-		const auto lReturnColor = ofColor::mediumSpringGreen;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::mediumSpringGreen;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetMediumTurquoise)
 	{
-		const auto lReturnColor = ofColor::mediumTurquoise;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::mediumTurquoise;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetMediumVioletRed)
 	{
-		const auto lReturnColor = ofColor::mediumVioletRed;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::mediumVioletRed;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetMidnightBlue)
 	{
-		const auto lReturnColor = ofColor::midnightBlue;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::midnightBlue;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetMintCream)
 	{
-		const auto lReturnColor = ofColor::mintCream;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::mintCream;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetMistyRose)
 	{
-		const auto lReturnColor = ofColor::mistyRose;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::mistyRose;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetMoccasin)
 	{
-		const auto lReturnColor = ofColor::moccasin;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::moccasin;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetNavajoWhite)
 	{
-		const auto lReturnColor = ofColor::navajoWhite;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::navajoWhite;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetNavy)
 	{
-		const auto lReturnColor = ofColor::navy;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::navy;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetOldLace)
 	{
-		const auto lReturnColor = ofColor::oldLace;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::oldLace;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetOlive)
 	{
-		const auto lReturnColor = ofColor::olive;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::olive;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetOliveDrab)
 	{
-		const auto lReturnColor = ofColor::oliveDrab;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::oliveDrab;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetOrange)
 	{
-		const auto lReturnColor = ofColor::orange;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::orange;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetOrangeRed)
 	{
-		const auto lReturnColor = ofColor::orangeRed;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::orangeRed;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetOrchid)
 	{
-		const auto lReturnColor = ofColor::orchid;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::orchid;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetPaleGoldenRod)
 	{
-		const auto lReturnColor = ofColor::paleGoldenRod;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::paleGoldenRod;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetPaleGreen)
 	{
-		const auto lReturnColor = ofColor::paleGreen;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::paleGreen;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetPaleTurquoise)
 	{
-		const auto lReturnColor = ofColor::paleTurquoise;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::paleTurquoise;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetPaleVioletRed)
 	{
-		const auto lReturnColor = ofColor::paleVioletRed;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::paleVioletRed;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetPapayaWhip)
 	{
-		const auto lReturnColor = ofColor::papayaWhip;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::papayaWhip;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetPeachPuff)
 	{
-		const auto lReturnColor = ofColor::peachPuff;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::peachPuff;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetPeru)
 	{
-		const auto lReturnColor = ofColor::peru;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::peru;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetPink)
 	{
-		const auto lReturnColor = ofColor::pink;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::pink;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetPlum)
 	{
-		const auto lReturnColor = ofColor::plum;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::plum;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetPowderBlue)
 	{
-		const auto lReturnColor = ofColor::powderBlue;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::powderBlue;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetPurple)
 	{
-		const auto lReturnColor = ofColor::purple;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::purple;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetRed)
 	{
-		const auto lReturnColor = ofColor::red;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::red;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetRosyBrown)
 	{
-		const auto lReturnColor = ofColor::rosyBrown;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::rosyBrown;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetRoyalBlue)
 	{
-		const auto lReturnColor = ofColor::royalBlue;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::royalBlue;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetSaddleBrown)
 	{
-		const auto lReturnColor = ofColor::saddleBrown;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::saddleBrown;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetSalmon)
 	{
-		const auto lReturnColor = ofColor::salmon;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::salmon;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetSandyBrown)
 	{
-		const auto lReturnColor = ofColor::sandyBrown;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::sandyBrown;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetSeaGreen)
 	{
-		const auto lReturnColor = ofColor::seaGreen;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::seaGreen;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetSeaShell)
 	{
-		const auto lReturnColor = ofColor::seaShell;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::seaShell;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetSienna)
 	{
-		const auto lReturnColor = ofColor::sienna;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::sienna;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetSilver)
 	{
-		const auto lReturnColor = ofColor::silver;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::silver;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetSkyBlue)
 	{
-		const auto lReturnColor = ofColor::skyBlue;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::skyBlue;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetSlateBlue)
 	{
-		const auto lReturnColor = ofColor::slateBlue;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::slateBlue;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetSlateGray)
 	{
-		const auto lReturnColor = ofColor::slateGray;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::slateGray;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetSlateGrey)
 	{
-		const auto lReturnColor = ofColor::slateGrey;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::slateGrey;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetSnow)
 	{
-		const auto lReturnColor = ofColor::snow;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::snow;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetSpringGreen)
 	{
-		const auto lReturnColor = ofColor::springGreen;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::springGreen;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetSteelBlue)
 	{
-		const auto lReturnColor = ofColor::steelBlue;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::steelBlue;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetTan)
 	{
-		const auto lReturnColor = ofColor::tan;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::tan;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetTeal)
 	{
-		const auto lReturnColor = ofColor::teal;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::teal;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetThistle)
 	{
-		const auto lReturnColor = ofColor::thistle;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::thistle;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetTomato)
 	{
-		const auto lReturnColor = ofColor::tomato;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::tomato;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetTurquoise)
 	{
-		const auto lReturnColor = ofColor::turquoise;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::turquoise;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetViolet)
 	{
-		const auto lReturnColor = ofColor::violet;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::violet;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetWheat)
 	{
-		const auto lReturnColor = ofColor::wheat;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::wheat;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetWhite)
 	{
-		const auto lReturnColor = ofColor::white;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::white;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetWhiteSmoke)
 	{
-		const auto lReturnColor = ofColor::whiteSmoke;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::whiteSmoke;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetYellow)
 	{
-		const auto lReturnColor = ofColor::yellow;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::yellow;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_PROPERTY_GETTER(ofxNode_ofColor::GetYellowGreen)
 	{
-		const auto lReturnColor = ofColor::yellowGreen;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(lReturnColor.r) ,
-			NanNew(lReturnColor.g) ,
-			NanNew(lReturnColor.b) ,
-			NanNew(lReturnColor.a)
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lToRet)->self() = ofColor::yellowGreen;
+		NanReturnValue(lToRet);
 	}
+	//-------------------------------------------------------
 
 	NAN_METHOD(ofxNode_ofColor::SetSaturation)
 	{
-		node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->internal_.setSaturation(args[0]->NumberValue());
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->self().setSaturation(args[0]->NumberValue());
 		NanReturnValue(args.This());
 	}
 
 
 	NAN_METHOD(ofxNode_ofColor::SetHue)
 	{
-		node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->internal_.setHue(args[0]->NumberValue());
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->self().setHue(args[0]->NumberValue());
 		NanReturnValue(args.This());
 	}
 
 	NAN_METHOD(ofxNode_ofColor::SetHueAngle)
 	{
-		node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->internal_.setHueAngle(args[0]->NumberValue());
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->self().setHueAngle(args[0]->NumberValue());
 		NanReturnValue(args.This());
 	}
 
 	NAN_METHOD(ofxNode_ofColor::SetBrightness)
 	{
-		node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->internal_.setBrightness(args[0]->NumberValue());
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->self().setBrightness(args[0]->NumberValue());
 		NanReturnValue(args.This());
 	}
 
@@ -2373,7 +1624,7 @@ namespace ofxNode
 		{
 			alpha = args[1]->NumberValue();
 		}
-		node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->internal_.setHex(
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->self().setHex(
 			args[0]->NumberValue(),
 			alpha);
 		NanReturnValue(args.This());
@@ -2386,7 +1637,7 @@ namespace ofxNode
 		{
 			alpha = args[3]->NumberValue();
 		}
-		node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->internal_.setHsb(
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->self().setHsb(
 			args[0]->NumberValue(),
 			args[1]->NumberValue(), 
 			args[2]->NumberValue(),
@@ -2396,46 +1647,45 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofColor::Set)
 	{
-		NanScope();
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->internal_;
-		if (args.IsConstructCall()) {
-			// Invoked as constructor: `new ofColor(...)`
-			ofxNode_ofColor* obj;
-			if (args.Length() >= 3)
+		auto &self = node::ObjectWrap::Unwrap<ofxNode_ofColor>(args.This())->self();
+		if (args.Length() >= 3)
+		{
+			float alpha = self.a;
+			if(!args[3]->IsUndefined())
 			{
-				float alpha = self.a;
-				if(!args[3]->IsUndefined())
-				{
-					alpha = args[3]->NumberValue();
-				}
-				self.set(V8_ARG_NUMBER(args[0]), V8_ARG_NUMBER(args[1]), V8_ARG_NUMBER(args[2]), alpha);
+				alpha = args[3]->NumberValue();
 			}
-			else if (args.Length() < 3 && args.Length() >= 1)
+			self.set(V8_ARG_NUMBER(args[0]), V8_ARG_NUMBER(args[1]), V8_ARG_NUMBER(args[2]), alpha);
+		}
+		else if (args.Length() < 3 && args.Length() >= 1)
+		{
+			//void ofColor_::set(float gray, float alpha=limit())
+			float alpha = self.a;
+			if(!args[1]->IsUndefined())
 			{
-				//void ofColor_::set(float gray, float alpha=limit())
-				float alpha = self.a;
-				if(!args[1]->IsUndefined())
-				{
-					alpha = args[1]->NumberValue();
-				}
-				self.set(V8_ARG_NUMBER(args[0]), alpha);
+				alpha = args[1]->NumberValue();
 			}
-			else
-			{
-				//copy constructor like a BOSS! This will also throw an exception if user is entering an "i dunno" color.
-				self.set(ObjectWrap::Unwrap<ofxNode_ofColor>(args[0]->ToObject())->internal_);
-			}
+			self.set(V8_ARG_NUMBER(args[0]), alpha);
+		}
+		else
+		{
+			//copy constructor like a BOSS! This will also throw an exception if user is entering an "i dunno" color.
+			self.set(ObjectWrap::Unwrap<ofxNode_ofColor>(args[0]->ToObject())->internal_);
 		}
 		NanReturnValue(args.This());
 	}
 	
 	NAN_METHOD(ofxNode_ofColor::New)
 	{
-		NanScope();
 		if (args.IsConstructCall()) {
 			// Invoked as constructor: `new ofColor(...)`
 			ofxNode_ofColor* obj;
-			if (args.Length() >= 3)
+			if (args.Length() == 0)
+			{
+				//This is called by NewInstance method on constructors. We'll return a mock color to play with
+				obj = new ofxNode_ofColor(ofColor());
+			}
+			else if (args.Length() >= 3)
 			{
 				float alpha = ofColor::limit();
 				if(!args[3]->IsUndefined())

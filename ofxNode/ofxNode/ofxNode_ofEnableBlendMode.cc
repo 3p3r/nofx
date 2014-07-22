@@ -4,16 +4,7 @@
 namespace ofxNode
 {
 	NAN_METHOD(ofxNode_ofEnableBlendMode) {
-		NanScope();
-		
-		if (args.Length() > 0 && IS_V8_ARG_NUMBER(args[0]))
-		{
-			ofEnableBlendMode((ofBlendMode) args[0]->Int32Value());
-		}
-		else
-		{
-			NanThrowError("bad arguments passed to ofEnableBlendMode");
-		}
+		ofEnableBlendMode((ofBlendMode) args[0]->Int32Value());
 		NanReturnValue(args.This());
 	} // !ofxNode_ofEnableBlendMode
 } // !namespace ofxNode

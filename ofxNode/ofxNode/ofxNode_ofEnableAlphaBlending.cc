@@ -4,10 +4,7 @@
 namespace ofxNode
 {
 	NAN_METHOD(ofxNode_ofEnableAlphaBlending) {
-		NanScope();
-		
 		ofEnableAlphaBlending();
-
 		NanReturnValue(args.This());
 	} // !ofxNode_ofEnableAlphaBlending
 } // !namespace ofxNode

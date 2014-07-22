@@ -7,8 +7,6 @@
 namespace ofxNode
 {
 	NAN_METHOD(ofxNode_ofRect) {
-		NanScope();
-
 		if (args.Length() == 1)
 		{
 			ofRect(node::ObjectWrap::Unwrap<ofxNode_ofRectangle>(args[0]->ToObject())->self());
@@ -35,7 +33,7 @@ namespace ofxNode
 				V8_ARG_NUMBER(args[3])
 				);
 		}
-		else if (args.Length() == 5)
+		else
 		{
 			ofRect(
 				V8_ARG_NUMBER(args[0]),
@@ -45,11 +43,6 @@ namespace ofxNode
 				V8_ARG_NUMBER(args[4])
 				);
 		}
-		else
-		{
-			NanThrowError("bad args passed to ofRect.");
-		}
-
 		NanReturnValue(args.This());
 	} // !ofxNode_ofRect
 } // !namespace ofxNode

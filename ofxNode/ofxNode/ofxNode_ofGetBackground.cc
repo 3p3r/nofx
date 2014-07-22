@@ -1,19 +1,12 @@
 #include "ofxNode_ofGetBackground.h"
 #include "ofGraphics.h"
-#include "ofTypes.h"
+#include "ofxNode_wrapper_ofColor.h"
 
 namespace ofxNode
 {
 	NAN_METHOD(ofxNode_ofGetBackground) {
-		NanScope();
-		
-		const auto lOfColor = ofGetBackground();
-		auto lColor = NanNew<v8::Object>();
-		lColor->Set(NanNew("r"), NanNew(lOfColor.r));
-		lColor->Set(NanNew("g"), NanNew(lOfColor.g));
-		lColor->Set(NanNew("b"), NanNew(lOfColor.b));
-		lColor->Set(NanNew("a"), NanNew(lOfColor.a));
-
-		NanReturnValue(lColor);
+		auto lOfColor = NanNew(ofxNode_ofColor::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(lOfColor)->self() = ofGetBackground();
+		NanReturnValue(lOfColor);
 	} // !ofxNode_ofGetBackground
 } // !namespace ofxNode

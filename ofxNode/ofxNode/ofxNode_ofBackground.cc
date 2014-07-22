@@ -1,33 +1,27 @@
 #include "ofxNode_ofBackground.h"
 #include "ofGraphics.h"
+#include "ofxNode_wrapper_ofColor.h"
 
 namespace ofxNode
 {
 	NAN_METHOD(ofxNode_ofBackground) {
-		NanScope();
-		if (args.Length() == 1 && args[0]->IsNumber())
+		if (args.Length() >= 3)
 		{
-			//void ofBackground(int brightness)
-			ofBackground(args[0]->NumberValue());
+			const auto alpha = args[3]->IsUndefined() ? ofColor::limit() : args[3]->Uint32Value();
+			ofBackground(
+				args[0]->Uint32Value(),
+				args[1]->Uint32Value(),
+				args[2]->Uint32Value(),
+				alpha);
 		}
-		else if (args.Length() == 2 && args[0]->IsNumber() && args[1]->IsNumber())
+		else if (args[0]->IsObject())
 		{
-			//void ofBackground(int brightness, int alpha=255)
-			ofBackground(args[0]->NumberValue(), args[1]->NumberValue());
-		}
-		else if (args.Length() == 3 && args[0]->IsNumber() && args[1]->IsNumber() && args[2]->IsNumber())
-		{
-			//void ofBackground(int r, int g, int b)
-			ofBackground(args[0]->NumberValue(), args[1]->NumberValue(), args[2]->NumberValue());
-		}
-		else if (args.Length() == 4 && args[0]->IsNumber() && args[1]->IsNumber() && args[2]->IsNumber() && args[3]->IsNumber())
-		{
-			//void ofBackground(int r, int g, int b, int a=255)
-			ofBackground(args[0]->NumberValue(), args[1]->NumberValue(), args[2]->NumberValue(), args[2]->NumberValue());
+			ofBackground(node::ObjectWrap::Unwrap<ofxNode_ofColor>(args[0]->ToObject())->self());
 		}
 		else
 		{
-			NanThrowError("Bad arguments passed to ofCircle.");
+			const auto alpha = args[1]->IsUndefined() ? ofColor::limit() : args[1]->Uint32Value();
+			ofBackground(args[0]->Uint32Value(), alpha);
 		}
 
 		NanReturnValue(args.This());

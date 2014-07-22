@@ -4,7 +4,7 @@ namespace ofxNode
 {
 	v8::Persistent<v8::Function> ofxNode_ofVec3f::constructor;
 
-	ofxNode_ofVec3f::ofxNode_ofVec3f(ofVec3f aOfVec3f)
+	ofxNode_ofVec3f::ofxNode_ofVec3f(ofVec3f& aOfVec3f)
 		: internal_(aOfVec3f)
 	{}
 
@@ -90,7 +90,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofVec3f::Equals)
 	{
-		const auto self = ObjectWrap::Unwrap<ofxNode_ofVec3f>(args.This())->internal_;
+		const auto& self = ObjectWrap::Unwrap<ofxNode_ofVec3f>(args.This())->internal_;
 		if (args[0]->IsArray())
 		{
 			bool result = true;
@@ -119,7 +119,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofVec3f::Over)
 	{
-		const auto self = ObjectWrap::Unwrap<ofxNode_ofVec3f>(args.This())->internal_;
+		const auto& self = ObjectWrap::Unwrap<ofxNode_ofVec3f>(args.This())->internal_;
 		const int lArgc = 3;
 		if(args[0]->IsNumber())
 		{
@@ -139,7 +139,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofVec3f::Times)
 	{
-		const auto self = ObjectWrap::Unwrap<ofxNode_ofVec3f>(args.This())->internal_;
+		const auto& self = ObjectWrap::Unwrap<ofxNode_ofVec3f>(args.This())->internal_;
 		const int lArgc = 3;
 		if(args[0]->IsNumber())
 		{
@@ -159,7 +159,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofVec3f::Minus)
 	{
-		const auto self = ObjectWrap::Unwrap<ofxNode_ofVec3f>(args.This())->internal_;
+		const auto& self = ObjectWrap::Unwrap<ofxNode_ofVec3f>(args.This())->internal_;
 		const int lArgc = 3;
 		if(args[0]->IsNumber())
 		{
@@ -179,7 +179,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofVec3f::Plus)
 	{
-		const auto self = ObjectWrap::Unwrap<ofxNode_ofVec3f>(args.This())->internal_;
+		const auto& self = ObjectWrap::Unwrap<ofxNode_ofVec3f>(args.This())->internal_;
 		const int lArgc = 3;
 		if(args[0]->IsNumber())
 		{
@@ -199,7 +199,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofVec3f::ToString)
 	{
-		const auto self = ObjectWrap::Unwrap<ofxNode_ofVec3f>(args.This())->internal_;
+		const auto& self = ObjectWrap::Unwrap<ofxNode_ofVec3f>(args.This())->internal_;
 		std::ostringstream out;
 		out << self;
 		NanReturnValue( NanNew(out.str().c_str()) );
@@ -286,7 +286,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofVec3f::Zero)
 	{
-		const auto lCalculatedVec = ObjectWrap::Unwrap<ofxNode_ofVec3f>(args.This())->internal_.zero();
+		const auto lCalculatedVec = ofVec3f::zero();
 		const int lArgc = 3;
 		v8::Handle<v8::Value> lArgv[] = {NanNew(lCalculatedVec.x), NanNew(lCalculatedVec.y), NanNew(lCalculatedVec.z)};
 		NanReturnValue( (NanNew(constructor))->CallAsConstructor(lArgc, lArgv) );
@@ -294,17 +294,18 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofVec3f::One)
 	{
+		const auto lCalculatedVec = ofVec3f::one();
 		const int lArgc = 3;
-		v8::Handle<v8::Value> lArgv[] = {NanNew(1), NanNew(1), NanNew(1)};
+		v8::Handle<v8::Value> lArgv[] = {NanNew(lCalculatedVec.x), NanNew(lCalculatedVec.y), NanNew(lCalculatedVec.z)};
 		NanReturnValue( (NanNew(constructor))->CallAsConstructor(lArgc, lArgv) );
 	}
 
 	NAN_METHOD(ofxNode_ofVec3f::Map)
 	{
-		const auto lArgVec1 = ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->internal_;
-		const auto lArgVec2 = ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[1]->ToObject())->internal_;
-		const auto lArgVec3 = ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[2]->ToObject())->internal_;
-		const auto lArgVec4 = ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[3]->ToObject())->internal_;
+		const auto& lArgVec1 = ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->internal_;
+		const auto& lArgVec2 = ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[1]->ToObject())->internal_;
+		const auto& lArgVec3 = ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[2]->ToObject())->internal_;
+		const auto& lArgVec4 = ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[3]->ToObject())->internal_;
 		ObjectWrap::Unwrap<ofxNode_ofVec3f>(args.This())->internal_.map(lArgVec1, lArgVec2, lArgVec3, lArgVec4);
 		NanReturnValue( args.This() );
 	}
@@ -351,7 +352,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofVec3f::GetPtr)
 	{
-		const auto self = ObjectWrap::Unwrap<ofxNode_ofVec3f>(args.This())->internal_;
+		const auto& self = ObjectWrap::Unwrap<ofxNode_ofVec3f>(args.This())->internal_;
 		
 		auto lArrToReturn = NanNew<v8::Array>();
 		lArrToReturn->Set(0, NanNew(self.x));
@@ -523,7 +524,11 @@ namespace ofxNode
 		if (args.IsConstructCall()) {
 			// Invoked as constructor: `new ofVec3f(...)`
 			ofxNode_ofVec3f* obj;
-			if (args.Length() == 3)
+			if (args.Length() == 0)
+			{
+				obj = new ofxNode_ofVec3f(ofVec3f());
+			}
+			else if (args.Length() == 3)
 			{
 				ofVec3f lPoint(V8_ARG_NUMBER(args[0]), V8_ARG_NUMBER(args[1]), V8_ARG_NUMBER(args[2]));
 				obj = new ofxNode_ofVec3f(lPoint);

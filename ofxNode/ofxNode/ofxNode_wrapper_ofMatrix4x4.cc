@@ -23,7 +23,6 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::New)
 	{
-		NanScope();
 		if (args.IsConstructCall()) {
 			// Invoked as constructor: `new ofMatrix4x4(...)`
 			ofxNode_ofMatrix4x4* obj;
@@ -186,7 +185,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::Decompose)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 
 		ofVec3f translation, scale;
 		ofQuaternion rotation, so;
@@ -205,7 +204,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::GetFrustum)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		double left = 0,
 			right = 0,
 			bottom = 0,
@@ -226,59 +225,21 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::GetInverse)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
-		const int lArgc = 16;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(self._mat[0][0]),
-			NanNew(self._mat[0][1]),
-			NanNew(self._mat[0][2]),
-			NanNew(self._mat[0][3]),
-			NanNew(self._mat[1][0]),
-			NanNew(self._mat[1][1]),
-			NanNew(self._mat[1][2]),
-			NanNew(self._mat[1][3]),
-			NanNew(self._mat[2][0]),
-			NanNew(self._mat[2][1]),
-			NanNew(self._mat[2][2]),
-			NanNew(self._mat[2][3]),
-			NanNew(self._mat[3][0]),
-			NanNew(self._mat[3][1]),
-			NanNew(self._mat[3][2]),
-			NanNew(self._mat[3][3]),
-		};
-		auto toRet = NanNew(constructor)->CallAsConstructor(lArgc, lArgv);
+		auto toRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(toRet)->self() = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self().getInverse();
 		NanReturnValue(toRet);
 	}
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::GetInverseOf)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args[0]->ToObject())->self();
-		const int lArgc = 16;
-		v8::Handle<v8::Value> lArgv[] = {
-			NanNew(self._mat[0][0]),
-			NanNew(self._mat[0][1]),
-			NanNew(self._mat[0][2]),
-			NanNew(self._mat[0][3]),
-			NanNew(self._mat[1][0]),
-			NanNew(self._mat[1][1]),
-			NanNew(self._mat[1][2]),
-			NanNew(self._mat[1][3]),
-			NanNew(self._mat[2][0]),
-			NanNew(self._mat[2][1]),
-			NanNew(self._mat[2][2]),
-			NanNew(self._mat[2][3]),
-			NanNew(self._mat[3][0]),
-			NanNew(self._mat[3][1]),
-			NanNew(self._mat[3][2]),
-			NanNew(self._mat[3][3]),
-		};
-		auto toRet = NanNew(constructor)->CallAsConstructor(lArgc, lArgv);
+		auto toRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(toRet)->self() = ofMatrix4x4::getInverseOf(node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args[0]->ToObject())->self());
 		NanReturnValue(toRet);
 	}
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::GetLookAt)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		ofVec3f eye, center, up;
 		float lookDistance = args[0]->IsNumber() ? args[0]->NumberValue() : 1.0f;
 		self.getLookAt(eye, center, up);
@@ -294,7 +255,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::GetOrtho)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		double left = 0,
 			right = 0,
 			bottom = 0,
@@ -315,33 +276,14 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::GetOrthoNormalOf)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
-		const auto lArgvMat = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args[0]->ToObject())->self();
-		const auto result = self.getOrthoNormalOf(lArgvMat);
-		v8::Local<v8::Value> lArgv[] = {
-			NanNew(result._mat[0][0]),
-			NanNew(result._mat[0][1]),
-			NanNew(result._mat[0][2]),
-			NanNew(result._mat[0][3]),
-			NanNew(result._mat[1][0]),
-			NanNew(result._mat[1][1]),
-			NanNew(result._mat[1][2]),
-			NanNew(result._mat[1][3]),
-			NanNew(result._mat[2][0]),
-			NanNew(result._mat[2][1]),
-			NanNew(result._mat[2][2]),
-			NanNew(result._mat[2][3]),
-			NanNew(result._mat[3][0]),
-			NanNew(result._mat[3][1]),
-			NanNew(result._mat[3][2]),
-			NanNew(result._mat[3][3]),
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(16, lArgv));
+		auto toRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(toRet)->self() = ofMatrix4x4::getOrthoNormalOf(node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args[0]->ToObject())->self());
+		NanReturnValue(toRet);
 	}
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::GetPerspective)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		double fovy = 0,
 			aspectRatio = 0,
 			zNear = 0,
@@ -358,7 +300,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::GetPtr)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		auto toRet = NanNew<v8::Array>();
 		toRet->Set(0, NanNew(self._mat[0][0]));
 		toRet->Set(1, NanNew(self._mat[0][1]));
@@ -381,72 +323,49 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::GetRotate)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
-		const auto toRet = self.getRotate();
-		v8::Local<v8::Value> lArgv[] = {NanNew(toRet.x()), NanNew(toRet.y()), NanNew(toRet.z()), NanNew(toRet.w())};
-		NanReturnValue(NanNew(ofxNode_ofQuaternion::factory())->CallAsConstructor(4, lArgv));
+		auto toRet = NanNew(ofxNode_ofQuaternion::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(toRet)->self() = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self().getRotate();
+		NanReturnValue(toRet);
 	}
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::GetRowAsVec3f)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
-		const auto toRet = self.getRowAsVec3f(args[0]->NumberValue());
-		v8::Local<v8::Value> lArgv[] = {NanNew(toRet.x), NanNew(toRet.y), NanNew(toRet.z)};
-		NanReturnValue(NanNew(ofxNode_ofVec3f::factory())->CallAsConstructor(3, lArgv));
+		auto toRet = NanNew(ofxNode_ofVec3f::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(toRet)->self() = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self().getRowAsVec3f(args[0]->NumberValue());
+		NanReturnValue(toRet);
 	}
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::GetRowAsVec4f)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
-		const auto toRet = self.getRowAsVec4f(args[0]->NumberValue());
-		v8::Local<v8::Value> lArgv[] = {NanNew(toRet.x), NanNew(toRet.y), NanNew(toRet.z), NanNew(toRet.w)};
-		NanReturnValue(NanNew(ofxNode_ofVec4f::factory())->CallAsConstructor(4, lArgv));
+		auto toRet = NanNew(ofxNode_ofVec4f::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofVec4f>(toRet)->self() = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self().getRowAsVec4f(args[0]->NumberValue());
+		NanReturnValue(toRet);
 	}
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::GetScale)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
-		const auto toRet = self.getScale();
-		v8::Local<v8::Value> lArgv[] = {NanNew(toRet.x), NanNew(toRet.y), NanNew(toRet.z)};
-		NanReturnValue(NanNew(ofxNode_ofVec3f::factory())->CallAsConstructor(3, lArgv));
+		auto toRet = NanNew(ofxNode_ofVec3f::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(toRet)->self() = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self().getScale();
+		NanReturnValue(toRet);
 	}
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::GetTranslation)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
-		const auto toRet = self.getTranslation();
-		v8::Local<v8::Value> lArgv[] = {NanNew(toRet.x), NanNew(toRet.y), NanNew(toRet.z)};
-		NanReturnValue(NanNew(ofxNode_ofVec3f::factory())->CallAsConstructor(3, lArgv));
+		auto toRet = NanNew(ofxNode_ofVec3f::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(toRet)->self() = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self().getTranslation();
+		NanReturnValue(toRet);
 	}
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::GetTransposedOf)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
-		const auto toRet = self.getTransposedOf(node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args[0]->ToObject())->self());
-		v8::Local<v8::Value> lArgv[] = {
-			NanNew(toRet._mat[0][0]),
-			NanNew(toRet._mat[0][1]),
-			NanNew(toRet._mat[0][2]),
-			NanNew(toRet._mat[0][3]),
-			NanNew(toRet._mat[1][0]),
-			NanNew(toRet._mat[1][1]),
-			NanNew(toRet._mat[1][2]),
-			NanNew(toRet._mat[1][3]),
-			NanNew(toRet._mat[2][0]),
-			NanNew(toRet._mat[2][1]),
-			NanNew(toRet._mat[2][2]),
-			NanNew(toRet._mat[2][3]),
-			NanNew(toRet._mat[3][0]),
-			NanNew(toRet._mat[3][1]),
-			NanNew(toRet._mat[3][2]),
-			NanNew(toRet._mat[3][3])
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(16, lArgv));
+		auto toRet = NanNew(ofxNode_ofVec3f::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(toRet)->self() = ofMatrix4x4::getTransposedOf(node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args[0]->ToObject())->self());
+		NanReturnValue(toRet);
 	}
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::GlRotate)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		if (args.Length() == 4)
 		{
 			self.glRotate(V8_ARG_NUMBER(args[0]), V8_ARG_NUMBER(args[1]), V8_ARG_NUMBER(args[2]), V8_ARG_NUMBER(args[3]));
@@ -460,14 +379,14 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::GlRotateRad)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		self.glRotateRad(V8_ARG_NUMBER(args[0]), V8_ARG_NUMBER(args[1]), V8_ARG_NUMBER(args[2]), V8_ARG_NUMBER(args[3]));
 		NanReturnValue(args.This());
 	}
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::GlScale)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		if (args.Length() == 3)
 		{
 			self.glScale(V8_ARG_NUMBER(args[0]), V8_ARG_NUMBER(args[1]), V8_ARG_NUMBER(args[2]));
@@ -481,7 +400,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::GlTranslate)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		if (args.Length() == 3)
 		{
 			self.glTranslate(V8_ARG_NUMBER(args[0]), V8_ARG_NUMBER(args[1]), V8_ARG_NUMBER(args[2]));
@@ -495,25 +414,25 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::IsIdentity)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		NanReturnValue(self.isIdentity());
 	}
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::IsNaN)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		NanReturnValue(self.isNaN());
 	}
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::IsValid)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		NanReturnValue(self.isValid());
 	}
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::MakeFromMultiplicationOf)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		self.makeFromMultiplicationOf(
 			node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args[0]->ToObject())->self(),
 			node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args[1]->ToObject())->self()
@@ -523,7 +442,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::MakeFrustumMatrix)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		self.makeFrustumMatrix(
 			V8_ARG_NUMBER(args[0]),
 			V8_ARG_NUMBER(args[1]),
@@ -537,14 +456,14 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::MakeIdentityMatrix)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		self.makeIdentityMatrix();
 		NanReturnValue(args.This());
 	}
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::MakeInvertOf)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		NanReturnValue(self.makeInvertOf(
 			node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args[0]->ToObject())->self()
 			));
@@ -552,7 +471,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::MakeLookAtMatrix)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		self.makeLookAtMatrix(
 			node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->self(),
 			node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[1]->ToObject())->self(),
@@ -563,7 +482,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::MakeLookAtViewMatrix)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		self.makeLookAtViewMatrix(
 			node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->self(),
 			node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[1]->ToObject())->self(),
@@ -574,7 +493,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::MakeOrtho2DMatrix)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		self.makeOrtho2DMatrix(
 			V8_ARG_NUMBER(args[0]),
 			V8_ARG_NUMBER(args[1]),
@@ -586,7 +505,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::MakeOrthoMatrix)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		self.makeOrthoMatrix(
 			V8_ARG_NUMBER(args[0]),
 			V8_ARG_NUMBER(args[1]),
@@ -600,14 +519,14 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::MakeOrthoNormalOf)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		self.makeOrthoNormalOf(node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args[0]->ToObject())->self());
 		NanReturnValue(args.This());
 	}
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::MakePerspectiveMatrix)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		self.makePerspectiveMatrix(
 			V8_ARG_NUMBER(args[0]),
 			V8_ARG_NUMBER(args[1]),
@@ -619,7 +538,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::MakeRotationMatrix)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		if (args.Length() == 1)
 		{
 			self.makeRotationMatrix(node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args[0]->ToObject())->self());
@@ -663,7 +582,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::MakeScaleMatrix)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		if (args.Length() == 1)
 		{
 			self.makeScaleMatrix(node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->self());
@@ -681,7 +600,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::MakeTranslationMatrix)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		if (args.Length() == 1)
 		{
 			self.makeTranslationMatrix(node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->self());
@@ -699,8 +618,8 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::NewFrustumMatrix)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
-		const auto toRet = self.newFrustumMatrix(
+		auto toRet = NanNew(ofxNode_ofVec3f::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(toRet)->self() =  ofMatrix4x4::newFrustumMatrix(
 			V8_ARG_NUMBER(args[0]),
 			V8_ARG_NUMBER(args[1]),
 			V8_ARG_NUMBER(args[2]),
@@ -708,115 +627,43 @@ namespace ofxNode
 			V8_ARG_NUMBER(args[4]),
 			V8_ARG_NUMBER(args[5])
 			);
-		v8::Local<v8::Value> lArgv[] = {
-			NanNew(toRet._mat[0][0]),
-			NanNew(toRet._mat[0][1]),
-			NanNew(toRet._mat[0][2]),
-			NanNew(toRet._mat[0][3]),
-			NanNew(toRet._mat[1][0]),
-			NanNew(toRet._mat[1][1]),
-			NanNew(toRet._mat[1][2]),
-			NanNew(toRet._mat[1][3]),
-			NanNew(toRet._mat[2][0]),
-			NanNew(toRet._mat[2][1]),
-			NanNew(toRet._mat[2][2]),
-			NanNew(toRet._mat[2][3]),
-			NanNew(toRet._mat[3][0]),
-			NanNew(toRet._mat[3][1]),
-			NanNew(toRet._mat[3][2]),
-			NanNew(toRet._mat[3][3])
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(16, lArgv));
+		NanReturnValue(toRet);
 	}
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::NewIdentityMatrix)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
-		const auto toRet = self.newIdentityMatrix();
-		v8::Local<v8::Value> lArgv[] = {
-			NanNew(toRet._mat[0][0]),
-			NanNew(toRet._mat[0][1]),
-			NanNew(toRet._mat[0][2]),
-			NanNew(toRet._mat[0][3]),
-			NanNew(toRet._mat[1][0]),
-			NanNew(toRet._mat[1][1]),
-			NanNew(toRet._mat[1][2]),
-			NanNew(toRet._mat[1][3]),
-			NanNew(toRet._mat[2][0]),
-			NanNew(toRet._mat[2][1]),
-			NanNew(toRet._mat[2][2]),
-			NanNew(toRet._mat[2][3]),
-			NanNew(toRet._mat[3][0]),
-			NanNew(toRet._mat[3][1]),
-			NanNew(toRet._mat[3][2]),
-			NanNew(toRet._mat[3][3])
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(16, lArgv));
+		auto toRet = NanNew(ofxNode_ofVec3f::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(toRet)->self() =  ofMatrix4x4::newIdentityMatrix();
+		NanReturnValue(toRet);
 	}
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::NewLookAtMatrix)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
-		const auto toRet = self.newLookAtMatrix(
+		auto toRet = NanNew(ofxNode_ofVec3f::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(toRet)->self() =  ofMatrix4x4::newLookAtMatrix(
 			node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->self(),
 			node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[1]->ToObject())->self(),
 			node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[2]->ToObject())->self()
 			);
-		v8::Local<v8::Value> lArgv[] = {
-			NanNew(toRet._mat[0][0]),
-			NanNew(toRet._mat[0][1]),
-			NanNew(toRet._mat[0][2]),
-			NanNew(toRet._mat[0][3]),
-			NanNew(toRet._mat[1][0]),
-			NanNew(toRet._mat[1][1]),
-			NanNew(toRet._mat[1][2]),
-			NanNew(toRet._mat[1][3]),
-			NanNew(toRet._mat[2][0]),
-			NanNew(toRet._mat[2][1]),
-			NanNew(toRet._mat[2][2]),
-			NanNew(toRet._mat[2][3]),
-			NanNew(toRet._mat[3][0]),
-			NanNew(toRet._mat[3][1]),
-			NanNew(toRet._mat[3][2]),
-			NanNew(toRet._mat[3][3])
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(16, lArgv));
+		NanReturnValue(toRet);
 	}
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::NewOrtho2DMatrix)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
-		const auto toRet = self.newOrtho2DMatrix(
+		auto toRet = NanNew(ofxNode_ofVec3f::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(toRet)->self() =  ofMatrix4x4::newOrtho2DMatrix(
 			V8_ARG_NUMBER(args[0]),
 			V8_ARG_NUMBER(args[1]),
 			V8_ARG_NUMBER(args[2]),
 			V8_ARG_NUMBER(args[3])
 			);
-		v8::Local<v8::Value> lArgv[] = {
-			NanNew(toRet._mat[0][0]),
-			NanNew(toRet._mat[0][1]),
-			NanNew(toRet._mat[0][2]),
-			NanNew(toRet._mat[0][3]),
-			NanNew(toRet._mat[1][0]),
-			NanNew(toRet._mat[1][1]),
-			NanNew(toRet._mat[1][2]),
-			NanNew(toRet._mat[1][3]),
-			NanNew(toRet._mat[2][0]),
-			NanNew(toRet._mat[2][1]),
-			NanNew(toRet._mat[2][2]),
-			NanNew(toRet._mat[2][3]),
-			NanNew(toRet._mat[3][0]),
-			NanNew(toRet._mat[3][1]),
-			NanNew(toRet._mat[3][2]),
-			NanNew(toRet._mat[3][3])
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(16, lArgv));
+		NanReturnValue(toRet);
 	}
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::NewOrthoMatrix)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
-		const auto toRet = self.newOrthoMatrix(
+		auto toRet = NanNew(ofxNode_ofVec3f::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(toRet)->self() =  ofMatrix4x4::newOrthoMatrix(
 			V8_ARG_NUMBER(args[0]),
 			V8_ARG_NUMBER(args[1]),
 			V8_ARG_NUMBER(args[2]),
@@ -824,82 +671,45 @@ namespace ofxNode
 			V8_ARG_NUMBER(args[4]),
 			V8_ARG_NUMBER(args[5])
 			);
-		v8::Local<v8::Value> lArgv[] = {
-			NanNew(toRet._mat[0][0]),
-			NanNew(toRet._mat[0][1]),
-			NanNew(toRet._mat[0][2]),
-			NanNew(toRet._mat[0][3]),
-			NanNew(toRet._mat[1][0]),
-			NanNew(toRet._mat[1][1]),
-			NanNew(toRet._mat[1][2]),
-			NanNew(toRet._mat[1][3]),
-			NanNew(toRet._mat[2][0]),
-			NanNew(toRet._mat[2][1]),
-			NanNew(toRet._mat[2][2]),
-			NanNew(toRet._mat[2][3]),
-			NanNew(toRet._mat[3][0]),
-			NanNew(toRet._mat[3][1]),
-			NanNew(toRet._mat[3][2]),
-			NanNew(toRet._mat[3][3])
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(16, lArgv));
+		NanReturnValue(toRet);
 	}
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::NewPerspectiveMatrix)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
-		const auto toRet = self.newPerspectiveMatrix(
+		auto toRet = NanNew(ofxNode_ofVec3f::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(toRet)->self() =  ofMatrix4x4::newPerspectiveMatrix(
 			V8_ARG_NUMBER(args[0]),
 			V8_ARG_NUMBER(args[1]),
 			V8_ARG_NUMBER(args[2]),
 			V8_ARG_NUMBER(args[3])
 			);
-		v8::Local<v8::Value> lArgv[] = {
-			NanNew(toRet._mat[0][0]),
-			NanNew(toRet._mat[0][1]),
-			NanNew(toRet._mat[0][2]),
-			NanNew(toRet._mat[0][3]),
-			NanNew(toRet._mat[1][0]),
-			NanNew(toRet._mat[1][1]),
-			NanNew(toRet._mat[1][2]),
-			NanNew(toRet._mat[1][3]),
-			NanNew(toRet._mat[2][0]),
-			NanNew(toRet._mat[2][1]),
-			NanNew(toRet._mat[2][2]),
-			NanNew(toRet._mat[2][3]),
-			NanNew(toRet._mat[3][0]),
-			NanNew(toRet._mat[3][1]),
-			NanNew(toRet._mat[3][2]),
-			NanNew(toRet._mat[3][3])
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(16, lArgv));
+		NanReturnValue(toRet);
 	}
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::NewRotationMatrix)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
-		ofMatrix4x4 toRet;
+		auto toRet = NanNew(ofxNode_ofVec3f::factory())->NewInstance();
 		if (args.Length() == 1)
 		{
-			toRet = self.newRotationMatrix(node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args[0]->ToObject())->self());
+			node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(toRet)->self() =  ofMatrix4x4::newRotationMatrix(node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args[0]->ToObject())->self());
 		}
 		else if (args.Length() == 2 && (args[0]->ToObject()->Get(NanNew("OFXNODE_TYPE"))->Uint32Value() & OFXNODE_TYPES::OFVEC3F))
 		{
-			toRet = self.newRotationMatrix(
+			node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(toRet)->self() =  ofMatrix4x4::newRotationMatrix(
 				node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->self(),
 				node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[1]->ToObject())->self()
 				);
 		}
 		else if (args.Length() == 2 && args[0]->IsNumber())
 		{
-			toRet = self.newRotationMatrix(
+			node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(toRet)->self() =  ofMatrix4x4::newRotationMatrix(
 				V8_ARG_NUMBER(args[0]),
 				node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[1]->ToObject())->self()
 				);
 		}
 		else if (args.Length() == 4)
 		{
-			toRet = self.newRotationMatrix(
+			node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(toRet)->self() =  ofMatrix4x4::newRotationMatrix(
 				V8_ARG_NUMBER(args[0]),
 				V8_ARG_NUMBER(args[1]),
 				V8_ARG_NUMBER(args[2]),
@@ -908,7 +718,7 @@ namespace ofxNode
 		}
 		else
 		{
-			toRet = self.newRotationMatrix(
+			node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(toRet)->self() =  ofMatrix4x4::newRotationMatrix(
 				V8_ARG_NUMBER(args[0]),
 				node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[1]->ToObject())->self(),
 				V8_ARG_NUMBER(args[2]),
@@ -917,115 +727,59 @@ namespace ofxNode
 				node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[5]->ToObject())->self()
 				);
 		}
-		v8::Local<v8::Value> lArgv[] = {
-			NanNew(toRet._mat[0][0]),
-			NanNew(toRet._mat[0][1]),
-			NanNew(toRet._mat[0][2]),
-			NanNew(toRet._mat[0][3]),
-			NanNew(toRet._mat[1][0]),
-			NanNew(toRet._mat[1][1]),
-			NanNew(toRet._mat[1][2]),
-			NanNew(toRet._mat[1][3]),
-			NanNew(toRet._mat[2][0]),
-			NanNew(toRet._mat[2][1]),
-			NanNew(toRet._mat[2][2]),
-			NanNew(toRet._mat[2][3]),
-			NanNew(toRet._mat[3][0]),
-			NanNew(toRet._mat[3][1]),
-			NanNew(toRet._mat[3][2]),
-			NanNew(toRet._mat[3][3])
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(16, lArgv));
+		NanReturnValue(toRet);
 	}
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::NewScaleMatrix)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
-		ofMatrix4x4 toRet;
+		auto toRet = NanNew(ofxNode_ofVec3f::factory())->NewInstance();
 		if (args.Length() == 1)
 		{
-			toRet = self.newScaleMatrix(node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->self());
+			node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(toRet)->self() =  ofMatrix4x4::newScaleMatrix(node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->self());
 		}
 		else
 		{
-			toRet = self.newScaleMatrix(
+			node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(toRet)->self() =  ofMatrix4x4::newScaleMatrix(
 				V8_ARG_NUMBER(args[0]),
 				V8_ARG_NUMBER(args[1]),
 				V8_ARG_NUMBER(args[2])
 				);
 		}
-		v8::Local<v8::Value> lArgv[] = {
-			NanNew(toRet._mat[0][0]),
-			NanNew(toRet._mat[0][1]),
-			NanNew(toRet._mat[0][2]),
-			NanNew(toRet._mat[0][3]),
-			NanNew(toRet._mat[1][0]),
-			NanNew(toRet._mat[1][1]),
-			NanNew(toRet._mat[1][2]),
-			NanNew(toRet._mat[1][3]),
-			NanNew(toRet._mat[2][0]),
-			NanNew(toRet._mat[2][1]),
-			NanNew(toRet._mat[2][2]),
-			NanNew(toRet._mat[2][3]),
-			NanNew(toRet._mat[3][0]),
-			NanNew(toRet._mat[3][1]),
-			NanNew(toRet._mat[3][2]),
-			NanNew(toRet._mat[3][3])
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(16, lArgv));
+		NanReturnValue(toRet);
 	}
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::NewTranslationMatrix)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
-		ofMatrix4x4 toRet;
+		auto toRet = NanNew(ofxNode_ofVec3f::factory())->NewInstance();
 		if (args.Length() == 1)
 		{
-			toRet = self.newTranslationMatrix(node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->self());
+			node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(toRet)->self() =  ofMatrix4x4::newTranslationMatrix(node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->self());
 		}
 		else
 		{
-			toRet = self.newTranslationMatrix(
+			node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(toRet)->self() =  ofMatrix4x4::newTranslationMatrix(
 				V8_ARG_NUMBER(args[0]),
 				V8_ARG_NUMBER(args[1]),
 				V8_ARG_NUMBER(args[2])
 				);
 		}
-		v8::Local<v8::Value> lArgv[] = {
-			NanNew(toRet._mat[0][0]),
-			NanNew(toRet._mat[0][1]),
-			NanNew(toRet._mat[0][2]),
-			NanNew(toRet._mat[0][3]),
-			NanNew(toRet._mat[1][0]),
-			NanNew(toRet._mat[1][1]),
-			NanNew(toRet._mat[1][2]),
-			NanNew(toRet._mat[1][3]),
-			NanNew(toRet._mat[2][0]),
-			NanNew(toRet._mat[2][1]),
-			NanNew(toRet._mat[2][2]),
-			NanNew(toRet._mat[2][3]),
-			NanNew(toRet._mat[3][0]),
-			NanNew(toRet._mat[3][1]),
-			NanNew(toRet._mat[3][2]),
-			NanNew(toRet._mat[3][3])
-		};
-		NanReturnValue(NanNew(constructor)->CallAsConstructor(16, lArgv));
+		NanReturnValue(toRet);
 	}
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::PostMult)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		if (args[0]->ToObject()->Get(NanNew("OFXNODE_TYPE"))->Uint32Value() & OFXNODE_TYPES::OFVEC3F)
 		{
-			const auto toRet = self.postMult(node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->self());
-			v8::Local<v8::Value> lArgv[] = {NanNew(toRet.x), NanNew(toRet.y), NanNew(toRet.z)};
-			NanReturnValue(NanNew(ofxNode_ofVec3f::factory())->CallAsConstructor(3, lArgv));
+			auto toRet = NanNew(ofxNode_ofVec3f::factory())->NewInstance();
+			node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(toRet)->self() = self.postMult(node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->self());
+			NanReturnValue(toRet);
 		}
 		else if (args[0]->ToObject()->Get(NanNew("OFXNODE_TYPE"))->Uint32Value() & OFXNODE_TYPES::OFVEC4F)
 		{
-			const auto toRet = self.postMult(node::ObjectWrap::Unwrap<ofxNode_ofVec4f>(args[0]->ToObject())->self());
-			v8::Local<v8::Value> lArgv[] = {NanNew(toRet.x), NanNew(toRet.y), NanNew(toRet.z), NanNew(toRet.w)};
-			NanReturnValue(NanNew(ofxNode_ofVec4f::factory())->CallAsConstructor(4, lArgv));
+			auto toRet = NanNew(ofxNode_ofVec4f::factory())->NewInstance();
+			node::ObjectWrap::Unwrap<ofxNode_ofVec4f>(toRet)->self() = self.postMult(node::ObjectWrap::Unwrap<ofxNode_ofVec4f>(args[0]->ToObject())->self());
+			NanReturnValue(toRet);
 		}
 		else
 		{
@@ -1036,7 +790,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::PostMultRotate)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		if (args.Length() == 1)
 		{
 			self.postMultRotate(node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args[0]->ToObject())->self());
@@ -1055,7 +809,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::PostMultScale)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		if (args.Length() == 1)
 		{
 			self.postMultScale(node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->self());
@@ -1073,7 +827,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::PostMultTranslate)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		if (args.Length() == 1)
 		{
 			self.postMultTranslate(node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->self());
@@ -1091,18 +845,18 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::PreMult)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		if (args[0]->ToObject()->Get(NanNew("OFXNODE_TYPE"))->Uint32Value() & OFXNODE_TYPES::OFVEC3F)
 		{
-			const auto toRet = self.preMult(node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->self());
-			v8::Local<v8::Value> lArgv[] = {NanNew(toRet.x), NanNew(toRet.y), NanNew(toRet.z)};
-			NanReturnValue(NanNew(ofxNode_ofVec3f::factory())->CallAsConstructor(3, lArgv));
+			auto toRet = NanNew(ofxNode_ofVec3f::factory())->NewInstance();
+			node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(toRet)->self() = self.preMult(node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->self());
+			NanReturnValue(toRet);
 		}
 		else if (args[0]->ToObject()->Get(NanNew("OFXNODE_TYPE"))->Uint32Value() & OFXNODE_TYPES::OFVEC4F)
 		{
-			const auto toRet = self.preMult(node::ObjectWrap::Unwrap<ofxNode_ofVec4f>(args[0]->ToObject())->self());
-			v8::Local<v8::Value> lArgv[] = {NanNew(toRet.x), NanNew(toRet.y), NanNew(toRet.z), NanNew(toRet.w)};
-			NanReturnValue(NanNew(ofxNode_ofVec4f::factory())->CallAsConstructor(4, lArgv));
+			auto toRet = NanNew(ofxNode_ofVec4f::factory())->NewInstance();
+			node::ObjectWrap::Unwrap<ofxNode_ofVec4f>(toRet)->self() = self.preMult(node::ObjectWrap::Unwrap<ofxNode_ofVec4f>(args[0]->ToObject())->self());
+			NanReturnValue(toRet);
 		}
 		else
 		{
@@ -1113,28 +867,28 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::PreMultRotate)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		self.preMultRotate(node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args[0]->ToObject())->self());
 		NanReturnValue(args.This());
 	}
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::PreMultScale)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		self.preMultScale(node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->self());
 		NanReturnValue(args.This());
 	}
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::PreMultTranslate)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		self.preMultTranslate(node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->self());
 		NanReturnValue(args.This());
 	}
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::Rotate)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		if (args.Length() == 1)
 		{
 			self.rotate(node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args[0]->ToObject())->self());
@@ -1153,7 +907,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::RotateRad)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		self.rotateRad(
 			V8_ARG_NUMBER(args[0]),
 			V8_ARG_NUMBER(args[1]),
@@ -1165,7 +919,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::Scale)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		if (args.Length() == 1)
 		{
 			self.scale(node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->self());
@@ -1183,7 +937,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::Set)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		if (args.Length() == 16)
 		{
 			self.set(
@@ -1214,14 +968,14 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::SetRotate)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		self.setRotate(node::ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args[0]->ToObject())->self());
 		NanReturnValue(args.This());
 	}
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::SetTranslation)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		if (args.Length() == 1)
 		{
 			self.setTranslation(node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->self());
@@ -1239,33 +993,27 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::Transform3x3)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
-		ofVec3f toRet;
+		auto toRet = NanNew(ofxNode_ofVec3f::factory())->NewInstance();
 		if (args[0]->ToObject()->Get(NanNew("OFXNODE_TYPE"))->Uint32Value() & OFXNODE_TYPES::OFMATRIX4X4)
 		{
-			toRet = self.transform3x3(
+			node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(toRet)->self() = ofMatrix4x4::transform3x3(
 				node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args[0]->ToObject())->self(),
 				node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->self()
 				);
 		}
 		else
 		{
-			toRet = self.transform3x3(
+			node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(toRet)->self() = ofMatrix4x4::transform3x3(
 				node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->self(),
 				node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args[0]->ToObject())->self()				
 				);
 		}
-		v8::Local<v8::Value> lArgv[] = {
-			NanNew(toRet.x),
-			NanNew(toRet.y),
-			NanNew(toRet.z)
-		};
-		NanReturnValue(NanNew(ofxNode_ofVec3f::factory())->CallAsConstructor(3, lArgv));
+		NanReturnValue(toRet);
 	}
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::Translate)
 	{
-		auto self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		if (args.Length() == 1)
 		{
 			self.translate(node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->self());
@@ -1283,7 +1031,7 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofMatrix4x4::ToString)
 	{
-		const auto self = ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->internal_;
+		const auto& self = ObjectWrap::Unwrap<ofxNode_ofMatrix4x4>(args.This())->self();
 		std::ostringstream out;
 		out << self;
 		NanReturnValue( NanNew(out.str().c_str()) );

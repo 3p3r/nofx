@@ -148,7 +148,6 @@ namespace ofxNode
 			const auto lProps = args[0]->ToObject()->GetPropertyNames();
 			for (int i = 0; i < lProps->Length(); ++i)
 			{
-				const auto lKey = lProps->Get(i);
 				const auto lVal = args[0]->ToObject()->Get(i);
 
 				if(lVal->ToObject()->Has(NanNew("OFXNODE_TYPE")) && lVal->ToObject()->Get(NanNew("OFXNODE_TYPE"))->Uint32Value() == OFXNODE_TYPES::OFRECTANGLE)
@@ -169,17 +168,16 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofRectangle::Plus)
 	{
-		auto& self = ObjectWrap::Unwrap<ofxNode_ofRectangle>(args.This())->internal_;
-		const int lArgc = 4;
-		const auto& lArgVec = ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->self();
-		const auto result = self + lArgVec;
-		v8::Handle<v8::Value> lArgv[] = {NanNew(result.x), NanNew(result.y), NanNew(result.width), NanNew(result.height)};
-		NanReturnValue( (NanNew(constructor))->CallAsConstructor(lArgc, lArgv) );
+		auto &self = ObjectWrap::Unwrap<ofxNode_ofRectangle>(args.This())->self();
+		const auto rhs = ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->self();
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofRectangle>(lToRet)->self() = self + rhs;
+		NanReturnValue(lToRet);
 	}
 
 	NAN_METHOD(ofxNode_ofRectangle::ToString)
 	{
-		const auto self = ObjectWrap::Unwrap<ofxNode_ofRectangle>(args.This())->self();
+		const auto& self = ObjectWrap::Unwrap<ofxNode_ofRectangle>(args.This())->self();
 		std::ostringstream out;
 		out << self;
 		NanReturnValue( NanNew(out.str().c_str()) );
@@ -233,8 +231,9 @@ namespace ofxNode
 	NAN_GETTER(ofxNode_ofRectangle::GetPosition)
 	{
 		const auto &self = node::ObjectWrap::Unwrap<ofxNode_ofRectangle>(args.This())->self();
-		v8::Local<v8::Value> lArgv[] = {NanNew(self.position.x), NanNew(self.position.y), NanNew(self.position.z)};
-		NanReturnValue(NanNew(ofxNode_ofVec3f::factory())->CallAsConstructor(3, lArgv));
+		auto lToRet = NanNew(ofxNode_ofVec3f::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(lToRet)->self() = self.getPosition();
+		NanReturnValue(lToRet);
 	}
 	NAN_SETTER(ofxNode_ofRectangle::SetPosition)
 	{
@@ -369,22 +368,25 @@ namespace ofxNode
 	NAN_METHOD(ofxNode_ofRectangle::GetBottomLeft)
 	{
 		const auto &self = node::ObjectWrap::Unwrap<ofxNode_ofRectangle>(args.This())->self();
-		v8::Local<v8::Value> lArgv[] = {NanNew(self.getBottomLeft().x), NanNew(self.getBottomLeft().y), NanNew(self.getBottomLeft().z)};
-		NanReturnValue(NanNew(ofxNode_ofVec3f::factory())->CallAsConstructor(3, lArgv));
+		auto lToRet = NanNew(ofxNode_ofVec3f::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(lToRet)->self() = self.getBottomLeft();
+		NanReturnValue(lToRet);
 	}
 	//----------------------------------------------------------
 	NAN_METHOD(ofxNode_ofRectangle::GetBottomRight)
 	{
 		const auto &self = node::ObjectWrap::Unwrap<ofxNode_ofRectangle>(args.This())->self();
-		v8::Local<v8::Value> lArgv[] = {NanNew(self.getBottomRight().x), NanNew(self.getBottomRight().y), NanNew(self.getBottomRight().z)};
-		NanReturnValue(NanNew(ofxNode_ofVec3f::factory())->CallAsConstructor(3, lArgv));
+		auto lToRet = NanNew(ofxNode_ofVec3f::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(lToRet)->self() = self.getBottomRight();
+		NanReturnValue(lToRet);
 	}
 	//----------------------------------------------------------
 	NAN_METHOD(ofxNode_ofRectangle::GetCenter)
 	{
 		const auto &self = node::ObjectWrap::Unwrap<ofxNode_ofRectangle>(args.This())->self();
-		v8::Local<v8::Value> lArgv[] = {NanNew(self.getCenter().x), NanNew(self.getCenter().y), NanNew(self.getCenter().z)};
-		NanReturnValue(NanNew(ofxNode_ofVec3f::factory())->CallAsConstructor(3, lArgv));
+		auto lToRet = NanNew(ofxNode_ofVec3f::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(lToRet)->self() = self.getCenter();
+		NanReturnValue(lToRet);
 	}
 	//----------------------------------------------------------
 	NAN_METHOD(ofxNode_ofRectangle::GetHeight)
@@ -402,14 +404,9 @@ namespace ofxNode
 	NAN_METHOD(ofxNode_ofRectangle::GetIntersection)
 	{
 		const auto &self = node::ObjectWrap::Unwrap<ofxNode_ofRectangle>(args.This())->self();
-		const auto result = self.getIntersection(node::ObjectWrap::Unwrap<ofxNode_ofRectangle>(args[0]->ToObject())->self());
-		v8::Local<v8::Value> lArgv[] = {
-			NanNew(result.x),
-			NanNew(result.y),
-			NanNew(result.width),
-			NanNew(result.height)
-		};
-		NanReturnValue(NanNew(ofxNode_ofRectangle::factory())->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofRectangle>(lToRet)->self() = self.getIntersection(node::ObjectWrap::Unwrap<ofxNode_ofRectangle>(args[0]->ToObject())->self());
+		NanReturnValue(lToRet);
 	}
 	//----------------------------------------------------------
 	NAN_METHOD(ofxNode_ofRectangle::GetLeft)
@@ -421,8 +418,9 @@ namespace ofxNode
 	NAN_METHOD(ofxNode_ofRectangle::GetMax)
 	{
 		const auto &self = node::ObjectWrap::Unwrap<ofxNode_ofRectangle>(args.This())->self();
-		v8::Local<v8::Value> lArgv[] = {NanNew(self.getMax().x), NanNew(self.getMax().y), NanNew(self.getMax().z)};
-		NanReturnValue(NanNew(ofxNode_ofVec3f::factory())->CallAsConstructor(3, lArgv));
+		auto lToRet = NanNew(ofxNode_ofVec3f::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(lToRet)->self() = self.getMax();
+		NanReturnValue(lToRet);
 	}
 	//----------------------------------------------------------
 	NAN_METHOD(ofxNode_ofRectangle::GetMaxX)
@@ -440,8 +438,9 @@ namespace ofxNode
 	NAN_METHOD(ofxNode_ofRectangle::GetMin)
 	{
 		const auto &self = node::ObjectWrap::Unwrap<ofxNode_ofRectangle>(args.This())->self();
-		v8::Local<v8::Value> lArgv[] = {NanNew(self.getMin().x), NanNew(self.getMin().y), NanNew(self.getMin().z)};
-		NanReturnValue(NanNew(ofxNode_ofVec3f::factory())->CallAsConstructor(3, lArgv));
+		auto lToRet = NanNew(ofxNode_ofVec3f::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(lToRet)->self() = self.getMin();
+		NanReturnValue(lToRet);
 	}
 	//----------------------------------------------------------
 	NAN_METHOD(ofxNode_ofRectangle::GetMinX)
@@ -465,15 +464,17 @@ namespace ofxNode
 	NAN_METHOD(ofxNode_ofRectangle::GetPosition)
 	{
 		const auto &self = node::ObjectWrap::Unwrap<ofxNode_ofRectangle>(args.This())->self();
-		v8::Local<v8::Value> lArgv[] = {NanNew(self.getPosition().x), NanNew(self.getPosition().y), NanNew(self.getPosition().z)};
-		NanReturnValue(NanNew(ofxNode_ofVec3f::factory())->CallAsConstructor(3, lArgv));
+		auto lToRet = NanNew(ofxNode_ofVec3f::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(lToRet)->self() = self.getPosition();
+		NanReturnValue(lToRet);
 	}
 	//----------------------------------------------------------
 	NAN_METHOD(ofxNode_ofRectangle::GetPositionRef)
 	{
-		const auto &self = node::ObjectWrap::Unwrap<ofxNode_ofRectangle>(args.This())->self();
-		v8::Local<v8::Value> lArgv[] = {NanNew(self.getPosition().x), NanNew(self.getPosition().y), NanNew(self.getPosition().z)};
-		NanReturnValue(NanNew(ofxNode_ofVec3f::factory())->CallAsConstructor(3, lArgv));
+		auto &self = node::ObjectWrap::Unwrap<ofxNode_ofRectangle>(args.This())->self();
+		auto lToRet = NanNew(ofxNode_ofVec3f::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(lToRet)->self() = self.getPositionRef();
+		NanReturnValue(lToRet);
 	}
 	//----------------------------------------------------------
 	NAN_METHOD(ofxNode_ofRectangle::GetRight)
@@ -485,14 +486,9 @@ namespace ofxNode
 	NAN_METHOD(ofxNode_ofRectangle::GetStandardized)
 	{
 		const auto &self = node::ObjectWrap::Unwrap<ofxNode_ofRectangle>(args.This())->self();
-		const auto result = self.getStandardized();
-		v8::Local<v8::Value> lArgv[] = {
-			NanNew(result.x),
-			NanNew(result.y),
-			NanNew(result.width),
-			NanNew(result.height)
-		};
-		NanReturnValue(NanNew(ofxNode_ofRectangle::factory())->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(constructor)->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofRectangle>(lToRet)->self() = self.getStandardized();
+		NanReturnValue(lToRet);
 	}
 	//----------------------------------------------------------
 	NAN_METHOD(ofxNode_ofRectangle::GetTop)
@@ -504,28 +500,25 @@ namespace ofxNode
 	NAN_METHOD(ofxNode_ofRectangle::GetTopLeft)
 	{
 		const auto &self = node::ObjectWrap::Unwrap<ofxNode_ofRectangle>(args.This())->self();
-		v8::Local<v8::Value> lArgv[] = {NanNew(self.getTopLeft().x), NanNew(self.getTopLeft().y), NanNew(self.getTopLeft().z)};
-		NanReturnValue(NanNew(ofxNode_ofVec3f::factory())->CallAsConstructor(3, lArgv));
+		auto lToRet = NanNew(ofxNode_ofVec3f::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(lToRet)->self() = self.getTopLeft();
+		NanReturnValue(lToRet);
 	}
 	//----------------------------------------------------------
 	NAN_METHOD(ofxNode_ofRectangle::GetTopRight)
 	{
 		const auto &self = node::ObjectWrap::Unwrap<ofxNode_ofRectangle>(args.This())->self();
-		v8::Local<v8::Value> lArgv[] = {NanNew(self.getTopRight().x), NanNew(self.getTopRight().y), NanNew(self.getTopRight().z)};
-		NanReturnValue(NanNew(ofxNode_ofVec3f::factory())->CallAsConstructor(3, lArgv));
+		auto lToRet = NanNew(ofxNode_ofVec3f::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(lToRet)->self() = self.getTopRight();
+		NanReturnValue(lToRet);
 	}
 	//----------------------------------------------------------
 	NAN_METHOD(ofxNode_ofRectangle::GetUnion)
 	{
 		const auto &self = node::ObjectWrap::Unwrap<ofxNode_ofRectangle>(args.This())->self();
-		const auto result = self.getUnion(node::ObjectWrap::Unwrap<ofxNode_ofRectangle>(args[0]->ToObject())->self());
-		v8::Local<v8::Value> lArgv[] = {
-			NanNew(result.x),
-			NanNew(result.y),
-			NanNew(result.width),
-			NanNew(result.height)
-		};
-		NanReturnValue(NanNew(ofxNode_ofRectangle::factory())->CallAsConstructor(4, lArgv));
+		auto lToRet = NanNew(ofxNode_ofRectangle::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofRectangle>(lToRet)->self() = self.getUnion(node::ObjectWrap::Unwrap<ofxNode_ofRectangle>(args[0]->ToObject())->self());
+		NanReturnValue(lToRet);
 	}
 	//----------------------------------------------------------
 	NAN_METHOD(ofxNode_ofRectangle::GetVertAnchor)

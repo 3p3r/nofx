@@ -4,7 +4,7 @@ namespace ofxNode
 {
 	v8::Persistent<v8::Function> ofxNode_ofVec4f::constructor;
 
-	ofxNode_ofVec4f::ofxNode_ofVec4f(ofVec4f aOfVec4f)
+	ofxNode_ofVec4f::ofxNode_ofVec4f(ofVec4f& aOfVec4f)
 		: internal_(aOfVec4f)
 	{}
 

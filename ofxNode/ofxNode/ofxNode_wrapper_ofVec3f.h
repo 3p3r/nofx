@@ -13,13 +13,13 @@ namespace ofxNode
 		friend class ofxNode_ofQuaternion;
 		static void Init(v8::Handle<v8::Object> exports);
 		static const v8::Persistent<v8::Function>& factory() {return constructor;}
-		ofVec3f self() {return internal_;}
+		ofVec3f& self() {return internal_;}
 	private:
 		// will be used to initialize native OF datatype
 		ofVec3f internal_;
 
 		// C++ constructors
-		explicit ofxNode_ofVec3f(ofVec3f);
+		explicit ofxNode_ofVec3f(ofVec3f&);
 		~ofxNode_ofVec3f();
 
 		// JS constructors
