@@ -378,6 +378,21 @@
     <ClCompile Include="ofxNode_ofViewport.cc">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ofxNode_ofGetHeight.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofGetWidth.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofGetMouseY.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofGetMouseX.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofGetElapsedTimef.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ofApp.h">
@@ -735,6 +750,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ofxNode_ofViewport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofGetWidth.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofGetHeight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofGetMouseY.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofGetMouseX.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofGetElapsedTimef.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

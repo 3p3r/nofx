@@ -291,16 +291,36 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
     <ClCompile Include="ofxNode_ofGetCurrentMatrix.cc" />
     <ClCompile Include="ofxNode_ofGetCurrentRenderer.cc" />
     <ClCompile Include="ofxNode_ofGetCurrentViewport.cc" />
+    <ClCompile Include="ofxNode_ofGetElapsedTimef.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="ofxNode_ofGetElapsedTimeMillis.cc">
       <SubType>
       </SubType>
     </ClCompile>
     <ClCompile Include="ofxNode_ofGetFill.cc" />
+    <ClCompile Include="ofxNode_ofGetHeight.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofGetMouseX.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
+    <ClCompile Include="ofxNode_ofGetMouseY.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="ofxNode_ofGetNativeViewport.cc" />
     <ClCompile Include="ofxNode_ofGetRectMode.cc" />
     <ClCompile Include="ofxNode_ofGetStyle.cc" />
     <ClCompile Include="ofxNode_ofGetViewportHeight.cc" />
     <ClCompile Include="ofxNode_ofGetViewportWidth.cc" />
+    <ClCompile Include="ofxNode_ofGetWidth.cc">
+      <SubType>
+      </SubType>
+    </ClCompile>
     <ClCompile Include="ofxNode_ofIsVFlipped.cc" />
     <ClCompile Include="ofxNode_ofLine.cc">
       <SubType>
@@ -589,16 +609,36 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
     <ClInclude Include="ofxNode_ofGetCurrentMatrix.h" />
     <ClInclude Include="ofxNode_ofGetCurrentRenderer.h" />
     <ClInclude Include="ofxNode_ofGetCurrentViewport.h" />
+    <ClInclude Include="ofxNode_ofGetElapsedTimef.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="ofxNode_ofGetElapsedTimeMillis.h">
       <SubType>
       </SubType>
     </ClInclude>
     <ClInclude Include="ofxNode_ofGetFill.h" />
+    <ClInclude Include="ofxNode_ofGetHeight.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofGetMouseX.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
+    <ClInclude Include="ofxNode_ofGetMouseY.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="ofxNode_ofGetNativeViewport.h" />
     <ClInclude Include="ofxNode_ofGetRectMode.h" />
     <ClInclude Include="ofxNode_ofGetStyle.h" />
     <ClInclude Include="ofxNode_ofGetViewportHeight.h" />
     <ClInclude Include="ofxNode_ofGetViewportWidth.h" />
+    <ClInclude Include="ofxNode_ofGetWidth.h">
+      <SubType>
+      </SubType>
+    </ClInclude>
     <ClInclude Include="ofxNode_ofIsVFlipped.h" />
     <ClInclude Include="ofxNode_ofLine.h">
       <SubType>

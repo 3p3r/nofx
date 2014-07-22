@@ -139,6 +139,11 @@
 #include "ofxNode_ofSetFrameRate.h"
 #include "ofxNode_ofSetWindowTitle.h"
 #include "ofxNode_ofRandom.h"
+#include "ofxNode_ofGetWidth.h"
+#include "ofxNode_ofGetHeight.h"
+#include "ofxNode_ofGetMouseY.h"
+#include "ofxNode_ofGetMouseX.h"
+#include "ofxNode_ofGetElapsedTimef.h"
 
 // self_ is a reference to the loaded module across all ported API's
 v8::Persistent<v8::Object> self_;
@@ -302,6 +307,11 @@ namespace ofxNode {
 			target->Set(NanNew<v8::String>("ofRandom")						, NanNew<v8::FunctionTemplate>(ofxNode_ofRandom)->GetFunction());
 			target->Set(NanNew<v8::String>("ofSetFrameRate")				, NanNew<v8::FunctionTemplate>(ofxNode_ofSetFrameRate)->GetFunction());
 			target->Set(NanNew<v8::String>("ofGetElapsedTimeMillis")		, NanNew<v8::FunctionTemplate>(ofxNode_ofGetElapsedTimeMillis)->GetFunction());
+			target->Set(NanNew<v8::String>("ofGetWidth")					, NanNew<v8::FunctionTemplate>(ofxNode_ofGetWidth)->GetFunction());
+			target->Set(NanNew<v8::String>("ofGetHeight")					, NanNew<v8::FunctionTemplate>(ofxNode_ofGetHeight)->GetFunction());
+			target->Set(NanNew<v8::String>("ofGetMouseY")					, NanNew<v8::FunctionTemplate>(ofxNode_ofGetMouseY)->GetFunction());
+			target->Set(NanNew<v8::String>("ofGetMouseX")					, NanNew<v8::FunctionTemplate>(ofxNode_ofGetMouseX)->GetFunction());
+			target->Set(NanNew<v8::String>("ofGetElapsedTimef")				, NanNew<v8::FunctionTemplate>(ofxNode_ofGetElapsedTimef)->GetFunction());
 	}
 
 }
