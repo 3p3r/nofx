@@ -5,9 +5,6 @@ namespace ofxNode
 {
     NAN_METHOD(ofxNode_ofbClearBg) {
         NanScope();
-
-        //Insert code here
-
-        NanReturnValue(args.This());
+		NanReturnValue(NanNew(ofbClearBg()));
     } // !{ofxNode_ofbClearBg}
 } // !namespace ofxNode

@@ -15,13 +15,14 @@ namespace ofxNode
 	public:
 		friend class ofxNode_ofQuaternion;
 		static void Init(v8::Handle<v8::Object> exports);
-		ofMatrix4x4 self() {return internal_;}
+		ofMatrix4x4& self() {return internal_;}
+		static const v8::Persistent<v8::Function>& factory() {return constructor;}
 	private:
 		// will be used to initialize native OF datatype
 		ofMatrix4x4 internal_;
 
 		// C++ constructors
-		explicit ofxNode_ofMatrix4x4(ofMatrix4x4);
+		explicit ofxNode_ofMatrix4x4(ofMatrix4x4&);
 		~ofxNode_ofMatrix4x4();
 
 		// Mutators

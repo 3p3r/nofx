@@ -14,7 +14,7 @@ namespace ofxNode
 {
 	v8::Persistent<v8::Function> ofxNode_ofMatrix4x4::constructor;
 
-	ofxNode_ofMatrix4x4::ofxNode_ofMatrix4x4(ofMatrix4x4 aOfMatrix4x4)
+	ofxNode_ofMatrix4x4::ofxNode_ofMatrix4x4(ofMatrix4x4& aOfMatrix4x4)
 		: internal_(aOfMatrix4x4)
 	{}
 
@@ -55,7 +55,7 @@ namespace ofxNode
 			}
 			else if (args.Length() == 1)
 			{
-				obj = new ofxNode_ofMatrix4x4(ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args[0]->ToObject())->self());
+				obj = new ofxNode_ofMatrix4x4(ofMatrix4x4(ObjectWrap::Unwrap<ofxNode_ofQuaternion>(args[0]->ToObject())->self()));
 			}
 			else
 			{
