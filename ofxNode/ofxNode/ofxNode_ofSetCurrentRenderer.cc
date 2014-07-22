@@ -4,10 +4,6 @@
 namespace ofxNode
 {
     NAN_METHOD(ofxNode_ofSetCurrentRenderer) {
-        NanScope();
-
-        //Insert code here
-
-        NanReturnValue(args.This());
+        NanThrowError("Methods incorporating ofPtr class are not implemented yet.");
     } // !{ofxNode_ofSetCurrentRenderer}
 } // !namespace ofxNode

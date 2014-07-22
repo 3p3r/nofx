@@ -6,7 +6,7 @@ namespace ofxNode
     NAN_METHOD(ofxNode_ofRotateY) {
         NanScope();
 
-        //Insert code here
+        ofRotateY(V8_ARG_NUMBER(args[0]));
 
         NanReturnValue(args.This());
     } // !{ofxNode_ofRotateY}

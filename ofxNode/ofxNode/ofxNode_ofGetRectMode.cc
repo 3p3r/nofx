@@ -5,9 +5,6 @@ namespace ofxNode
 {
     NAN_METHOD(ofxNode_ofGetRectMode) {
         NanScope();
-
-        //Insert code here
-
-        NanReturnValue(args.This());
+		NanReturnValue(NanNew(ofGetRectMode()));
     } // !{ofxNode_ofGetRectMode}
 } // !namespace ofxNode

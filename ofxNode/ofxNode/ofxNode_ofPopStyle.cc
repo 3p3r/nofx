@@ -6,7 +6,7 @@ namespace ofxNode
     NAN_METHOD(ofxNode_ofPopStyle) {
         NanScope();
 
-        //Insert code here
+        ofPopStyle();
 
         NanReturnValue(args.This());
     } // !{ofxNode_ofPopStyle}

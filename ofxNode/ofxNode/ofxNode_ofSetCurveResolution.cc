@@ -6,7 +6,7 @@ namespace ofxNode
     NAN_METHOD(ofxNode_ofSetCurveResolution) {
         NanScope();
 
-        //Insert code here
+        ofSetCurveResolution(V8_ARG_NUMBER(args[0]));
 
         NanReturnValue(args.This());
     } // !{ofxNode_ofSetCurveResolution}

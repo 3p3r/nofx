@@ -5,9 +5,6 @@ namespace ofxNode
 {
     NAN_METHOD(ofxNode_ofIsVFlipped) {
         NanScope();
-
-        //Insert code here
-
-        NanReturnValue(args.This());
+		NanReturnValue(NanNew(ofIsVFlipped()));
     } // !{ofxNode_ofIsVFlipped}
 } // !namespace ofxNode

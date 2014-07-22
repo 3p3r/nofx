@@ -6,7 +6,7 @@ namespace ofxNode
     NAN_METHOD(ofxNode_ofSetBackgroundAuto) {
         NanScope();
 
-        //Insert code here
+        ofSetBackgroundAuto(args[0]->BooleanValue());
 
         NanReturnValue(args.This());
     } // !{ofxNode_ofSetBackgroundAuto}

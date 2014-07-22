@@ -6,7 +6,7 @@ namespace ofxNode
     NAN_METHOD(ofxNode_ofNextContour) {
         NanScope();
 
-        //Insert code here
+        ofNextContour(args[0]->IsUndefined() ? args[0]->BooleanValue() : false);
 
         NanReturnValue(args.This());
     } // !{ofxNode_ofNextContour}

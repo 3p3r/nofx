@@ -2,6 +2,7 @@
 #include "ofGraphics.h"
 #include "ofTypes.h"
 #include "ofxNode_wrapper_ofVec3f.h"
+#include "ofxNode_wrapper_ofRectangle.h"
 
 namespace ofxNode
 {
@@ -10,7 +11,7 @@ namespace ofxNode
 
 		if (args.Length() == 1)
 		{
-			//not implemented yet TODO (sepehr)
+			ofRect(node::ObjectWrap::Unwrap<ofxNode_ofRectangle>(args[0]->ToObject())->self());
 		}
 		if (args.Length() == 3)
 		{

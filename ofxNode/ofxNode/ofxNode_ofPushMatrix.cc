@@ -6,7 +6,7 @@ namespace ofxNode
     NAN_METHOD(ofxNode_ofPushMatrix) {
         NanScope();
 
-        //Insert code here
+        ofPushMatrix();
 
         NanReturnValue(args.This());
     } // !{ofxNode_ofPushMatrix}

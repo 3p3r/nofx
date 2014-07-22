@@ -6,7 +6,7 @@ namespace ofxNode
     NAN_METHOD(ofxNode_ofLoadIdentityMatrix) {
         NanScope();
 
-        //Insert code here
+        ofLoadIdentityMatrix();
 
         NanReturnValue(args.This());
     } // !{ofxNode_ofLoadIdentityMatrix}

@@ -6,7 +6,7 @@ namespace ofxNode
     NAN_METHOD(ofxNode_ofSetPolyMode) {
         NanScope();
 
-        //Insert code here
+        ofSetPolyMode((ofPolyWindingMode)args[0]->Uint32Value());
 
         NanReturnValue(args.This());
     } // !{ofxNode_ofSetPolyMode}

@@ -5,9 +5,6 @@ namespace ofxNode
 {
     NAN_METHOD(ofxNode_ofOrientationToDegrees) {
         NanScope();
-
-        //Insert code here
-
-        NanReturnValue(args.This());
+		NanReturnValue(NanNew(ofOrientationToDegrees((ofOrientation)args[0]->Uint32Value())));
     } // !{ofxNode_ofOrientationToDegrees}
 } // !namespace ofxNode

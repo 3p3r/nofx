@@ -6,7 +6,7 @@ namespace ofxNode
     NAN_METHOD(ofxNode_ofSetupScreen) {
         NanScope();
 
-        //Insert code here
+        ofSetupScreen();
 
         NanReturnValue(args.This());
     } // !{ofxNode_ofSetupScreen}

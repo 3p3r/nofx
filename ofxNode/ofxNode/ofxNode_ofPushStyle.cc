@@ -6,7 +6,7 @@ namespace ofxNode
     NAN_METHOD(ofxNode_ofPushStyle) {
         NanScope();
 
-        //Insert code here
+        ofPushStyle();
 
         NanReturnValue(args.This());
     } // !{ofxNode_ofPushStyle}

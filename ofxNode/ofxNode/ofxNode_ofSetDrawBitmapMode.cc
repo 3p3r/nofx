@@ -6,7 +6,7 @@ namespace ofxNode
     NAN_METHOD(ofxNode_ofSetDrawBitmapMode) {
         NanScope();
 
-        //Insert code here
+        ofSetDrawBitmapMode((ofDrawBitmapMode)args[0]->Uint32Value());
 
         NanReturnValue(args.This());
     } // !{ofxNode_ofSetDrawBitmapMode}

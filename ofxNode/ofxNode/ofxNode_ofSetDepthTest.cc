@@ -6,7 +6,7 @@ namespace ofxNode
     NAN_METHOD(ofxNode_ofSetDepthTest) {
         NanScope();
 
-        //Insert code here
+        ofSetDepthTest(args[0]->BooleanValue());
 
         NanReturnValue(args.This());
     } // !{ofxNode_ofSetDepthTest}

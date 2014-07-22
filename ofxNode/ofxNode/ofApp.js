@@ -76,7 +76,7 @@ ofxNode.setup(function () {
     
 })
 .mousePressed(function (x, y, button) {
-    var c = this.ofGetCurrentMatrix(0);
+    var c = this.ofGetStyle();
     console.log(c);
 })
 .draw(function () {

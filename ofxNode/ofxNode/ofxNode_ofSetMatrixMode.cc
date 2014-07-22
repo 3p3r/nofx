@@ -6,7 +6,7 @@ namespace ofxNode
     NAN_METHOD(ofxNode_ofSetMatrixMode) {
         NanScope();
 
-        //Insert code here
+        ofSetMatrixMode((ofMatrixMode)args[0]->Uint32Value());
 
         NanReturnValue(args.This());
     } // !{ofxNode_ofSetMatrixMode}

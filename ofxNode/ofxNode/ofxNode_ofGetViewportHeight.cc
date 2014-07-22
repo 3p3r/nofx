@@ -5,9 +5,6 @@ namespace ofxNode
 {
     NAN_METHOD(ofxNode_ofGetViewportHeight) {
         NanScope();
-
-        //Insert code here
-
-        NanReturnValue(args.This());
+		NanReturnValue(NanNew(ofGetViewportHeight()));
     } // !{ofxNode_ofGetViewportHeight}
 } // !namespace ofxNode
