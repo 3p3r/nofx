@@ -151,6 +151,8 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ofxNode_ofAngleDifferenceDegrees.cc" />
+    <ClCompile Include="ofxNode_ofAngleDifferenceRadians.cc" />
     <ClCompile Include="ofxNode_ofBackground.cc">
       <SubType>
       </SubType>
@@ -176,6 +178,8 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ofxNode_ofBezierPoint.cc" />
+    <ClCompile Include="ofxNode_ofBezierTangent.cc" />
     <ClCompile Include="ofxNode_ofBezierVertex.cc">
       <SubType>
       </SubType>
@@ -188,6 +192,7 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ofxNode_ofClamp.cc" />
     <ClCompile Include="ofxNode_ofClear.cc">
       <SubType>
       </SubType>
@@ -200,6 +205,8 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ofxNode_ofCurvePoint.cc" />
+    <ClCompile Include="ofxNode_ofCurveTangent.cc" />
     <ClCompile Include="ofxNode_ofCurveVertex.cc">
       <SubType>
       </SubType>
@@ -208,6 +215,7 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ofxNode_ofDegToRad.cc" />
     <ClCompile Include="ofxNode_ofDisableAlphaBlending.cc">
       <SubType>
       </SubType>
@@ -232,6 +240,8 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ofxNode_ofDist.cc" />
+    <ClCompile Include="ofxNode_ofDistSquared.cc" />
     <ClCompile Include="ofxNode_ofDrawBitmapString.cc">
       <SubType>
       </SubType>
@@ -321,19 +331,33 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ofxNode_ofInRange.cc" />
+    <ClCompile Include="ofxNode_ofInsidePoly.cc" />
+    <ClCompile Include="ofxNode_ofInterpolateCatmullRom.cc" />
+    <ClCompile Include="ofxNode_ofInterpolateCosine.cc" />
+    <ClCompile Include="ofxNode_ofInterpolateCubic.cc" />
+    <ClCompile Include="ofxNode_ofInterpolateHermite.cc" />
     <ClCompile Include="ofxNode_ofIsVFlipped.cc" />
+    <ClCompile Include="ofxNode_ofLerp.cc" />
+    <ClCompile Include="ofxNode_ofLerpDegrees.cc" />
+    <ClCompile Include="ofxNode_ofLerpRadians.cc" />
     <ClCompile Include="ofxNode_ofLine.cc">
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ofxNode_ofLineSegmentIntersection.cc" />
     <ClCompile Include="ofxNode_ofLoadIdentityMatrix.cc" />
     <ClCompile Include="ofxNode_ofLoadMatrix.cc" />
+    <ClCompile Include="ofxNode_ofMap.cc" />
     <ClCompile Include="ofxNode_ofMultMatrix.cc" />
     <ClCompile Include="ofxNode_ofNextContour.cc" />
+    <ClCompile Include="ofxNode_ofNextPow2.cc" />
     <ClCompile Include="ofxNode_ofNoFill.cc">
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ofxNode_ofNoise.cc" />
+    <ClCompile Include="ofxNode_ofNormalize.cc" />
     <ClCompile Include="ofxNode_ofOrientationToDegrees.cc" />
     <ClCompile Include="ofxNode_ofPopMatrix.cc" />
     <ClCompile Include="ofxNode_ofPopStyle.cc" />
@@ -341,10 +365,15 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
     <ClCompile Include="ofxNode_ofPushMatrix.cc" />
     <ClCompile Include="ofxNode_ofPushStyle.cc" />
     <ClCompile Include="ofxNode_ofPushView.cc" />
+    <ClCompile Include="ofxNode_ofRadToDeg.cc" />
     <ClCompile Include="ofxNode_ofRandom.cc">
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ofxNode_ofRandomf.cc" />
+    <ClCompile Include="ofxNode_ofRandomHeight.cc" />
+    <ClCompile Include="ofxNode_ofRandomuf.cc" />
+    <ClCompile Include="ofxNode_ofRandomWidth.cc" />
     <ClCompile Include="ofxNode_ofRect.cc">
       <SubType>
       </SubType>
@@ -356,6 +385,7 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
     <ClCompile Include="ofxNode_ofRotateZ.cc" />
     <ClCompile Include="ofxNode_ofRunApp.cc" />
     <ClCompile Include="ofxNode_ofScale.cc" />
+    <ClCompile Include="ofxNode_ofSeedRandom.cc" />
     <ClCompile Include="ofxNode_ofSetBackgroundAuto.cc" />
     <ClCompile Include="ofxNode_ofSetBackgroundColor.cc" />
     <ClCompile Include="ofxNode_ofSetBackgroundColorHex.cc" />
@@ -393,11 +423,16 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClCompile>
+    <ClCompile Include="ofxNode_ofSign.cc" />
+    <ClCompile Include="ofxNode_ofSignedNoise.cc" />
     <ClCompile Include="ofxNode_ofTranslate.cc" />
     <ClCompile Include="ofxNode_ofTriangle.cc" />
     <ClCompile Include="ofxNode_ofVertex.cc" />
     <ClCompile Include="ofxNode_ofVertices.cc" />
     <ClCompile Include="ofxNode_ofViewport.cc" />
+    <ClCompile Include="ofxNode_ofWrap.cc" />
+    <ClCompile Include="ofxNode_ofWrapDegrees.cc" />
+    <ClCompile Include="ofxNode_ofWrapRadians.cc" />
     <ClCompile Include="ofxNode_setup.cc">
       <SubType>
       </SubType>
@@ -471,6 +506,8 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ofxNode_ofAngleDifferenceDegrees.h" />
+    <ClInclude Include="ofxNode_ofAngleDifferenceRadians.h" />
     <ClInclude Include="ofxNode_ofBackground.h">
       <SubType>
       </SubType>
@@ -496,6 +533,8 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ofxNode_ofBezierPoint.h" />
+    <ClInclude Include="ofxNode_ofBezierTangent.h" />
     <ClInclude Include="ofxNode_ofBezierVertex.h">
       <SubType>
       </SubType>
@@ -508,6 +547,7 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ofxNode_ofClamp.h" />
     <ClInclude Include="ofxNode_ofClear.h">
       <SubType>
       </SubType>
@@ -520,6 +560,8 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ofxNode_ofCurvePoint.h" />
+    <ClInclude Include="ofxNode_ofCurveTangent.h" />
     <ClInclude Include="ofxNode_ofCurveVertex.h">
       <SubType>
       </SubType>
@@ -528,6 +570,7 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ofxNode_ofDegToRad.h" />
     <ClInclude Include="ofxNode_ofDisableAlphaBlending.h">
       <SubType>
       </SubType>
@@ -552,6 +595,8 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ofxNode_ofDist.h" />
+    <ClInclude Include="ofxNode_ofDistSquared.h" />
     <ClInclude Include="ofxNode_ofDrawBitmapString.h">
       <SubType>
       </SubType>
@@ -641,19 +686,33 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ofxNode_ofInRange.h" />
+    <ClInclude Include="ofxNode_ofInsidePoly.h" />
+    <ClInclude Include="ofxNode_ofInterpolateCatmullRom.h" />
+    <ClInclude Include="ofxNode_ofInterpolateCosine.h" />
+    <ClInclude Include="ofxNode_ofInterpolateCubic.h" />
+    <ClInclude Include="ofxNode_ofInterpolateHermite.h" />
     <ClInclude Include="ofxNode_ofIsVFlipped.h" />
+    <ClInclude Include="ofxNode_ofLerp.h" />
+    <ClInclude Include="ofxNode_ofLerpDegrees.h" />
+    <ClInclude Include="ofxNode_ofLerpRadians.h" />
     <ClInclude Include="ofxNode_ofLine.h">
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ofxNode_ofLineSegmentIntersection.h" />
     <ClInclude Include="ofxNode_ofLoadIdentityMatrix.h" />
     <ClInclude Include="ofxNode_ofLoadMatrix.h" />
+    <ClInclude Include="ofxNode_ofMap.h" />
     <ClInclude Include="ofxNode_ofMultMatrix.h" />
     <ClInclude Include="ofxNode_ofNextContour.h" />
+    <ClInclude Include="ofxNode_ofNextPow2.h" />
     <ClInclude Include="ofxNode_ofNoFill.h">
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ofxNode_ofNoise.h" />
+    <ClInclude Include="ofxNode_ofNormalize.h" />
     <ClInclude Include="ofxNode_ofOrientationToDegrees.h" />
     <ClInclude Include="ofxNode_ofPopMatrix.h" />
     <ClInclude Include="ofxNode_ofPopStyle.h" />
@@ -661,10 +720,15 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
     <ClInclude Include="ofxNode_ofPushMatrix.h" />
     <ClInclude Include="ofxNode_ofPushStyle.h" />
     <ClInclude Include="ofxNode_ofPushView.h" />
+    <ClInclude Include="ofxNode_ofRadToDeg.h" />
     <ClInclude Include="ofxNode_ofRandom.h">
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ofxNode_ofRandomf.h" />
+    <ClInclude Include="ofxNode_ofRandomHeight.h" />
+    <ClInclude Include="ofxNode_ofRandomuf.h" />
+    <ClInclude Include="ofxNode_ofRandomWidth.h" />
     <ClInclude Include="ofxNode_ofRect.h">
       <SubType>
       </SubType>
@@ -676,6 +740,7 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
     <ClInclude Include="ofxNode_ofRotateZ.h" />
     <ClInclude Include="ofxNode_ofRunApp.h" />
     <ClInclude Include="ofxNode_ofScale.h" />
+    <ClInclude Include="ofxNode_ofSeedRandom.h" />
     <ClInclude Include="ofxNode_ofSetBackgroundAuto.h" />
     <ClInclude Include="ofxNode_ofSetBackgroundColor.h" />
     <ClInclude Include="ofxNode_ofSetBackgroundColorHex.h" />
@@ -713,11 +778,16 @@ IF DEFINED OFXNODE_OF exit(0) ELSE exit(1)</Command>
       <SubType>
       </SubType>
     </ClInclude>
+    <ClInclude Include="ofxNode_ofSign.h" />
+    <ClInclude Include="ofxNode_ofSignedNoise.h" />
     <ClInclude Include="ofxNode_ofTranslate.h" />
     <ClInclude Include="ofxNode_ofTriangle.h" />
     <ClInclude Include="ofxNode_ofVertex.h" />
     <ClInclude Include="ofxNode_ofVertices.h" />
     <ClInclude Include="ofxNode_ofViewport.h" />
+    <ClInclude Include="ofxNode_ofWrap.h" />
+    <ClInclude Include="ofxNode_ofWrapDegrees.h" />
+    <ClInclude Include="ofxNode_ofWrapRadians.h" />
     <ClInclude Include="ofxNode_setup.h">
       <SubType>
       </SubType>

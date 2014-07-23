@@ -132,6 +132,46 @@
 #include "ofxNode_ofbClearBg.h"
 
 /************************************************************************/
+/* ofMath	                                                            */
+/************************************************************************/
+#include "ofxNode_ofAngleDifferenceDegrees.h"
+#include "ofxNode_ofAngleDifferenceRadians.h"
+#include "ofxNode_ofBezierPoint.h"
+#include "ofxNode_ofBezierTangent.h"
+#include "ofxNode_ofClamp.h"
+#include "ofxNode_ofCurvePoint.h"
+#include "ofxNode_ofCurveTangent.h"
+#include "ofxNode_ofDegToRad.h"
+#include "ofxNode_ofDist.h"
+#include "ofxNode_ofDistSquared.h"
+#include "ofxNode_ofInRange.h"
+#include "ofxNode_ofInsidePoly.h"
+#include "ofxNode_ofInterpolateCatmullRom.h"
+#include "ofxNode_ofInterpolateCosine.h"
+#include "ofxNode_ofInterpolateCubic.h"
+#include "ofxNode_ofInterpolateHermite.h"
+#include "ofxNode_ofLerp.h"
+#include "ofxNode_ofLerpDegrees.h"
+#include "ofxNode_ofLerpRadians.h"
+#include "ofxNode_ofLineSegmentIntersection.h"
+#include "ofxNode_ofMap.h"
+#include "ofxNode_ofNextPow2.h"
+#include "ofxNode_ofNoise.h"
+#include "ofxNode_ofNormalize.h"
+#include "ofxNode_ofRadToDeg.h"
+#include "ofxNode_ofRandom.h"
+#include "ofxNode_ofRandomHeight.h"
+#include "ofxNode_ofRandomWidth.h"
+#include "ofxNode_ofRandomf.h"
+#include "ofxNode_ofRandomuf.h"
+#include "ofxNode_ofSeedRandom.h"
+#include "ofxNode_ofSign.h"
+#include "ofxNode_ofSignedNoise.h"
+#include "ofxNode_ofWrap.h"
+#include "ofxNode_ofWrapDegrees.h"
+#include "ofxNode_ofWrapRadians.h"
+
+/************************************************************************/
 /* MISC.                                                                */
 /************************************************************************/
 #include "ofxNode_noop.h"
@@ -140,7 +180,6 @@
 #include "ofxNode_ofGetElapsedTimeMillis.h"
 #include "ofxNode_ofSetFrameRate.h"
 #include "ofxNode_ofSetWindowTitle.h"
-#include "ofxNode_ofRandom.h"
 #include "ofxNode_ofGetWidth.h"
 #include "ofxNode_ofGetHeight.h"
 #include "ofxNode_ofGetMouseY.h"
@@ -162,7 +201,7 @@ namespace ofxNode {
 			/* initializing internal functions										*/
 			/* These are implemented as hidden for future security implementations	*/
 			/************************************************************************/
-			auto lNoop = NanNew<v8::FunctionTemplate>(ofxNode_noop)->GetFunction();
+			const auto lNoop = NanNew<v8::FunctionTemplate>(ofxNode_noop)->GetFunction();
 			target->SetHiddenValue(NanNew<v8::String>("setup_")			, lNoop);
 			target->SetHiddenValue(NanNew<v8::String>("exit_")			, lNoop);
 			target->SetHiddenValue(NanNew<v8::String>("update_")		, lNoop);
@@ -302,22 +341,61 @@ namespace ofxNode {
 			target->Set(NanNew<v8::String>("ofbClearBg"), NanNew<v8::FunctionTemplate>(ofxNode_ofbClearBg)->GetFunction());
 
 			/************************************************************************/
+			/* ofMath initialization												*/
+			/************************************************************************/
+			target->Set(NanNew<v8::String>("ofAngleDifferenceDegrees"), NanNew<v8::FunctionTemplate>(ofxNode_ofAngleDifferenceDegrees)->GetFunction());
+			target->Set(NanNew<v8::String>("ofAngleDifferenceRadians"), NanNew<v8::FunctionTemplate>(ofxNode_ofAngleDifferenceRadians)->GetFunction());
+			target->Set(NanNew<v8::String>("ofBezierPoint"), NanNew<v8::FunctionTemplate>(ofxNode_ofBezierPoint)->GetFunction());
+			target->Set(NanNew<v8::String>("ofBezierTangent"), NanNew<v8::FunctionTemplate>(ofxNode_ofBezierTangent)->GetFunction());
+			target->Set(NanNew<v8::String>("ofClamp"), NanNew<v8::FunctionTemplate>(ofxNode_ofClamp)->GetFunction());
+			target->Set(NanNew<v8::String>("ofCurvePoint"), NanNew<v8::FunctionTemplate>(ofxNode_ofCurvePoint)->GetFunction());
+			target->Set(NanNew<v8::String>("ofCurveTangent"), NanNew<v8::FunctionTemplate>(ofxNode_ofCurveTangent)->GetFunction());
+			target->Set(NanNew<v8::String>("ofDegToRad"), NanNew<v8::FunctionTemplate>(ofxNode_ofDegToRad)->GetFunction());
+			target->Set(NanNew<v8::String>("ofDist"), NanNew<v8::FunctionTemplate>(ofxNode_ofDist)->GetFunction());
+			target->Set(NanNew<v8::String>("ofDistSquared"), NanNew<v8::FunctionTemplate>(ofxNode_ofDistSquared)->GetFunction());
+			target->Set(NanNew<v8::String>("ofInRange"), NanNew<v8::FunctionTemplate>(ofxNode_ofInRange)->GetFunction());
+			target->Set(NanNew<v8::String>("ofInsidePoly"), NanNew<v8::FunctionTemplate>(ofxNode_ofInsidePoly)->GetFunction());
+			target->Set(NanNew<v8::String>("ofInterpolateCatmullRom"), NanNew<v8::FunctionTemplate>(ofxNode_ofInterpolateCatmullRom)->GetFunction());
+			target->Set(NanNew<v8::String>("ofInterpolateCosine"), NanNew<v8::FunctionTemplate>(ofxNode_ofInterpolateCosine)->GetFunction());
+			target->Set(NanNew<v8::String>("ofInterpolateCubic"), NanNew<v8::FunctionTemplate>(ofxNode_ofInterpolateCubic)->GetFunction());
+			target->Set(NanNew<v8::String>("ofInterpolateHermite"), NanNew<v8::FunctionTemplate>(ofxNode_ofInterpolateHermite)->GetFunction());
+			target->Set(NanNew<v8::String>("ofLerp"), NanNew<v8::FunctionTemplate>(ofxNode_ofLerp)->GetFunction());
+			target->Set(NanNew<v8::String>("ofLerpDegrees"), NanNew<v8::FunctionTemplate>(ofxNode_ofLerpDegrees)->GetFunction());
+			target->Set(NanNew<v8::String>("ofLerpRadians"), NanNew<v8::FunctionTemplate>(ofxNode_ofLerpRadians)->GetFunction());
+			target->Set(NanNew<v8::String>("ofLineSegmentIntersection"), NanNew<v8::FunctionTemplate>(ofxNode_ofLineSegmentIntersection)->GetFunction());
+			target->Set(NanNew<v8::String>("ofMap"), NanNew<v8::FunctionTemplate>(ofxNode_ofMap)->GetFunction());
+			target->Set(NanNew<v8::String>("ofNextPow2"), NanNew<v8::FunctionTemplate>(ofxNode_ofNextPow2)->GetFunction());
+			target->Set(NanNew<v8::String>("ofNoise"), NanNew<v8::FunctionTemplate>(ofxNode_ofNoise)->GetFunction());
+			target->Set(NanNew<v8::String>("ofNormalize"), NanNew<v8::FunctionTemplate>(ofxNode_ofNormalize)->GetFunction());
+			target->Set(NanNew<v8::String>("ofRadToDeg"), NanNew<v8::FunctionTemplate>(ofxNode_ofRadToDeg)->GetFunction());
+			target->Set(NanNew<v8::String>("ofRandom"), NanNew<v8::FunctionTemplate>(ofxNode_ofRandom)->GetFunction());
+			target->Set(NanNew<v8::String>("ofRandomHeight"), NanNew<v8::FunctionTemplate>(ofxNode_ofRandomHeight)->GetFunction());
+			target->Set(NanNew<v8::String>("ofRandomWidth"), NanNew<v8::FunctionTemplate>(ofxNode_ofRandomWidth)->GetFunction());
+			target->Set(NanNew<v8::String>("ofRandomf"), NanNew<v8::FunctionTemplate>(ofxNode_ofRandomf)->GetFunction());
+			target->Set(NanNew<v8::String>("ofRandomuf"), NanNew<v8::FunctionTemplate>(ofxNode_ofRandomuf)->GetFunction());
+			target->Set(NanNew<v8::String>("ofSeedRandom"), NanNew<v8::FunctionTemplate>(ofxNode_ofSeedRandom)->GetFunction());
+			target->Set(NanNew<v8::String>("ofSign"), NanNew<v8::FunctionTemplate>(ofxNode_ofSign)->GetFunction());
+			target->Set(NanNew<v8::String>("ofSignedNoise"), NanNew<v8::FunctionTemplate>(ofxNode_ofSignedNoise)->GetFunction());
+			target->Set(NanNew<v8::String>("ofWrap"), NanNew<v8::FunctionTemplate>(ofxNode_ofWrap)->GetFunction());
+			target->Set(NanNew<v8::String>("ofWrapDegrees"), NanNew<v8::FunctionTemplate>(ofxNode_ofWrapDegrees)->GetFunction());
+			target->Set(NanNew<v8::String>("ofWrapRadians"), NanNew<v8::FunctionTemplate>(ofxNode_ofWrapRadians)->GetFunction());
+
+			/************************************************************************/
 			/* MISC.                                                                */
 			/************************************************************************/
-			target->Set(NanNew<v8::String>("noop")							, NanNew<v8::FunctionTemplate>(ofxNode_noop)->GetFunction());
-			target->Set(NanNew<v8::String>("ofSetupOpenGL")					, NanNew<v8::FunctionTemplate>(ofxNode_ofSetupOpenGL)->GetFunction());
-			target->Set(NanNew<v8::String>("ofRunApp")						, NanNew<v8::FunctionTemplate>(ofxNode_ofRunApp)->GetFunction());
-			target->Set(NanNew<v8::String>("ofSetWindowTitle")				, NanNew<v8::FunctionTemplate>(ofxNode_ofSetWindowTitle)->GetFunction());
-			target->Set(NanNew<v8::String>("ofRandom")						, NanNew<v8::FunctionTemplate>(ofxNode_ofRandom)->GetFunction());
-			target->Set(NanNew<v8::String>("ofSetFrameRate")				, NanNew<v8::FunctionTemplate>(ofxNode_ofSetFrameRate)->GetFunction());
-			target->Set(NanNew<v8::String>("ofGetElapsedTimeMillis")		, NanNew<v8::FunctionTemplate>(ofxNode_ofGetElapsedTimeMillis)->GetFunction());
-			target->Set(NanNew<v8::String>("ofGetWidth")					, NanNew<v8::FunctionTemplate>(ofxNode_ofGetWidth)->GetFunction());
-			target->Set(NanNew<v8::String>("ofGetHeight")					, NanNew<v8::FunctionTemplate>(ofxNode_ofGetHeight)->GetFunction());
-			target->Set(NanNew<v8::String>("ofGetMouseY")					, NanNew<v8::FunctionTemplate>(ofxNode_ofGetMouseY)->GetFunction());
-			target->Set(NanNew<v8::String>("ofGetMouseX")					, NanNew<v8::FunctionTemplate>(ofxNode_ofGetMouseX)->GetFunction());
-			target->Set(NanNew<v8::String>("ofGetElapsedTimef")				, NanNew<v8::FunctionTemplate>(ofxNode_ofGetElapsedTimef)->GetFunction());
-			target->Set(NanNew<v8::String>("ofLoadImage")					, NanNew<v8::FunctionTemplate>(ofxNode_ofLoadImage)->GetFunction());
-			target->Set(NanNew<v8::String>("ofSaveImage")					, NanNew<v8::FunctionTemplate>(ofxNode_ofSaveImage)->GetFunction());
+			target->Set(NanNew<v8::String>("noop"), NanNew<v8::FunctionTemplate>(ofxNode_noop)->GetFunction());
+			target->Set(NanNew<v8::String>("ofSetupOpenGL"), NanNew<v8::FunctionTemplate>(ofxNode_ofSetupOpenGL)->GetFunction());
+			target->Set(NanNew<v8::String>("ofRunApp"), NanNew<v8::FunctionTemplate>(ofxNode_ofRunApp)->GetFunction());
+			target->Set(NanNew<v8::String>("ofSetWindowTitle"), NanNew<v8::FunctionTemplate>(ofxNode_ofSetWindowTitle)->GetFunction());
+			target->Set(NanNew<v8::String>("ofSetFrameRate"), NanNew<v8::FunctionTemplate>(ofxNode_ofSetFrameRate)->GetFunction());
+			target->Set(NanNew<v8::String>("ofGetElapsedTimeMillis"), NanNew<v8::FunctionTemplate>(ofxNode_ofGetElapsedTimeMillis)->GetFunction());
+			target->Set(NanNew<v8::String>("ofGetWidth"), NanNew<v8::FunctionTemplate>(ofxNode_ofGetWidth)->GetFunction());
+			target->Set(NanNew<v8::String>("ofGetHeight"), NanNew<v8::FunctionTemplate>(ofxNode_ofGetHeight)->GetFunction());
+			target->Set(NanNew<v8::String>("ofGetMouseY"), NanNew<v8::FunctionTemplate>(ofxNode_ofGetMouseY)->GetFunction());
+			target->Set(NanNew<v8::String>("ofGetMouseX"), NanNew<v8::FunctionTemplate>(ofxNode_ofGetMouseX)->GetFunction());
+			target->Set(NanNew<v8::String>("ofGetElapsedTimef"), NanNew<v8::FunctionTemplate>(ofxNode_ofGetElapsedTimef)->GetFunction());
+			target->Set(NanNew<v8::String>("ofLoadImage"), NanNew<v8::FunctionTemplate>(ofxNode_ofLoadImage)->GetFunction());
+			target->Set(NanNew<v8::String>("ofSaveImage"), NanNew<v8::FunctionTemplate>(ofxNode_ofSaveImage)->GetFunction());
 	}
 
 }
