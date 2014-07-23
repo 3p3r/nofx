@@ -13,8 +13,7 @@ namespace ofxNode
 		}
 		if (args.Length() == 3)
 		{
-			if ((args[0]->ToObject()->Get(NanNew("OFXNODE_TYPE"))->Uint32Value() & OFXNODE_TYPES::OFPOINT) ||
-				(args[0]->ToObject()->Get(NanNew("OFXNODE_TYPE"))->Uint32Value() & OFXNODE_TYPES::OFVEC3F))
+			if ((args[0]->ToObject()->Get(NanNew("OFXNODE_TYPE"))->Uint32Value() & OFXNODE_TYPES::OFVEC3F))
 			{
 				const ofPoint p1 = node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->self();
 				ofRect(p1, args[1]->NumberValue(), args[2]->NumberValue());

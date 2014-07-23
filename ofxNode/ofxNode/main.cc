@@ -33,6 +33,8 @@
 #include "ofxNode_wrapper_ofMatrix4x4.h"
 #include "ofxNode_wrapper_ofStyle.h"
 #include "ofxNode_wrapper_ofRectangle.h"
+#include "ofxNode_wrapper_ofTrueTypeFont.h"
+#include "ofxNode_wrapper_ofImage.h"
 
 //Global functions
 
@@ -186,6 +188,8 @@ namespace ofxNode {
 			ofxNode_ofMatrix4x4::Init(target);
 			ofxNode_ofStyle::Init(target);
 			ofxNode_ofRectangle::Init(target);
+			ofxNode_ofTrueTypeFont::Init(target);
+			ofxNode_ofImage::Init(target);
 			
 			/************************************************************************/
 			/* initializing internal function overrider API							*/
@@ -312,6 +316,8 @@ namespace ofxNode {
 			target->Set(NanNew<v8::String>("ofGetMouseY")					, NanNew<v8::FunctionTemplate>(ofxNode_ofGetMouseY)->GetFunction());
 			target->Set(NanNew<v8::String>("ofGetMouseX")					, NanNew<v8::FunctionTemplate>(ofxNode_ofGetMouseX)->GetFunction());
 			target->Set(NanNew<v8::String>("ofGetElapsedTimef")				, NanNew<v8::FunctionTemplate>(ofxNode_ofGetElapsedTimef)->GetFunction());
+			target->Set(NanNew<v8::String>("ofLoadImage")					, NanNew<v8::FunctionTemplate>(ofxNode_ofLoadImage)->GetFunction());
+			target->Set(NanNew<v8::String>("ofSaveImage")					, NanNew<v8::FunctionTemplate>(ofxNode_ofSaveImage)->GetFunction());
 	}
 
 }
