@@ -1,5 +1,7 @@
 #include "ofxNode_wrapper_ofImage.h"
 #include "ofxNode_wrapper_ofColor.h"
+#include "ofxNode_wrapper_ofRectangle.h"
+#include "ofxNode_wrapper_ofVec3f.h"
 
 namespace ofxNode
 {
@@ -194,13 +196,32 @@ namespace ofxNode
 	NAN_METHOD(ofxNode_ofImage::Draw)
 	{
 		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		self.draw(
-			args[0]->NumberValue(),
-			args[1]->NumberValue(),
-			args[2]->NumberValue() ? NULL : args[2]->NumberValue(),
-			args[4]->NumberValue() ? NULL : args[3]->NumberValue(),
-			args[3]->NumberValue() ? NULL : args[4]->NumberValue()
-			);
+		if (args.Length() == 1 && args[0]->ToObject()->Get(NanNew("OFXNODE_TYPE"))->Uint32Value() & OFXNODE_TYPES::OFRECTANGLE)
+		{
+			self.draw(node::ObjectWrap::Unwrap<ofxNode_ofRectangle>(args[0]->ToObject())->self());
+		}
+		else if (args.Length() == 1 && args[0]->ToObject()->Get(NanNew("OFXNODE_TYPE"))->Uint32Value() & OFXNODE_TYPES::OFVEC3F)
+		{
+			self.draw(node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->self());
+		}
+		else if (args.Length() == 2)
+		{
+			self.draw(args[0]->NumberValue(), args[1]->NumberValue());
+		}
+		else if (args.Length() == 3 && args[0]->ToObject()->Get(NanNew("OFXNODE_TYPE"))->Uint32Value() & OFXNODE_TYPES::OFVEC3F)
+		{
+			self.draw(node::ObjectWrap::Unwrap<ofxNode_ofVec3f>(args[0]->ToObject())->self(), args[1]->NumberValue(), args[2]->NumberValue());
+		}
+		else if (args.Length() >= 3)
+		{
+			self.draw(
+				args[0]->NumberValue(),
+				args[1]->NumberValue(),
+				args[2]->NumberValue(),
+				args[3]->NumberValue() ? NULL : args[3]->NumberValue(),
+				args[4]->NumberValue() ? NULL : args[4]->NumberValue()
+				);
+		}
 		NanReturnValue(args.This());
 	}
 	//-------------------------------------------------------

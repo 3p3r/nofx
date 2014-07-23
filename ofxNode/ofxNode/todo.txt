@@ -1,6 +1,5 @@
 ofEvents
 ofAppRunner
-ofMath
 ofEasyCam
 ofVboMesh
 ofLight
@@ -10,3 +9,6 @@ ofVideoGrabber
 ofUtils
 ofTexture
 ofBuffer <=> node buffer?
+
+mouseX
+mouseY

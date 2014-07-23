@@ -195,10 +195,10 @@ namespace ofxNode
 		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofTrueTypeFont>(args.This())->self();
 		self.loadFont(NanCString(args[0], nullptr), args[1]->Int32Value(), 
 			args[2]->IsUndefined() ? true : args[2]->BooleanValue(),
-			args[3]->IsUndefined() ? true : args[3]->BooleanValue(),
-			args[4]->IsUndefined() ? true : args[4]->BooleanValue(),
+			args[3]->IsUndefined() ? false : args[3]->BooleanValue(),
+			args[4]->IsUndefined() ? false : args[4]->BooleanValue(),
 			args[5]->IsUndefined() ? NULL : args[5]->NumberValue(),
-			args[6]->IsUndefined() ? true : args[6]->Int32Value());
+			args[6]->IsUndefined() ? 0 : args[6]->Int32Value());
 		NanReturnValue(args.This());
 	}
 	//-------------------------------------------------------
