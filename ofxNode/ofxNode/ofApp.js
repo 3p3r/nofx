@@ -1,4 +1,9 @@
 var ofxNode = require("../bin/ofxNode");
+var extend = require("./extend.js");
+
+// We do this to avoid calling "this" on every API call
+// Source code will get cleaner and more readable.
+extend(true, GLOBAL, ofxNode);
 
 var winW = 800,
 winH = 550,
@@ -76,7 +81,8 @@ ofxNode.setup(function () {
 
 })
 .mousePressed(function (x, y, button) {
-
+    var c = new ofImage("C:\\Users\\Sepehr\\Desktop\\download.png");
+    console.log(c.getPixels().data);
 })
 .draw(function () {
     //return;

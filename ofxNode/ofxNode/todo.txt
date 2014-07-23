@@ -1,5 +1,3 @@
-ofTrueTypeFont
-ofImage
 ofEvents
 ofAppRunner
 ofMath
@@ -10,3 +8,5 @@ ofPath
 ofDirectory
 ofVideoGrabber
 ofUtils
+ofTexture
+ofBuffer <=> node buffer?

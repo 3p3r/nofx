@@ -1,4 +1,5 @@
 #include "ofxNode_wrapper_ofImage.h"
+#include "ofxNode_wrapper_ofColor.h"
 
 namespace ofxNode
 {
@@ -144,249 +145,290 @@ namespace ofxNode
 
 	NAN_METHOD(ofxNode_ofImage::Allocate)
 	{
-		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
+		self.allocate(args[0]->Int32Value(), args[1]->Int32Value(), (ofImageType)args[2]->Uint32Value());
 		NanReturnValue(args.This());
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::BAllocated)
 	{
-		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
-		NanReturnValue(args.This());
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
+		NanReturnValue(self.bAllocated());
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::Bind)
 	{
-		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
+		self.bind();
 		NanReturnValue(args.This());
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::Clear)
 	{
-		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
+		self.clear();
 		NanReturnValue(args.This());
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::Clone)
 	{
-		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
+		self.clone(node::ObjectWrap::Unwrap<ofxNode_ofImage>(args[0]->ToObject())->self());
 		NanReturnValue(args.This());
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::Crop)
 	{
-		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
+		self.crop(args[0]->Int32Value(), args[1]->Int32Value(), args[2]->Int32Value(), args[3]->Int32Value());
 		NanReturnValue(args.This());
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::CropFrom)
 	{
-		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
+		self.cropFrom(node::ObjectWrap::Unwrap<ofxNode_ofImage>(args[0]->ToObject())->self(), args[1]->Int32Value(), args[2]->Int32Value(), args[3]->Int32Value(), args[4]->Int32Value());
 		NanReturnValue(args.This());
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::Draw)
 	{
-		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
+		self.draw(
+			args[0]->NumberValue(),
+			args[1]->NumberValue(),
+			args[2]->NumberValue() ? NULL : args[2]->NumberValue(),
+			args[4]->NumberValue() ? NULL : args[3]->NumberValue(),
+			args[3]->NumberValue() ? NULL : args[4]->NumberValue()
+			);
 		NanReturnValue(args.This());
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::DrawSubsection)
 	{
-		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
+		self.drawSubsection(
+			args[0]->NumberValue(),
+			args[1]->NumberValue(),
+			args[2]->NumberValue(),
+			args[3]->NumberValue(),
+			args[4]->NumberValue(),
+			args[5]->NumberValue(),
+			args[6]->NumberValue(),
+			args[7]->NumberValue(),
+			args[8]->NumberValue() ? NULL : args[8]->NumberValue()
+			);
 		NanReturnValue(args.This());
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::GetColor)
 	{
 		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
-		NanReturnValue(args.This());
+		auto toRet = NanNew(ofxNode_ofColor::factory())->NewInstance();
+		node::ObjectWrap::Unwrap<ofxNode_ofColor>(toRet)->self() = self.getColor(args[0]->Int32Value(), args[1]->Int32Value());
+		NanReturnValue(toRet);
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::GetHeight)
 	{
-		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
-		NanReturnValue(args.This());
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
+		NanReturnValue(NanNew(self.getHeight()));
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::GetPixels)
 	{
-		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
-		NanReturnValue(args.This());
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
+		ofLogWarning() << "This method (GetPixels) might not work as expected. Please consult the documentation." << std::endl;
+		// We have to copy the data, we can't work with pointers in JS side yet
+		const auto data = self.getPixels();
+		// Returning it compatible to HTML5 getImageData()
+		auto toRet = NanNew<v8::Object>();
+		toRet->Set(NanNew("width"), NanNew(self.getWidth()));
+		toRet->Set(NanNew("height"), NanNew(self.getHeight()));
+		toRet->Set(NanNew("data"), node::Buffer::New((char*)data, sizeof(data)));
+		NanReturnValue(toRet);
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::GetPixelsRef)
 	{
-		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
-		NanReturnValue(args.This());
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
+		ofLogWarning() << "This method (GetPixelsRef) might not work as expected. Please consult the documentation." << std::endl;
+		// We have to copy the data, we can't work with pointers in JS side yet
+		const auto data = self.getPixels();
+		// Returning it compatible to HTML5 getImageData()
+		auto toRet = NanNew<v8::Object>();
+		toRet->Set(NanNew("width"), NanNew(self.getWidth()));
+		toRet->Set(NanNew("height"), NanNew(self.getHeight()));
+		toRet->Set(NanNew("data"), node::Buffer::New((char*)data, sizeof(data)));
+		NanReturnValue(toRet);
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::GetTextureReference)
 	{
 		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
+		NanThrowError("Not implemented.");
 		NanReturnValue(args.This());
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::GetWidth)
 	{
-		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
-		NanReturnValue(args.This());
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
+		NanReturnValue(NanNew(self.getWidth()));
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::GrabScreen)
 	{
-		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
+		self.grabScreen(args[0]->Int32Value(), args[1]->Int32Value(), args[2]->Int32Value(), args[3]->Int32Value());
 		NanReturnValue(args.This());
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::IsAllocated)
 	{
-		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
-		NanReturnValue(args.This());
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
+		NanReturnValue(self.isAllocated());
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::IsUsingTexture)
 	{
-		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
-		NanReturnValue(args.This());
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
+		NanReturnValue(self.isUsingTexture());
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::LoadImage)
 	{
-		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
+		//todo(sepehr)
+		self.loadImage(NanCString(args[0], nullptr));
 		NanReturnValue(args.This());
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::Mirror)
 	{
-		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
+		self.mirror(args[0]->BooleanValue(), args[1]->BooleanValue());
 		NanReturnValue(args.This());
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::ReloadTexture)
 	{
-		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
+		self.reloadTexture();
 		NanReturnValue(args.This());
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::ResetAnchor)
 	{
-		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
+		self.resetAnchor();
 		NanReturnValue(args.This());
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::Resize)
 	{
-		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
+		self.resize(args[0]->Int32Value(), args[1]->Int32Value());
 		NanReturnValue(args.This());
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::Rotate90)
 	{
-		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
+		self.rotate90(args[0]->Int32Value());
 		NanReturnValue(args.This());
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::SaveImage)
 	{
-		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
+		//todo(sepehr)
+		self.saveImage(NanCString(args[0], nullptr), (ofImageQualityType) args[1]->Uint32Value());
 		NanReturnValue(args.This());
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::SetAnchorPercent)
 	{
-		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
+		self.setAnchorPercent(args[0]->NumberValue(), args[1]->NumberValue());
 		NanReturnValue(args.This());
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::SetAnchorPoint)
 	{
-		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
+		self.setAnchorPoint(args[0]->NumberValue(), args[1]->NumberValue());
 		NanReturnValue(args.This());
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::SetColor)
 	{
-		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
+		if (args.Length() == 1)
+		{
+			self.setColor(node::ObjectWrap::Unwrap<ofxNode_ofColor>(args[0]->ToObject())->self());
+		}
+		else if (args.Length() == 2)
+		{
+			self.setColor(args[0]->Int32Value(), node::ObjectWrap::Unwrap<ofxNode_ofColor>(args[1]->ToObject())->self());
+		}
+		else
+		{
+			self.setColor(args[0]->Int32Value(), args[1]->Int32Value(), node::ObjectWrap::Unwrap<ofxNode_ofColor>(args[2]->ToObject())->self());
+		}
 		NanReturnValue(args.This());
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::SetCompression)
 	{
-		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
+		self.setCompression((ofTexCompression)args[0]->Int32Value());
 		NanReturnValue(args.This());
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::SetFromPixels)
 	{
 		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
+		NanThrowError("Not implemented.");
 		NanReturnValue(args.This());
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::SetImageType)
 	{
-		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
+		self.setImageType((ofImageType)args[0]->Uint32Value());
 		NanReturnValue(args.This());
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::SetUseTexture)
 	{
-		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
+		self.setUseTexture(args[0]->BooleanValue());
 		NanReturnValue(args.This());
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::Unbind)
 	{
-		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
+		self.unbind();
 		NanReturnValue(args.This());
 	}
 	//-------------------------------------------------------
 	NAN_METHOD(ofxNode_ofImage::Update)
 	{
-		const auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
-		//implementation
+		auto& self = node::ObjectWrap::Unwrap<ofxNode_ofImage>(args.This())->self();
+		self.update();
 		NanReturnValue(args.This());
 	}
 	//-------------------------------------------------------
 
 	NAN_METHOD(ofxNode_ofLoadImage)
 	{
+		NanThrowError("Not implemented.");
 		NanReturnValue(args.This());
 	}
 	NAN_METHOD(ofxNode_ofSaveImage)
 	{
+		NanThrowError("Not implemented.");
 		NanReturnValue(args.This());
 	}
 
