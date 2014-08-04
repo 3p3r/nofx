@@ -10,3 +10,4 @@ ofxNode/ofxNode/Release
 *.dll
 *.node
 *.psess
+*.vsp
