@@ -1,6 +1,6 @@
-ofxNode/bin
-ofxNode/ofxNode/Debug
-ofxNode/ofxNode/Release
+nofx/bin
+nofx/nofx/Debug
+nofx/nofx/Release
 *.opensdf
 *.sdf
 *.user
