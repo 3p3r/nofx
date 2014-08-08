@@ -63,6 +63,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>_VARIADIC_MAX=10;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <AdditionalIncludeDirectories>$(NOFX_OF)\openFrameworks\libs\openFrameworks;$(NOFX_OF)\openFrameworks\libs\openFrameworks\graphics;$(NOFX_OF)\openFrameworks\libs\openFrameworks\app;$(NOFX_OF)\openFrameworks\libs\openFrameworks\sound;$(NOFX_OF)\openFrameworks\libs\openFrameworks\utils;$(NOFX_OF)\openFrameworks\libs\openFrameworks\communication;$(NOFX_OF)\openFrameworks\libs\openFrameworks\video;$(NOFX_OF)\openFrameworks\libs\openFrameworks\types;$(NOFX_OF)\openFrameworks\libs\openFrameworks\math;$(NOFX_OF)\openFrameworks\libs\openFrameworks\3d;$(NOFX_OF)\openFrameworks\libs\openFrameworks\gl;$(NOFX_OF)\openFrameworks\libs\openFrameworks\events;$(NOFX_OF)\openFrameworks\libs\glut\include;$(NOFX_OF)\openFrameworks\libs\rtAudio\include;$(NOFX_OF)\openFrameworks\libs\quicktime\include;$(NOFX_OF)\openFrameworks\libs\freetype\include;$(NOFX_OF)\openFrameworks\libs\freetype\include\freetype2;$(NOFX_OF)\openFrameworks\libs\freeImage\include;$(NOFX_OF)\openFrameworks\libs\fmodex\include;$(NOFX_OF)\openFrameworks\libs\videoInput\include;$(NOFX_OF)\openFrameworks\libs\glew\include;$(NOFX_OF)\openFrameworks\libs\glu\include;$(NOFX_OF)\openFrameworks\libs\tess2\include;$(NOFX_OF)\openFrameworks\libs\cairo\include\cairo;$(NOFX_OF)\openFrameworks\libs\poco\include;$(NOFX_OF)\openFrameworks\libs\glfw\include;$(NOFX_OF)\openFrameworks\libs\openssl\include;$(NOFX_OF)\openFrameworks\libs\addons;$(NOFX_NODE)\node\src;$(NOFX_NODE)\node\deps\v8\include;$(NOFX_NODE)\node\deps\uv\include;$(NOFX_NAN)\nan;$(NOFX_GTEST)\include</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4250</DisableSpecificWarnings>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -107,11 +108,17 @@ IF DEFINED NOFX_OF exit(0) ELSE exit(1)</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cc" />
-    <ClCompile Include="ofApp.cc" />
+    <ClCompile Include="nofx_ofApp.cc" />
+    <ClCompile Include="nofx_noop.cc" />
+    <ClCompile Include="nofx_ofRunApp.cc" />
+    <ClCompile Include="nofx_ofSetupOpenGL.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="globals.h" />
-    <ClInclude Include="ofApp.h" />
+    <ClInclude Include="nofx_ofApp.h" />
+    <ClInclude Include="nofx_noop.h" />
+    <ClInclude Include="nofx_ofRunApp.h" />
+    <ClInclude Include="nofx_ofSetupOpenGL.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="ofApp.js">
