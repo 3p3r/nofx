@@ -1,6 +1,6 @@
-nofx/bin
-nofx/nofx/Debug
-nofx/nofx/Release
+/nofx/bin
+/nofx/nofx*/Debug
+/nofx/nofx*/Release
 *.opensdf
 *.sdf
 *.user
@@ -11,3 +11,8 @@ nofx/nofx/Release
 *.node
 *.psess
 *.vsp
+*.log
+*.tlog
+*.obj
+*.idb
+*.pdb

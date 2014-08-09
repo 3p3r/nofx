@@ -1,6 +1,6 @@
 #include "nofx_ofRunApp.h"
 #include "ofAppRunner.h"
-#include "nofx_ofApp.h"
+#include "..\nofx_ofBaseApp\nofx_ofApp.h"
 
 namespace nofx
 {
@@ -12,4 +12,4 @@ namespace nofx
 		// Attempting to run the OF app
 		return ofRunApp(node::ObjectWrap::Unwrap<OfAppWrap>(args[0]->ToObject())->GetWrapped());
 	} // ofxNode_ofRunApp
-} // namespace ofxNode
+} // namespace nofx

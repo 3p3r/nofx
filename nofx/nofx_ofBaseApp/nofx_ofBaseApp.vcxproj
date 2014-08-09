@@ -17,14 +17,14 @@
     <LocalDebuggerCommandArguments>$(ProjectDir)ofApp.js</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{A03FC266-793D-4228-945B-0CE27ECD9A33}</ProjectGuid>
+    <ProjectGuid>{8686A41D-1EDF-4368-A3D3-F2FF878EB0E4}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>nofx</RootNamespace>
-    <ProjectName>nofx</ProjectName>
+    <RootNamespace>nofx_ofBaseApp</RootNamespace>
+    <ProjectName>nofx_ofBaseApp</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
-    <ConfigurationType>Utility</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -50,8 +50,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <TargetExt>
-    </TargetExt>
+    <TargetExt>.node</TargetExt>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -108,10 +107,14 @@ IF DEFINED NOFX_OF exit(0) ELSE exit(1)</Command>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ofApp.js">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </ExcludedFromBuild>
-    </None>
+    <ClCompile Include="main.cc" />
+    <ClCompile Include="nofx_noop.cc" />
+    <ClCompile Include="nofx_ofApp.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="globals.h" />
+    <ClInclude Include="nofx_noop.h" />
+    <ClInclude Include="nofx_ofApp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

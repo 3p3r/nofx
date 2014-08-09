@@ -2,7 +2,7 @@
 #define _NOFX_BASE_APP_H_
 
 #include "globals.h"
-#include "ofMain.h"
+#include "ofBaseApp.h"
 
 using namespace v8;
 
