@@ -14,6 +14,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nofx_ofBaseApp", "nofx_ofBaseApp\nofx_ofBaseApp.vcxproj", "{8686A41D-1EDF-4368-A3D3-F2FF878EB0E4}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nofx_ofAppRunner", "nofx_ofAppRunner\nofx_ofAppRunner.vcxproj", "{DC6B418E-8EC0-4723-8E15-817BE2A178AF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{8686A41D-1EDF-4368-A3D3-F2FF878EB0E4} = {8686A41D-1EDF-4368-A3D3-F2FF878EB0E4}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -10,6 +10,6 @@ namespace nofx
 	// currently multiple calls to this function should not happen.
 	NAN_METHOD(nofx_ofRunApp) {
 		// Attempting to run the OF app
-		return ofRunApp(node::ObjectWrap::Unwrap<OfAppWrap>(args[0]->ToObject())->GetWrapped());
+		return ofRunApp(node::ObjectWrap::Unwrap<BaseApp::OfAppWrap>(args[0]->ToObject())->GetWrapped());
 	} // ofxNode_ofRunApp
 } // namespace nofx

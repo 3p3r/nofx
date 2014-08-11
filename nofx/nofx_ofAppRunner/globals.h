@@ -8,4 +8,6 @@
 #include "v8.h"
 #include "nan.h"
 
+extern v8::Persistent<v8::Function> JsOfBaseApp;
+
 #endif // !_NOFX_GLOBALS_H_

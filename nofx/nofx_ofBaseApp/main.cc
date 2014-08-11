@@ -3,16 +3,19 @@
 
 namespace nofx
 {
-	using namespace v8;
-
-	void Initialize(v8::Handle<Object> target,
-		v8::Handle<Value> unused,
-		v8::Handle<Context> context)
+	namespace BaseApp
 	{
-		
-		OfAppWrap::Initialize(target);
+		using namespace v8;
 
-	} //!Initialize
+		void Initialize(v8::Handle<Object> target,
+			v8::Handle<Value> unused,
+			v8::Handle<Context> context)
+		{
+
+			OfAppWrap::Initialize(target);
+
+		} //!Initialize
+	} //!namespace BaseApp
 } //!namespace nofx
 
-NODE_MODULE_CONTEXT_AWARE(nofx, nofx::Initialize)
+NODE_MODULE_CONTEXT_AWARE(nofx_ofBaseApp, nofx::BaseApp::Initialize)
