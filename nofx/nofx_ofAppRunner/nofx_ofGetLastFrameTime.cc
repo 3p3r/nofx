@@ -8,9 +8,7 @@ namespace nofx
         NAN_METHOD(nofx_ofGetLastFrameTime)
         {
         
-            //ofGetLastFrameTime(...);
-        
-            NanReturnUndefined();
+			NanReturnValue(ofGetLastFrameTime());
         } // !nofx_ofGetLastFrameTime
     } // !namespace AppRunner
 } // !namespace nofx

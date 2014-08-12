@@ -18,6 +18,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nofx_ofAppRunner", "nofx_of
 		{8686A41D-1EDF-4368-A3D3-F2FF878EB0E4} = {8686A41D-1EDF-4368-A3D3-F2FF878EB0E4}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nofx_ofAppBaseWindow", "nofx_ofAppBaseWindow\nofx_ofAppBaseWindow.vcxproj", "{24B7533E-0FC5-4EF0-AFCB-01CB136CE336}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -40,6 +42,10 @@ Global
 		{DC6B418E-8EC0-4723-8E15-817BE2A178AF}.Debug|Win32.Build.0 = Debug|Win32
 		{DC6B418E-8EC0-4723-8E15-817BE2A178AF}.Release|Win32.ActiveCfg = Release|Win32
 		{DC6B418E-8EC0-4723-8E15-817BE2A178AF}.Release|Win32.Build.0 = Release|Win32
+		{24B7533E-0FC5-4EF0-AFCB-01CB136CE336}.Debug|Win32.ActiveCfg = Debug|Win32
+		{24B7533E-0FC5-4EF0-AFCB-01CB136CE336}.Debug|Win32.Build.0 = Debug|Win32
+		{24B7533E-0FC5-4EF0-AFCB-01CB136CE336}.Release|Win32.ActiveCfg = Release|Win32
+		{24B7533E-0FC5-4EF0-AFCB-01CB136CE336}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

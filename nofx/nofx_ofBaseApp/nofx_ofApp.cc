@@ -157,22 +157,31 @@ namespace nofx
 		NAN_METHOD(OfAppWrap::New)
 		{
 			NanScope();
-			OfAppWrap* obj;
-			if (args.Length() == 0)
-			{
-				obj = new OfAppWrap();
-			}
-			else if (args[0]->IsNull())
-			{
-				obj = new OfAppWrap(nullptr);
+			if (args.IsConstructCall()) {
+				OfAppWrap* obj;
+				if (args.Length() == 0)
+				{
+					obj = new OfAppWrap();
+				}
+				else if (args[0]->IsNull())
+				{
+					obj = new OfAppWrap(nullptr);
+				}
+				else
+				{
+					//copy constructor
+					obj = new OfAppWrap(ObjectWrap::Unwrap<OfAppWrap>(args[0]->ToObject())->GetWrapped());
+				}
+				obj->Wrap(args.This());
+				NanReturnValue(args.This());
 			}
 			else
 			{
-				//copy constructor
-				obj = new OfAppWrap(ObjectWrap::Unwrap<OfAppWrap>(args[0]->ToObject())->GetWrapped());
+				// Invoked as plain function `MyObject(...)`, turn into construct call.
+				std::vector<v8::Handle<v8::Value>> lArgvVec;
+				for (int i = 0; i < args.Length(); ++i) { lArgvVec.push_back(args[i]); }
+				NanReturnValue(NanNew<v8::Function>(constructor)->NewInstance(lArgvVec.size(), (lArgvVec.size() == 0) ? nullptr : &lArgvVec[0]));
 			}
-			obj->Wrap(args.This());
-			NanReturnValue(args.This());
 		}
 
 		//--------------------------------------------------------------

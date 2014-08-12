@@ -8,9 +8,7 @@ namespace nofx
         NAN_METHOD(nofx_ofGetOrientation)
         {
         
-            //ofGetOrientation(...);
-        
-            NanReturnUndefined();
+			NanReturnValue(ofGetOrientation());
         } // !nofx_ofGetOrientation
     } // !namespace AppRunner
 } // !namespace nofx

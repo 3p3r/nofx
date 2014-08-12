@@ -8,9 +8,7 @@ namespace nofx
         NAN_METHOD(nofx_ofGetScreenHeight)
         {
         
-            //ofGetScreenHeight(...);
-        
-            NanReturnUndefined();
+			NanReturnValue(ofGetScreenHeight());
         } // !nofx_ofGetScreenHeight
     } // !namespace AppRunner
 } // !namespace nofx

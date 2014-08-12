@@ -1,5 +1,6 @@
 #include "nofx_ofGetWindowPtr.h"
 #include "ofAppRunner.h"
+#include "..\nofx_ofAppBaseWindow\nofx_ofAppBaseWindow.h"
 
 namespace nofx
 {
@@ -8,9 +9,10 @@ namespace nofx
         NAN_METHOD(nofx_ofGetWindowPtr)
         {
         
-            //ofGetWindowPtr(...);
+			auto JsWindowPtr = DepNewInstance(DEP_ofAppBaseWindow);
+			node::ObjectWrap::Unwrap<OfAppBaseWindow::OfAppBaseWindowWrap>(JsWindowPtr->ToObject())->SetWrapped(ofGetWindowPtr());
         
-            NanReturnUndefined();
+            NanReturnValue(JsWindowPtr);
         } // !nofx_ofGetWindowPtr
     } // !namespace AppRunner
 } // !namespace nofx

@@ -8,9 +8,7 @@ namespace nofx
         NAN_METHOD(nofx_ofGetWindowPositionY)
         {
         
-            //ofGetWindowPositionY(...);
-        
-            NanReturnUndefined();
+			NanReturnValue(ofGetWindowPositionY());
         } // !nofx_ofGetWindowPositionY
     } // !namespace AppRunner
 } // !namespace nofx

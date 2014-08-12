@@ -1,6 +1,8 @@
 var ofApp = require("../bin/nofx_ofBaseApp").ofApp;
+var ofAppBaseWindow = require("../bin/nofx_ofAppBaseWindow").ofAppBaseWindow;
 var ofAppRunner = require("../bin/nofx_ofAppRunner").dependencies({
-    "ofApp": function () { return new ofApp(null); }
+    "ofApp" : function () { return new ofApp(null); },
+    "ofAppBaseWindow": function () { return new ofAppBaseWindow(null); }
 });
 var extend      = require("./extend.js");
 
@@ -11,9 +13,9 @@ extend(true, GLOBAL, ofAppRunner);
 var app = new ofApp();
 
 app.mousePressed = function () {
-    var app2 = ofGetAppPtr();
-    app2.mousePressed = function () { console.log("hello old!"); };
-    console.log("hello new!");
+    var ptr = ofGetWindowPtr();
+    ptr.setWindowTitle("new title!");
+    ptr.
 }
 
 ofSetupOpenGL(800, 600);

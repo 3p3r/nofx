@@ -8,9 +8,7 @@ namespace nofx
         NAN_METHOD(nofx_ofGetWindowMode)
         {
         
-            //ofGetWindowMode(...);
-        
-            NanReturnUndefined();
+			NanReturnValue(ofGetWindowMode());
         } // !nofx_ofGetWindowMode
     } // !namespace AppRunner
 } // !namespace nofx

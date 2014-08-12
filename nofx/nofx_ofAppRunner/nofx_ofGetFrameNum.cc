@@ -8,9 +8,8 @@ namespace nofx
         NAN_METHOD(nofx_ofGetFrameNum)
         {
         
-            //ofGetFrameNum(...);
-        
-            NanReturnUndefined();
+			NanReturnValue(ofGetFrameNum());
+
         } // !nofx_ofGetFrameNum
     } // !namespace AppRunner
 } // !namespace nofx

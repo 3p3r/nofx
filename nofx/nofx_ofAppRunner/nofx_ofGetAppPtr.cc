@@ -12,8 +12,7 @@ namespace nofx
         NAN_METHOD(nofx_ofGetAppPtr)
         {
 
-			Local<Value> argv[] = { v8::Null(Isolate::GetCurrent()) };
-			auto JsAppPtr = NanNew(JsOfBaseApp)->Call(args.This(), 0, nullptr);
+			auto JsAppPtr = DepNewInstance(DEP_ofApp);
 			node::ObjectWrap::Unwrap<OfAppWrap>(JsAppPtr->ToObject())->SetWrapped((OfAppImpl*)ofGetAppPtr());
         
 			NanReturnValue(JsAppPtr);
