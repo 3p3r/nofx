@@ -1,29 +1,29 @@
 <?php
-$className = "ofAppBaseWindow";
-$methods = array(
-    "disableSetupScreen",
-    "doesHWOrientation",
-    "enableSetupScreen",
-    "getHeight",
-    "getOrientation",
-    "getScreenSize",
-    "getWidth",
-    "getWindowMode",
-    "getWindowPosition",
-    "getWindowSize",
-    "hideCursor",
-    "initializeWindow",
-    "runAppViaInfiniteLoop",
-    "setFullscreen",
-    "setOrientation",
-    "setVerticalSync",
-    "setWindowPosition",
-    "setWindowShape",
-    "setWindowTitle",
-    "setupOpenGL",
-    "showCursor",
-    "toggleFullscreen"
-);
+require_once("phpQuery/phpQuery.php");
+$className = lcfirst($_GET["className"]);
+$url = $_GET["url"];
+$ofDocPageStr = file_get_contents($url);
+$ofDocPage = phpQuery::newDocument($ofDocPageStr);
+$methods = array();
+$functions = array();
+$variables = array();
+foreach($ofDocPage['ul.functionslist li a'] as $node) {
+    if($node->nodeValue != $className."()") {
+        if(substr($node->nodeValue, 0, 2) == "of" && substr($node->nodeValue, -2) == "()") {
+            //this is a global function
+            array_push($functions, str_replace("()", "", $node->nodeValue ));
+        } else if (substr($node->nodeValue, -2) == "()") {
+            //this is a class method
+            array_push($methods, str_replace("()", "", $node->nodeValue ));
+        } else if(!strstr($node->nodeValue, "operator")) {
+            //this is a variable
+            $temp = explode(" ", $node->nodeValue);
+            array_push($variables, end($temp) );
+        } else {
+            //this is either unknown or an operator overload
+        }
+    }
+}
 
 function makeHeader($methods, $className) {
     $lClassName = lcfirst($className);
@@ -82,7 +82,7 @@ function makeSource($methods, $className) {
     $methodsTmpl = "";
     foreach($methods as $method) {
         $protoTmpl .= "            NanSetPrototypeTemplate(tpl, NanNew(\"".lcfirst($method)."\"), NanNew<v8::FunctionTemplate>(".ucfirst($method)."), v8::ReadOnly);\n";
-        
+
         $methodsTmpl .= "\n        //---------------------------------------------------------\n";
         $methodsTmpl .= "        NAN_METHOD({$uClassName}Wrap::".ucfirst($method).")\n";
         $methodsTmpl .= "        {\n";
@@ -187,10 +187,14 @@ namespace nofx
 
 NODE_MODULE_CONTEXT_AWARE(nofx_{$lClassName}, nofx::{$uClassName}::Initialize)
 TMP;
-return $template;
+    return $template;
 }
 
-file_put_contents("nofx_".lcfirst($className).".h", makeHeader($methods, $className));
-file_put_contents("nofx_".lcfirst($className).".cc", makeSource($methods, $className));
-file_put_contents("main.cc", makeMain($className));
+function savePath($filename) {
+    return dirname($_SERVER["SCRIPT_FILENAME"]).PATH_SEPARATOR.$filename;
+}
+
+file_put_contents(savePath("nofx_".lcfirst($className).".h"), makeHeader($methods, $className));
+file_put_contents(savePath("nofx_".lcfirst($className).".cc"), makeSource($methods, $className));
+file_put_contents(savePath("main.cc"), makeMain($className));
 ?>
