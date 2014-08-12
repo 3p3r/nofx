@@ -8,7 +8,7 @@ namespace nofx
         NAN_METHOD(nofx_ofSleepMillis)
         {
         
-            //ofSleepMillis(...);
+            ofSleepMillis(args[0]->Int32Value());
         
             NanReturnUndefined();
         } // !nofx_ofSleepMillis

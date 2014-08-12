@@ -8,7 +8,7 @@ namespace nofx
         NAN_METHOD(nofx_ofShowCursor)
         {
         
-            //ofShowCursor(...);
+            ofShowCursor();
         
             NanReturnUndefined();
         } // !nofx_ofShowCursor

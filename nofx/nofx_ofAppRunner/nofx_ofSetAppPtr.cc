@@ -1,5 +1,6 @@
 #include "nofx_ofSetAppPtr.h"
 #include "ofAppRunner.h"
+#include "..\nofx_ofBaseApp\nofx_ofApp.h"
 
 namespace nofx
 {
@@ -8,7 +9,7 @@ namespace nofx
         NAN_METHOD(nofx_ofSetAppPtr)
         {
         
-            //ofSetAppPtr(...);
+			ofSetAppPtr( static_cast<std::shared_ptr<ofBaseApp>>( node::ObjectWrap::Unwrap<BaseApp::OfAppWrap>(args[0]->ToObject())->GetWrapped() ));
         
             NanReturnUndefined();
         } // !nofx_ofSetAppPtr

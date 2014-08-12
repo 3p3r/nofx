@@ -8,9 +8,7 @@ namespace nofx
         NAN_METHOD(nofx_ofGetWindowWidth)
         {
         
-            //ofGetWindowWidth(...);
-        
-            NanReturnUndefined();
+			NanReturnValue(ofGetWindowWidth());
         } // !nofx_ofGetWindowWidth
     } // !namespace AppRunner
 } // !namespace nofx

@@ -8,7 +8,7 @@ namespace nofx
         NAN_METHOD(nofx_ofSetWindowTitle)
         {
         
-            //ofSetWindowTitle(...);
+            ofSetWindowTitle(*NanUtf8String(args[0]));
         
             NanReturnUndefined();
         } // !nofx_ofSetWindowTitle

@@ -8,7 +8,7 @@ namespace nofx
         NAN_METHOD(nofx_ofSetOrientation)
         {
         
-            //ofSetOrientation(...);
+            ofSetOrientation((ofOrientation) args[0]->Uint32Value());
         
             NanReturnUndefined();
         } // !nofx_ofSetOrientation

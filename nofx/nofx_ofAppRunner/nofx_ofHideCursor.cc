@@ -8,7 +8,7 @@ namespace nofx
         NAN_METHOD(nofx_ofHideCursor)
         {
         
-            //ofHideCursor(...);
+            ofHideCursor();
         
             NanReturnUndefined();
         } // !nofx_ofHideCursor

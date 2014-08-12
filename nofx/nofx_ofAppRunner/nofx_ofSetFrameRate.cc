@@ -8,7 +8,7 @@ namespace nofx
         NAN_METHOD(nofx_ofSetFrameRate)
         {
         
-            //ofSetFrameRate(...);
+            ofSetFrameRate(args[0]->Uint32Value());
         
             NanReturnUndefined();
         } // !nofx_ofSetFrameRate

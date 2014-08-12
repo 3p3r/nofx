@@ -8,7 +8,7 @@ namespace nofx
         NAN_METHOD(nofx_ofSetWindowShape)
         {
         
-            //ofSetWindowShape(...);
+			ofSetWindowShape(args[0]->Int32Value(), args[1]->Int32Value());
         
             NanReturnUndefined();
         } // !nofx_ofSetWindowShape

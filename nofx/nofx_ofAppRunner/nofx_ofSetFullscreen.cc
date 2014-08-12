@@ -8,7 +8,7 @@ namespace nofx
         NAN_METHOD(nofx_ofSetFullscreen)
         {
         
-            //ofSetFullscreen(...);
+            ofSetFullscreen(args[0]->BooleanValue());
         
             NanReturnUndefined();
         } // !nofx_ofSetFullscreen
