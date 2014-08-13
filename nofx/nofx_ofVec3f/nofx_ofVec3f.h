@@ -17,8 +17,8 @@ namespace nofx
         public:
             static void Initialize(v8::Handle<Object> target);
             ofVec3f* GetWrapped() const { return internal_.get(); };
-            ofVec3f* GetWrapped() { return internal_.get(); };
             void SetWrapped(ofVec3f* n)  { internal_.reset(n); };
+			void SetWrapped(ofVec3f& n)  { if (!internal_) { internal_.reset(new ofVec3f()); } internal_.get()->set(n); };
             static const Persistent<Function>& Factory() { return constructor; }
         private:
             OfVec3fWrap();

@@ -6,6 +6,8 @@ namespace nofx
 {
 	namespace OfVec3f
 	{
+		using node::ObjectWrap;
+
 		Persistent<Function> OfVec3fWrap::constructor;
 
 		OfVec3fWrap::OfVec3fWrap()
@@ -188,95 +190,267 @@ namespace nofx
 		//---------------------------------------------------------
 		NAN_METHOD(OfVec3fWrap::Align)
 		{
-			auto self = node::ObjectWrap::Unwrap<OfVec3fWrap>(args.This())->GetWrapped();
+			auto self = ObjectWrap::Unwrap<OfVec3fWrap>(args.This())->GetWrapped();
 			if (self != nullptr)
 			{
-				//self->align();
+				auto target = ObjectWrap::Unwrap<OfVec3fWrap>(args[0]->ToObject())->GetWrapped();
+				if (args.Length() == 1) {
+					NanReturnValue( self->align(*target) );
+				}
+				else
+				{
+					NanReturnValue(self->align(*target, args[1]->NumberValue()) );
+				}
 			}
+
+			NanReturnUndefined();
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfVec3fWrap::AlignRad)
 		{
-			//implementation
+			auto self = ObjectWrap::Unwrap<OfVec3fWrap>(args.This())->GetWrapped();
+			if (self != nullptr)
+			{
+				auto target = ObjectWrap::Unwrap<OfVec3fWrap>(args[0]->ToObject())->GetWrapped();
+				if (args.Length() == 1) {
+					NanReturnValue(self->alignRad(*target));
+				}
+				else
+				{
+					NanReturnValue(self->alignRad(*target, args[1]->NumberValue()));
+				}
+			}
+
+			NanReturnUndefined();
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfVec3fWrap::Angle)
 		{
-			//implementation
+			auto self = ObjectWrap::Unwrap<OfVec3fWrap>(args.This())->GetWrapped();
+			if (self != nullptr)
+			{
+				auto target = ObjectWrap::Unwrap<OfVec3fWrap>(args[0]->ToObject())->GetWrapped();
+				if (args.Length() == 1) {
+					NanReturnValue(self->angle(*target));
+				}
+			}
+
+			NanReturnUndefined();
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfVec3fWrap::AngleRad)
 		{
-			//implementation
+			auto self = ObjectWrap::Unwrap<OfVec3fWrap>(args.This())->GetWrapped();
+			if (self != nullptr)
+			{
+				auto target = ObjectWrap::Unwrap<OfVec3fWrap>(args[0]->ToObject())->GetWrapped();
+				if (args.Length() == 1) {
+					NanReturnValue(self->angleRad(*target));
+				}
+			}
+
+			NanReturnUndefined();
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfVec3fWrap::Average)
 		{
-			//implementation
+			auto self = ObjectWrap::Unwrap<OfVec3fWrap>(args.This())->GetWrapped();
+			if (self != nullptr)
+			{
+				auto& points = args[0]->ToObject();
+				auto& props = points->GetPropertyNames();
+
+				std::vector<ofVec3f> points_to_pass;
+				points_to_pass.reserve(props->Length());
+
+				for (auto it = 0; it < props->Length(); ++it)
+				{
+					points_to_pass.push_back(*ObjectWrap::Unwrap<OfVec3fWrap>(points->Get(props->Get(it))->ToObject())->GetWrapped());
+				}
+
+				self->average(&points_to_pass[0], points_to_pass.size());
+				NanReturnValue(args.This());
+			}
+			else
+			{
+				NanReturnUndefined();
+			}
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfVec3fWrap::Cross)
 		{
-			//implementation
+			auto self = ObjectWrap::Unwrap<OfVec3fWrap>(args.This())->GetWrapped();
+			if (self != nullptr)
+			{
+				self->cross(*ObjectWrap::Unwrap<OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
+				NanReturnValue(args.This());
+			}
+			else
+			{
+				NanReturnUndefined();
+			}
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfVec3fWrap::Distance)
 		{
-			//implementation
+			auto self = ObjectWrap::Unwrap<OfVec3fWrap>(args.This())->GetWrapped();
+			if (self != nullptr)
+			{
+				NanReturnValue(self->distance(*ObjectWrap::Unwrap<OfVec3fWrap>(args[0]->ToObject())->GetWrapped()));
+			}
+			else
+			{
+				NanReturnUndefined();
+			}
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfVec3fWrap::Dot)
 		{
-			//implementation
+			auto self = ObjectWrap::Unwrap<OfVec3fWrap>(args.This())->GetWrapped();
+			if (self != nullptr)
+			{
+				NanReturnValue(self->dot(*ObjectWrap::Unwrap<OfVec3fWrap>(args[0]->ToObject())->GetWrapped()));
+			}
+			else
+			{
+				NanReturnUndefined();
+			}
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfVec3fWrap::GetCrossed)
 		{
-			//implementation
+			auto self = ObjectWrap::Unwrap<OfVec3fWrap>(args.This())->GetWrapped();
+			if (self != nullptr)
+			{
+				Local<Value> argv[] = { v8::Null(v8::Isolate::GetCurrent()) };
+				auto newInst = NanNew(Factory())->NewInstance(1, argv);
+				ObjectWrap::Unwrap<OfVec3fWrap>(newInst)->SetWrapped(self->getCrossed(*ObjectWrap::Unwrap<OfVec3fWrap>(args[0]->ToObject())->GetWrapped()));
+				NanReturnValue(newInst);
+			}
+			else
+			{
+				NanReturnUndefined();
+			}
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfVec3fWrap::GetInterpolated)
 		{
-			//implementation
+			auto self = ObjectWrap::Unwrap<OfVec3fWrap>(args.This())->GetWrapped();
+			if (self != nullptr)
+			{
+				Local<Value> argv[] = { v8::Null(v8::Isolate::GetCurrent()) };
+				auto newInst = NanNew(Factory())->NewInstance(1, argv);
+				ObjectWrap::Unwrap<OfVec3fWrap>(newInst)->SetWrapped(
+					self->getInterpolated(
+					*ObjectWrap::Unwrap<OfVec3fWrap>(
+					args[0]->ToObject())->GetWrapped(), args[1]->NumberValue()));
+				NanReturnValue(newInst);
+			}
+			else
+			{
+				NanReturnUndefined();
+			}
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfVec3fWrap::GetLimited)
 		{
-			//implementation
+			auto self = ObjectWrap::Unwrap<OfVec3fWrap>(args.This())->GetWrapped();
+			if (self != nullptr)
+			{
+				Local<Value> argv[] = { v8::Null(v8::Isolate::GetCurrent()) };
+				auto newInst = NanNew(Factory())->NewInstance(1, argv);
+				ObjectWrap::Unwrap<OfVec3fWrap>(newInst)->SetWrapped(
+					self->getLimited(args[0]->NumberValue()));
+				NanReturnValue(newInst);
+			}
+			else
+			{
+				NanReturnUndefined();
+			}
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfVec3fWrap::GetMapped)
 		{
-			//implementation
+			auto self = ObjectWrap::Unwrap<OfVec3fWrap>(args.This())->GetWrapped();
+			if (self != nullptr)
+			{
+				Local<Value> argv[] = { v8::Null(v8::Isolate::GetCurrent()) };
+				auto newInst = NanNew(Factory())->NewInstance(1, argv);
+				ObjectWrap::Unwrap<OfVec3fWrap>(newInst)->SetWrapped(
+					self->getMapped(
+					*ObjectWrap::Unwrap<OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
+					*ObjectWrap::Unwrap<OfVec3fWrap>(args[1]->ToObject())->GetWrapped(),
+					*ObjectWrap::Unwrap<OfVec3fWrap>(args[2]->ToObject())->GetWrapped(),
+					*ObjectWrap::Unwrap<OfVec3fWrap>(args[3]->ToObject())->GetWrapped()
+					));
+				NanReturnValue(newInst);
+			}
+			else
+			{
+				NanReturnUndefined();
+			}
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfVec3fWrap::GetMiddle)
 		{
-			//implementation
+			auto self = ObjectWrap::Unwrap<OfVec3fWrap>(args.This())->GetWrapped();
+			if (self != nullptr)
+			{
+				Local<Value> argv[] = { v8::Null(v8::Isolate::GetCurrent()) };
+				auto newInst = NanNew(Factory())->NewInstance(1, argv);
+				ObjectWrap::Unwrap<OfVec3fWrap>(newInst)->SetWrapped(self->getMiddle(*ObjectWrap::Unwrap<OfVec3fWrap>(args[0]->ToObject())->GetWrapped()));
+				NanReturnValue(newInst);
+			}
+			else
+			{
+				NanReturnUndefined();
+			}
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfVec3fWrap::GetNormalized)
 		{
-			//implementation
+			auto self = ObjectWrap::Unwrap<OfVec3fWrap>(args.This())->GetWrapped();
+			if (self != nullptr)
+			{
+				Local<Value> argv[] = { v8::Null(v8::Isolate::GetCurrent()) };
+				auto newInst = NanNew(Factory())->NewInstance(1, argv);
+				ObjectWrap::Unwrap<OfVec3fWrap>(newInst)->SetWrapped(self->getNormalized());
+				NanReturnValue(newInst);
+			}
+			else
+			{
+				NanReturnUndefined();
+			}
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfVec3fWrap::GetPerpendicular)
 		{
-			//implementation
+			auto self = ObjectWrap::Unwrap<OfVec3fWrap>(args.This())->GetWrapped();
+			if (self != nullptr)
+			{
+				Local<Value> argv[] = { v8::Null(v8::Isolate::GetCurrent()) };
+				auto newInst = NanNew(Factory())->NewInstance(1, argv);
+				ObjectWrap::Unwrap<OfVec3fWrap>(newInst)->SetWrapped(self->getPerpendicular(*ObjectWrap::Unwrap<OfVec3fWrap>(args[0]->ToObject())->GetWrapped()));
+				NanReturnValue(newInst);
+			}
+			else
+			{
+				NanReturnUndefined();
+			}
 		}
 
 		//---------------------------------------------------------
