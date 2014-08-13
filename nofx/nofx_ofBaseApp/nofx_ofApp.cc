@@ -1,5 +1,6 @@
 #include "nofx_ofApp.h"
 #include "nofx_noop.h"
+#include "..\nofx\nofx_types.h"
 
 namespace nofx
 {
@@ -212,7 +213,7 @@ namespace nofx
 			inst->SetAccessor(NanNew("messageReceived"), GetMessageReceived, SetMessageReceived);
 			inst->SetAccessor(NanNew("dragged"), GetDragged, SetDragged);
 
-
+			NanSetPrototypeTemplate(tpl, NanNew("NOFX_TYPE"), NanNew(NOFX_TYPES::OFBASEAPP), v8::ReadOnly);
 			NanAssignPersistent(constructor, tpl->GetFunction());
 			exports->Set(NanNew<String>("ofApp"), tpl->GetFunction());
 		}

@@ -12,7 +12,7 @@ foreach($ofDocPage['ul.functionslist li a'] as $node) {
         if(substr($node->nodeValue, 0, 2) == "of" && substr($node->nodeValue, -2) == "()") {
             //this is a global function
             array_push($functions, str_replace("()", "", $node->nodeValue ));
-        } else if (substr($node->nodeValue, -2) == "()") {
+        } else if (substr($node->nodeValue, -2) == "()" && !strstr($node->nodeValue, "operator")) {
             //this is a class method
             array_push($methods, str_replace("()", "", $node->nodeValue ));
         } else if(!strstr($node->nodeValue, "operator")) {
@@ -24,20 +24,31 @@ foreach($ofDocPage['ul.functionslist li a'] as $node) {
         }
     }
 }
-
-function makeHeader($methods, $className) {
+var_dump($methods);
+var_dump($functions);
+var_dump($variables);
+function makeHeader($methods, $variables, $className) {
     $lClassName = lcfirst($className);
     $uClassName = ucfirst($className);
     $guard = strtoupper(preg_replace('/(?<=\\w)(?=[A-Z])/',"_$1", $className));
     $methodsTmpl = "";
     foreach($methods as $method) {
-        $methodsTmpl .= "            static NAN_METHOD(".ucfirst($method).");\n";
+        $methodsTmpl .= "\n            static NAN_METHOD(".ucfirst($method).");";
     }
+    
+    $getters = "";
+    $setters = "";
+    foreach($variables as $var) {
+        $getters .= "\n            static NAN_GETTER(Get".ucfirst($var).");";
+        $setters .= "\n            static NAN_SETTER(Set".ucfirst($var).");";
+    }
+    
     $template = <<<TMP
 #ifndef _NOFX_{$guard}_H_
 #define _NOFX_{$guard}_H_
 
 #include "globals.h"
+#include <memory>
 #include "{$className}.h"
 
 using namespace v8;
@@ -52,6 +63,7 @@ namespace nofx
         public:
             static void Initialize(v8::Handle<Object> target);
             {$lClassName}* GetWrapped() const { return internal_.get(); };
+            {$lClassName}* GetWrapped() { return internal_.get(); };
             void SetWrapped({$lClassName}* n)  { internal_.reset(n); };
             static const Persistent<Function>& Factory() { return constructor; }
         private:
@@ -59,7 +71,8 @@ namespace nofx
             {$uClassName}Wrap({$lClassName}*);
             ~{$uClassName}Wrap() {};
 
-            // Methods
+            {$getters}
+            {$setters}
 {$methodsTmpl}
             static Persistent<Function> constructor;
             static NAN_METHOD(New);
@@ -75,13 +88,14 @@ TMP;
     return $template;
 }
 
-function makeSource($methods, $className) {
+function makeSource($methods, $variables, $className) {
     $lClassName = lcfirst($className);
     $uClassName = ucfirst($className);
+    $uuClassName = strtoupper($className);
     $protoTmpl = "";
     $methodsTmpl = "";
     foreach($methods as $method) {
-        $protoTmpl .= "            NanSetPrototypeTemplate(tpl, NanNew(\"".lcfirst($method)."\"), NanNew<v8::FunctionTemplate>(".ucfirst($method)."), v8::ReadOnly);\n";
+        $protoTmpl .= "\n            NanSetPrototypeTemplate(tpl, NanNew(\"".lcfirst($method)."\"), NanNew<v8::FunctionTemplate>(".ucfirst($method)."), v8::ReadOnly);";
 
         $methodsTmpl .= "\n        //---------------------------------------------------------\n";
         $methodsTmpl .= "        NAN_METHOD({$uClassName}Wrap::".ucfirst($method).")\n";
@@ -89,9 +103,34 @@ function makeSource($methods, $className) {
         $methodsTmpl .= "            //implementation\n";
         $methodsTmpl .= "        }\n";
     }
+    
+    $mutators = "";
+    $getters = "";
+    $setters = "";
+    foreach($variables as $var) {
+        $mutators .= "\n            inst->SetAccessor(NanNew(\"".$var."\"), {$uClassName}Wrap::Get".ucfirst($var).", {$uClassName}Wrap::Set".ucfirst($var).");";
+        $getters .= "\n            NAN_GETTER({$uClassName}Wrap::Get".ucfirst($var).")
+            {
+                const auto self = ObjectWrap::Unwrap<{$uClassName}Wrap>(args.This())->GetWrapped();
+                if(self != nullptr) {
+                    NanReturnValue(self->".$var.");
+                }
+            }
+            //----------------------------------------------------\n";
+        $setters .= "\n            NAN_SETTER({$uClassName}Wrap::Set".ucfirst($var).")
+            {
+                auto self = ObjectWrap::Unwrap<{$uClassName}Wrap>(args.This())->GetWrapped();
+                if(self != nullptr) {
+                    self->".$var." = value->NumberValue();
+                }
+            }
+            //----------------------------------------------------\n";
+    }
+    
     $template = <<<TMP
 #include "nofx_{$lClassName}.h"
 #include "nofx_noop.h"
+#include "..\\nofx\\nofx_types.h"
 
 namespace nofx
 {
@@ -100,7 +139,7 @@ namespace nofx
         Persistent<Function> {$uClassName}Wrap::constructor;
 
         {$uClassName}Wrap::{$uClassName}Wrap()
-            //: internal_(...) //implement me
+            : internal_(nullptr)
         {}
 
         //--------------------------------------------------------------
@@ -148,12 +187,16 @@ namespace nofx
             auto inst = tpl->InstanceTemplate();
             inst->SetInternalFieldCount(1);
 
+{$mutators}
 {$protoTmpl}
 
+            NanSetPrototypeTemplate(tpl, NanNew("NOFX_TYPE"), NanNew(NOFX_TYPES::{$uuClassName}), v8::ReadOnly);
             NanAssignPersistent(constructor, tpl->GetFunction());
             exports->Set(NanNew<String>("{$lClassName}"), tpl->GetFunction());
         }
 
+        {$getters}
+        {$setters}
         {$methodsTmpl}
     } //!namespace {$uClassName}
 } //!namespace nofx
@@ -191,10 +234,10 @@ TMP;
 }
 
 function savePath($filename) {
-    return dirname($_SERVER["SCRIPT_FILENAME"]).PATH_SEPARATOR.$filename;
+    return dirname($_SERVER["SCRIPT_FILENAME"])."/".$filename;
 }
 
-file_put_contents(savePath("nofx_".lcfirst($className).".h"), makeHeader($methods, $className));
-file_put_contents(savePath("nofx_".lcfirst($className).".cc"), makeSource($methods, $className));
+file_put_contents(savePath("nofx_".lcfirst($className).".h"), makeHeader($methods, $variables, $className));
+file_put_contents(savePath("nofx_".lcfirst($className).".cc"), makeSource($methods, $variables, $className));
 file_put_contents(savePath("main.cc"), makeMain($className));
 ?>

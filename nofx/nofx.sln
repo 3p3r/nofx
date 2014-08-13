@@ -20,6 +20,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nofx_ofAppRunner", "nofx_of
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nofx_ofAppBaseWindow", "nofx_ofAppBaseWindow\nofx_ofAppBaseWindow.vcxproj", "{24B7533E-0FC5-4EF0-AFCB-01CB136CE336}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nofx_ofVec3f", "nofx_ofVec3f\nofx_ofVec3f.vcxproj", "{12F3FDE0-89C5-4604-BE1A-55F749104411}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -46,6 +48,10 @@ Global
 		{24B7533E-0FC5-4EF0-AFCB-01CB136CE336}.Debug|Win32.Build.0 = Debug|Win32
 		{24B7533E-0FC5-4EF0-AFCB-01CB136CE336}.Release|Win32.ActiveCfg = Release|Win32
 		{24B7533E-0FC5-4EF0-AFCB-01CB136CE336}.Release|Win32.Build.0 = Release|Win32
+		{12F3FDE0-89C5-4604-BE1A-55F749104411}.Debug|Win32.ActiveCfg = Debug|Win32
+		{12F3FDE0-89C5-4604-BE1A-55F749104411}.Debug|Win32.Build.0 = Debug|Win32
+		{12F3FDE0-89C5-4604-BE1A-55F749104411}.Release|Win32.ActiveCfg = Release|Win32
+		{12F3FDE0-89C5-4604-BE1A-55F749104411}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

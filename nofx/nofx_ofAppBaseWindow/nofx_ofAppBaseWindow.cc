@@ -1,6 +1,7 @@
 #include "nofx_ofAppBaseWindow.h"
 #include "nofx_noop.h"
 #include "..\nofx_ofBaseApp\nofx_ofApp.h"
+#include "..\nofx\nofx_types.h"
 
 namespace nofx
 {
@@ -79,7 +80,7 @@ namespace nofx
             NanSetPrototypeTemplate(tpl, NanNew("showCursor"), NanNew<v8::FunctionTemplate>(ShowCursor), v8::ReadOnly);
             NanSetPrototypeTemplate(tpl, NanNew("toggleFullscreen"), NanNew<v8::FunctionTemplate>(ToggleFullscreen), v8::ReadOnly);
 
-
+			NanSetPrototypeTemplate(tpl, NanNew("NOFX_TYPE"), NanNew(NOFX_TYPES::OFAPPBASEWINDOW), v8::ReadOnly);
             NanAssignPersistent(constructor, tpl->GetFunction());
             exports->Set(NanNew<String>("ofAppBaseWindow"), tpl->GetFunction());
         }
