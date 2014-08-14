@@ -17,10 +17,10 @@
     <LocalDebuggerCommandArguments>$(ProjectDir)ofApp.js</LocalDebuggerCommandArguments>
   </PropertyGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{12F3FDE0-89C5-4604-BE1A-55F749104411}</ProjectGuid>
+    <ProjectGuid>{9B231EDD-91A2-4B9E-B885-74A0EE05FD49}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
-    <RootNamespace>nofx_ofVec3f</RootNamespace>
-    <ProjectName>nofx_ofVec3f</ProjectName>
+    <RootNamespace>nofx_pointer</RootNamespace>
+    <ProjectName>nofx_pointer</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -108,15 +108,10 @@ IF DEFINED NOFX_OF exit(0) ELSE exit(1)</Command>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cc" />
-    <ClCompile Include="nofx_dependencies.cc" />
-    <ClCompile Include="nofx_noop.cc" />
-    <ClCompile Include="nofx_ofVec3f.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="globals.h" />
-    <ClInclude Include="nofx_dependencies.h" />
-    <ClInclude Include="nofx_noop.h" />
-    <ClInclude Include="nofx_ofVec3f.h" />
+    <ClInclude Include="nofx_pointer.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

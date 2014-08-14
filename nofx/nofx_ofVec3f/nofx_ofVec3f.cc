@@ -1,6 +1,7 @@
 #include "nofx_ofVec3f.h"
 #include "nofx_noop.h"
 #include "..\nofx\nofx_types.h"
+#include "..\nofx_pointer\nofx_pointer.h"
 
 namespace nofx
 {
@@ -117,11 +118,22 @@ namespace nofx
 			NanSetPrototypeTemplate(tpl, NanNew("squareDistance"), NanNew<v8::FunctionTemplate>(SquareDistance), v8::ReadOnly);
 			NanSetPrototypeTemplate(tpl, NanNew("zero"), NanNew<v8::FunctionTemplate>(Zero), v8::ReadOnly);
 
+			inst->SetIndexedPropertyHandler(OfVec3fWrap::IndexGetter, OfVec3fWrap::IndexSetter);
+
 			NanSetPrototypeTemplate(tpl, NanNew("NOFX_TYPE"), NanNew(NOFX_TYPES::OFVEC3F), v8::ReadOnly);
 			NanAssignPersistent(constructor, tpl->GetFunction());
 			exports->Set(NanNew<String>("ofVec3f"), tpl->GetFunction());
 		}
 
+		NAN_INDEX_GETTER(OfVec3fWrap::IndexGetter)
+		{
+			NanReturnValue(ObjectWrap::Unwrap<OfVec3fWrap>(args.This())->GetWrapped()->getPtr()[index]);
+		}
+		NAN_INDEX_SETTER(OfVec3fWrap::IndexSetter)
+		{
+			auto self = ObjectWrap::Unwrap<OfVec3fWrap>(args.This())->GetWrapped();
+			self->getPtr()[index] = value->NumberValue();
+		}
 
 		NAN_GETTER(OfVec3fWrap::GetDIM)
 		{
@@ -263,6 +275,11 @@ namespace nofx
 			{
 				auto& points = args[0]->ToObject();
 				auto& props = points->GetPropertyNames();
+
+				if (props->Length() == 0)
+				{
+					NanReturnUndefined();
+				}
 
 				std::vector<ofVec3f> points_to_pass;
 				points_to_pass.reserve(props->Length());
@@ -456,7 +473,11 @@ namespace nofx
 		//---------------------------------------------------------
 		NAN_METHOD(OfVec3fWrap::GetPtr)
 		{
-			//implementation
+			auto JsFloatPtr = DepNewInstance(DEP_floatPtr);
+			auto PtrSelf = ObjectWrap::Unwrap<nofx::Pointer::PointerWrap<float>>(JsFloatPtr->ToObject());
+			PtrSelf->SetDisplayLength(3);
+			PtrSelf->SetWrapped(ObjectWrap::Unwrap<OfVec3fWrap>(args.This())->GetWrapped()->getPtr());
+			NanReturnValue(JsFloatPtr);
 		}
 
 		//---------------------------------------------------------

@@ -36,6 +36,9 @@ namespace nofx
             static NAN_SETTER(SetY);
             static NAN_SETTER(SetZ);
 
+			static NAN_INDEX_GETTER(IndexGetter);
+			static NAN_INDEX_SETTER(IndexSetter);
+
             static NAN_METHOD(Align);
             static NAN_METHOD(AlignRad);
             static NAN_METHOD(Angle);
