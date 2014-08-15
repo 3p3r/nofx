@@ -102,8 +102,8 @@ function makeSource($methods, $variables, $className) {
         $methodsTmpl .= "\n        //---------------------------------------------------------\n";
         $methodsTmpl .= "        NAN_METHOD({$uClassName}Wrap::".ucfirst($method).")\n";
         $methodsTmpl .= "        {\n";
-        $methodsTmpl .= "            auto self = ObjectWrap::Unwrap<OfVec3fWrap>(args.This())->GetWrapped();\n";
-        $methodsTmpl .= "            //auto target = ObjectWrap::Unwrap<OfVec3fWrap>(args[0]->ToObject())->GetWrapped();\n";
+        $methodsTmpl .= "            auto self = ObjectWrap::Unwrap<{$uClassName}Wrap>(args.This())->GetWrapped();\n";
+        $methodsTmpl .= "            //auto target = ObjectWrap::Unwrap<{$uClassName}Wrap>(args[0]->ToObject())->GetWrapped();\n";
         $methodsTmpl .= "            //implementation\n";
         $methodsTmpl .= "            NanReturnUndefined();\n";
         $methodsTmpl .= "        }\n";
@@ -239,16 +239,15 @@ TMP;
 function savePath($filename) {
     return dirname($_SERVER["SCRIPT_FILENAME"])."/".$filename;
 }
-if(!isset($_GET["build"])) {
-    die();
+if(isset($_GET["build"])) {
+    file_put_contents(savePath("nofx_".lcfirst($className).".h"), makeHeader($methods, $variables, $className));
+    file_put_contents(savePath("nofx_".lcfirst($className).".cc"), makeSource($methods, $variables, $className));
+    file_put_contents(savePath("main.cc"), makeMain($className));
+    die("done");
 }
 else {
     var_dump($methods);
     var_dump($variables);
     var_dump($functions);
 }
-file_put_contents(savePath("nofx_".lcfirst($className).".h"), makeHeader($methods, $variables, $className));
-file_put_contents(savePath("nofx_".lcfirst($className).".cc"), makeSource($methods, $variables, $className));
-file_put_contents(savePath("main.cc"), makeMain($className));
-die("done");
 ?>

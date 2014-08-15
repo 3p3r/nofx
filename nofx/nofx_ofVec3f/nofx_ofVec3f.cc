@@ -2,6 +2,7 @@
 #include "..\nofx\nofx_types.h"
 #include "..\nofx_pointer\nofx_pointer.h"
 #include "..\nofx_ofVec2f\nofx_ofVec2f.h"
+#include "..\nofx_ofVec4f\nofx_ofVec4f.h"
 
 namespace nofx
 {
@@ -27,7 +28,6 @@ namespace nofx
 			if (args.IsConstructCall()) {
 				OfVec3fWrap* obj;
 
-				//depends on ofVec4f
 				if (args.Length() == 0)
 				{
 					obj = new OfVec3fWrap(new ofVec3f());
@@ -37,6 +37,10 @@ namespace nofx
 					if (args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() == NOFX_TYPES::OFVEC2F)
 					{
 						obj = new OfVec3fWrap(new ofVec3f(*ObjectWrap::Unwrap<nofx::OfVec2f::OfVec2fWrap>(args[0]->ToObject())->GetWrapped()));
+					}
+					else if (args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() == NOFX_TYPES::OFVEC4F)
+					{
+						obj = new OfVec3fWrap(new ofVec3f(*ObjectWrap::Unwrap<nofx::OfVec4f::OfVec4fWrap>(args[0]->ToObject())->GetWrapped()));
 					}
 					else
 					{
