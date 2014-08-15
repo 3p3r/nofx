@@ -8,7 +8,7 @@ namespace nofx
         NAN_METHOD(nofx_ofGetWindowRect)
         {
         
-            //ofGetWindowRect(...);
+			//ofGetWindowRect(...);
         
             NanReturnUndefined();
         } // !nofx_ofGetWindowRect

@@ -12,7 +12,8 @@ var ofAppBaseWindow = require("../bin/nofx_ofAppBaseWindow").dependencies({
 
 var ofAppRunner = require("../bin/nofx_ofAppRunner").dependencies({
     "ofApp" : function () { return new ofApp(null); },
-    "ofAppBaseWindow": function () { return new ofAppBaseWindow(null); }
+    "ofAppBaseWindow": function () { return new ofAppBaseWindow(null); },
+    "ofVec3f": function () { return new ofVec3f(null); }
 });
 
 // We do this to avoid calling "this" on every API call

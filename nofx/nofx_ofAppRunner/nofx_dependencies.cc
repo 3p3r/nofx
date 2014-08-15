@@ -1,6 +1,7 @@
 #include "nofx_dependencies.h"
 
 v8::Persistent<v8::Function> DEP_ofApp;
+v8::Persistent<v8::Function> DEP_ofVec3f;
 v8::Persistent<v8::Function> DEP_ofAppBaseWindow;
 
 namespace nofx
@@ -19,6 +20,8 @@ namespace nofx
 				args[0]->ToObject()->Get(NanNew("ofApp"))));
 			NanAssignPersistent(DEP_ofAppBaseWindow, v8::Handle<v8::Function>::Cast(
 				args[0]->ToObject()->Get(NanNew("ofAppBaseWindow"))));
+			NanAssignPersistent(DEP_ofVec3f, v8::Handle<v8::Function>::Cast(
+				args[0]->ToObject()->Get(NanNew("ofVec3f"))));
         
             NanReturnValue(args.This());
         } // !nofx_dependencies
