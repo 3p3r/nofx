@@ -1,6 +1,7 @@
 #include "nofx_ofVec3f.h"
 #include "..\nofx\nofx_types.h"
 #include "..\nofx_pointer\nofx_pointer.h"
+#include "..\nofx_ofVec2f\nofx_ofVec2f.h"
 
 namespace nofx
 {
@@ -27,14 +28,20 @@ namespace nofx
 				OfVec3fWrap* obj;
 
 				//depends on ofVec4f
-				//depends on ofVec2f
 				if (args.Length() == 0)
 				{
 					obj = new OfVec3fWrap(new ofVec3f());
 				}
 				else if (args.Length() == 1)
 				{
-					obj = new OfVec3fWrap(new ofVec3f(args[0]->NumberValue()));
+					if (args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() == NOFX_TYPES::OFVEC2F)
+					{
+						obj = new OfVec3fWrap(new ofVec3f(*ObjectWrap::Unwrap<nofx::OfVec2f::OfVec2fWrap>(args[0]->ToObject())->GetWrapped()));
+					}
+					else
+					{
+						obj = new OfVec3fWrap(new ofVec3f(args[0]->NumberValue()));
+					}
 				}
 				else if (args.Length() == 2)
 				{
@@ -213,9 +220,7 @@ namespace nofx
 		{
 			auto self = ObjectWrap::Unwrap<OfVec3fWrap>(args.This())->GetWrapped();
 			auto target = ObjectWrap::Unwrap<OfVec3fWrap>(args[0]->ToObject())->GetWrapped();
-			if (args.Length() == 1) {
-				NanReturnValue(self->angle(*target));
-			}
+			NanReturnValue(self->angle(*target));
 		}
 
 		//---------------------------------------------------------
@@ -223,9 +228,7 @@ namespace nofx
 		{
 			auto self = ObjectWrap::Unwrap<OfVec3fWrap>(args.This())->GetWrapped();
 			auto target = ObjectWrap::Unwrap<OfVec3fWrap>(args[0]->ToObject())->GetWrapped();
-			if (args.Length() == 1) {
-				NanReturnValue(self->angleRad(*target));
-			}
+			NanReturnValue(self->angleRad(*target));
 		}
 
 		//---------------------------------------------------------

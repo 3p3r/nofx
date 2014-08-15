@@ -24,9 +24,7 @@ foreach($ofDocPage['ul.functionslist li a'] as $node) {
         }
     }
 }
-var_dump($methods);
-var_dump($functions);
-var_dump($variables);
+
 function makeHeader($methods, $variables, $className) {
     $lClassName = lcfirst($className);
     $uClassName = ucfirst($className);
@@ -63,8 +61,8 @@ namespace nofx
         public:
             static void Initialize(v8::Handle<Object> target);
             {$lClassName}* GetWrapped() const { return internal_.get(); };
-            {$lClassName}* GetWrapped() { return internal_.get(); };
             void SetWrapped({$lClassName}* n)  { internal_.reset(n); };
+            void SetWrapped({$lClassName}& n)  { if (!internal_) { internal_.reset(new {$lClassName}()); } internal_.get()->set(n); };
             static const Persistent<Function>& Factory() { return constructor; }
         private:
             {$uClassName}Wrap();
@@ -74,8 +72,12 @@ namespace nofx
             {$getters}
             {$setters}
 {$methodsTmpl}
+            
+            //Js ctor, can be used inside the class itself to construct {$lClassName}
             static Persistent<Function> constructor;
             static NAN_METHOD(New);
+            
+            //Pointer to internal object
             std::shared_ptr<{$lClassName}> internal_;
         }; // !class {$uClassName}Wrap
     } //!namespace {$uClassName}
@@ -100,7 +102,10 @@ function makeSource($methods, $variables, $className) {
         $methodsTmpl .= "\n        //---------------------------------------------------------\n";
         $methodsTmpl .= "        NAN_METHOD({$uClassName}Wrap::".ucfirst($method).")\n";
         $methodsTmpl .= "        {\n";
+        $methodsTmpl .= "            auto self = ObjectWrap::Unwrap<OfVec3fWrap>(args.This())->GetWrapped();\n";
+        $methodsTmpl .= "            //auto target = ObjectWrap::Unwrap<OfVec3fWrap>(args[0]->ToObject())->GetWrapped();\n";
         $methodsTmpl .= "            //implementation\n";
+        $methodsTmpl .= "            NanReturnUndefined();\n";
         $methodsTmpl .= "        }\n";
     }
     
@@ -112,17 +117,13 @@ function makeSource($methods, $variables, $className) {
         $getters .= "\n            NAN_GETTER({$uClassName}Wrap::Get".ucfirst($var).")
             {
                 const auto self = ObjectWrap::Unwrap<{$uClassName}Wrap>(args.This())->GetWrapped();
-                if(self != nullptr) {
-                    NanReturnValue(self->".$var.");
-                }
+                NanReturnValue(self->".$var.");
             }
             //----------------------------------------------------\n";
         $setters .= "\n            NAN_SETTER({$uClassName}Wrap::Set".ucfirst($var).")
             {
                 auto self = ObjectWrap::Unwrap<{$uClassName}Wrap>(args.This())->GetWrapped();
-                if(self != nullptr) {
-                    self->".$var." = value->NumberValue();
-                }
+                self->".$var." = value->NumberValue();
             }
             //----------------------------------------------------\n";
     }
@@ -136,6 +137,8 @@ namespace nofx
 {
     namespace {$uClassName}
     {
+        using node::ObjectWrap;
+    
         Persistent<Function> {$uClassName}Wrap::constructor;
 
         {$uClassName}Wrap::{$uClassName}Wrap()
@@ -236,8 +239,16 @@ TMP;
 function savePath($filename) {
     return dirname($_SERVER["SCRIPT_FILENAME"])."/".$filename;
 }
-
+if(!isset($_GET["build"])) {
+    die();
+}
+else {
+    var_dump($methods);
+    var_dump($variables);
+    var_dump($functions);
+}
 file_put_contents(savePath("nofx_".lcfirst($className).".h"), makeHeader($methods, $variables, $className));
 file_put_contents(savePath("nofx_".lcfirst($className).".cc"), makeSource($methods, $variables, $className));
 file_put_contents(savePath("main.cc"), makeMain($className));
+die("done");
 ?>

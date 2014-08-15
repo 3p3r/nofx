@@ -5,6 +5,7 @@ VisualStudioVersion = 12.0.30501.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nofx", "nofx\nofx.vcxproj", "{A03FC266-793D-4228-945B-0CE27ECD9A33}"
 	ProjectSection(ProjectDependencies) = postProject
+		{7A67AC07-78D3-437F-8BB1-B666B27F8B69} = {7A67AC07-78D3-437F-8BB1-B666B27F8B69}
 		{8686A41D-1EDF-4368-A3D3-F2FF878EB0E4} = {8686A41D-1EDF-4368-A3D3-F2FF878EB0E4}
 		{24B7533E-0FC5-4EF0-AFCB-01CB136CE336} = {24B7533E-0FC5-4EF0-AFCB-01CB136CE336}
 		{DC6B418E-8EC0-4723-8E15-817BE2A178AF} = {DC6B418E-8EC0-4723-8E15-817BE2A178AF}
@@ -29,6 +30,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nofx_ofVec3f", "nofx_ofVec3
 	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nofx_pointer", "nofx_pointer\nofx_pointer.vcxproj", "{9B231EDD-91A2-4B9E-B885-74A0EE05FD49}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "nofx_ofVec2f", "nofx_ofVec2f\nofx_ofVec2f.vcxproj", "{7A67AC07-78D3-437F-8BB1-B666B27F8B69}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -64,6 +67,10 @@ Global
 		{9B231EDD-91A2-4B9E-B885-74A0EE05FD49}.Debug|Win32.Build.0 = Debug|Win32
 		{9B231EDD-91A2-4B9E-B885-74A0EE05FD49}.Release|Win32.ActiveCfg = Release|Win32
 		{9B231EDD-91A2-4B9E-B885-74A0EE05FD49}.Release|Win32.Build.0 = Release|Win32
+		{7A67AC07-78D3-437F-8BB1-B666B27F8B69}.Debug|Win32.ActiveCfg = Debug|Win32
+		{7A67AC07-78D3-437F-8BB1-B666B27F8B69}.Debug|Win32.Build.0 = Debug|Win32
+		{7A67AC07-78D3-437F-8BB1-B666B27F8B69}.Release|Win32.ActiveCfg = Release|Win32
+		{7A67AC07-78D3-437F-8BB1-B666B27F8B69}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

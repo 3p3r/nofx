@@ -1,39 +1,37 @@
-#ifndef _NOFX_OF_VEC3F_H_
-#define _NOFX_OF_VEC3F_H_
+#ifndef _NOFX_OF_VEC2F_H_
+#define _NOFX_OF_VEC2F_H_
 
 #include "globals.h"
 #include <memory>
-#include "ofVec3f.h"
+#include "ofVec2f.h"
 
 using namespace v8;
 
 namespace nofx
 {
-    namespace OfVec3f
+    namespace OfVec2f
     {
-        class OfVec3fWrap
+        class OfVec2fWrap
             : public node::ObjectWrap
         {
         public:
             static void Initialize(v8::Handle<Object> target);
-            ofVec3f* GetWrapped() const { return internal_.get(); };
-            void SetWrapped(ofVec3f* n)  { internal_.reset(n); };
-			void SetWrapped(ofVec3f& n)  { if (!internal_) { internal_.reset(new ofVec3f()); } internal_.get()->set(n); };
+            ofVec2f* GetWrapped() const { return internal_.get(); };
+            void SetWrapped(ofVec2f* n)  { internal_.reset(n); };
+            void SetWrapped(ofVec2f& n)  { if (!internal_) { internal_.reset(new ofVec2f()); } internal_.get()->set(n); };
             static const Persistent<Function>& Factory() { return constructor; }
         private:
-            OfVec3fWrap();
-            OfVec3fWrap(ofVec3f*);
-            ~OfVec3fWrap() {};
+            OfVec2fWrap();
+            OfVec2fWrap(ofVec2f*);
+            ~OfVec2fWrap() {};
 
             // Mutators
             static NAN_GETTER(GetDIM);
             static NAN_GETTER(GetX);
             static NAN_GETTER(GetY);
-            static NAN_GETTER(GetZ);
             
             static NAN_SETTER(SetX);
             static NAN_SETTER(SetY);
-            static NAN_SETTER(SetZ);
 
 			static NAN_INDEX_GETTER(IndexGetter);
 			static NAN_INDEX_SETTER(IndexSetter);
@@ -43,13 +41,10 @@ namespace nofx
             static NAN_METHOD(Angle);
             static NAN_METHOD(AngleRad);
             static NAN_METHOD(Average);
-            static NAN_METHOD(Cross);
             static NAN_METHOD(Distance);
             static NAN_METHOD(Dot);
-            static NAN_METHOD(GetCrossed);
             static NAN_METHOD(GetInterpolated);
             static NAN_METHOD(GetLimited);
-            static NAN_METHOD(GetMapped);
             static NAN_METHOD(GetMiddle);
             static NAN_METHOD(GetNormalized);
             static NAN_METHOD(GetPerpendicular);
@@ -74,16 +69,16 @@ namespace nofx
             static NAN_METHOD(Set);
             static NAN_METHOD(SquareDistance);
             static NAN_METHOD(Zero);
-
-			//Js ctor, can be used inside the class itself to construct ofVec3f
+            
+            //Js ctor, can be used inside the class itself to construct ofVec2f
             static Persistent<Function> constructor;
             static NAN_METHOD(New);
-			
-			//Pointer to internal object
-            std::shared_ptr<ofVec3f> internal_;
-        }; // !class OfVec3fWrap
-    } //!namespace OfVec3f
+            
+            //Pointer to internal object
+            std::shared_ptr<ofVec2f> internal_;
+        }; // !class OfVec2fWrap
+    } //!namespace OfVec2f
 } // !namespace nofx
 
-#endif // !_NOFX_OF_VEC3F_H_
+#endif // !_NOFX_OF_VEC2F_H_
     
