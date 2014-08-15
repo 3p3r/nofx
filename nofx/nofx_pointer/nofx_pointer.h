@@ -50,25 +50,6 @@ namespace nofx
 			PointerWrap(T* aInternal) : internal_(aInternal), displayLength_(0) {};
 			~PointerWrap() { if (internal_) delete internal_; };
 
-// 			static NAN_SETTER(DataSetter) {
-// 				auto& points = value->ToObject();
-// 				auto& props = points->GetPropertyNames();
-// 
-// 				if (props->Length() != 0)
-// 				{
-// 					std::vector<T> points_to_pass;
-// 					points_to_pass.reserve(props->Length());
-// 
-// 					for (auto it = 0; it < props->Length(); ++it)
-// 					{
-// 						//this is just for now, the template class needs to be specialized
-// 						points_to_pass.push_back(static_cast<T>(props->Get(it)->NumberValue()));
-// 					}
-// 
-// 					const auto self = ObjectWrap::Unwrap<PointerWrap<T>>(args.This())->SetWrapped(new T(&points_to_pass[0]));
-// 				}
-// 			};
-
 			static NAN_GETTER(DataGetter) {
 				const auto self = node::ObjectWrap::Unwrap<PointerWrap<T>>(args.This())->GetWrapped();
 				if (self != nullptr)
@@ -85,6 +66,7 @@ namespace nofx
 					NanReturnNull();
 				}
 			};
+
 			static NAN_METHOD(ToString) {
 				const auto self = ObjectWrap::Unwrap<PointerWrap<T>>(args.This());
 				if (self != nullptr)
@@ -103,6 +85,7 @@ namespace nofx
 			};
 
 			static Persistent<Function> constructor;
+
 			static NAN_METHOD(New) {
 				NanScope();
 				if (args.IsConstructCall()) {

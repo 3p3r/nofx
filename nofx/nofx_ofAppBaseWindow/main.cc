@@ -1,5 +1,6 @@
 #include "globals.h"
 #include "nofx_ofAppBaseWindow.h"
+#include "nofx_dependencies.h"
 
 namespace nofx
 {
@@ -12,7 +13,8 @@ namespace nofx
             v8::Handle<Context> context)
         {
 
-            OfAppBaseWindowWrap::Initialize(target);
+			target->Set(NanNew<v8::String>("dependencies"), NanNew<v8::FunctionTemplate>(nofx_dependencies)->GetFunction());
+			OfAppBaseWindowWrap::Initialize(target);
 
         } //!Initialize
     } //!namespace OfAppBaseWindow

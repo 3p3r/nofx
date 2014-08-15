@@ -25,7 +25,7 @@ namespace nofx
             OfVec3fWrap(ofVec3f*);
             ~OfVec3fWrap() {};
 
-            
+            // Mutators
             static NAN_GETTER(GetDIM);
             static NAN_GETTER(GetX);
             static NAN_GETTER(GetY);
@@ -75,8 +75,12 @@ namespace nofx
             static NAN_METHOD(Set);
             static NAN_METHOD(SquareDistance);
             static NAN_METHOD(Zero);
+
+			//Js ctor, can be used inside the class itself to construct ofVec3f
             static Persistent<Function> constructor;
             static NAN_METHOD(New);
+			
+			//Pointer to internal object
             std::shared_ptr<ofVec3f> internal_;
         }; // !class OfVec3fWrap
     } //!namespace OfVec3f

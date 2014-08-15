@@ -7,5 +7,8 @@
 #include "node.h"
 #include "v8.h"
 #include "nan.h"
+#include "..\nofx\nofx_types.h"
+
+extern v8::Persistent<v8::Function> DEP_ofVec3f;
 
 #endif // !_NOFX_GLOBALS_H_

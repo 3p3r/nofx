@@ -7,8 +7,7 @@
 #include "node.h"
 #include "v8.h"
 #include "nan.h"
-
-#define DepNewInstance(name) (NanNew(name)->Call(args.This(), 0, nullptr))
+#include "..\nofx\nofx_types.h"
 
 extern v8::Persistent<v8::Function> DEP_floatPtr;
 

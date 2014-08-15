@@ -7,5 +7,6 @@
 #include "node.h"
 #include "v8.h"
 #include "nan.h"
+#include "..\nofx\nofx_types.h"
 
 #endif // !_NOFX_GLOBALS_H_

@@ -109,13 +109,11 @@ IF DEFINED NOFX_OF exit(0) ELSE exit(1)</Command>
   <ItemGroup>
     <ClCompile Include="main.cc" />
     <ClCompile Include="nofx_dependencies.cc" />
-    <ClCompile Include="nofx_noop.cc" />
     <ClCompile Include="nofx_ofVec3f.cc" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="globals.h" />
     <ClInclude Include="nofx_dependencies.h" />
-    <ClInclude Include="nofx_noop.h" />
     <ClInclude Include="nofx_ofVec3f.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
