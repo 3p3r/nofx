@@ -11,5 +11,7 @@
 
 extern v8::Persistent<v8::Function> DEP_ofQuaternion;
 extern v8::Persistent<v8::Function> DEP_ofVec4f;
+extern v8::Persistent<v8::Function> DEP_ofVec3f;
+extern v8::Persistent<v8::Function> DEP_floatPtr;
 
 #endif // !_NOFX_GLOBALS_H_

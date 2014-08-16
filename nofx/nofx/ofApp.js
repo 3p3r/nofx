@@ -29,7 +29,9 @@ var ofQuaternion = require("../bin/nofx_ofQuaternion").dependencies({
 
 var ofMatrix4x4 = require("../bin/nofx_ofMatrix4x4").dependencies({
     "ofQuaternion": function () { return new ofQuaternion(null); },
-    "ofVec4f": function () { return new ofVec4f(null); }
+    "ofVec4f": function () { return new ofVec4f(null); },
+    "ofVec3f": function () { return new ofVec3f(null); },
+    "floatPtr": function () { return new floatPtr(null); }
 }).ofMatrix4x4;
 
 // We do this to avoid calling "this" on every API call
@@ -45,12 +47,7 @@ app.update = function () {
 
 app.mousePressed = function () {
     var mat = new ofMatrix4x4(1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4);
-    console.log(mat[1]);
-    mat[1] = new ofVec4f(8, 8, 8, 8);
-    console.log(mat[1]);
-    mat[1][2] = 10;
-    console.log(mat[1]);
-
+    console.log(mat.getPtr());
 }
 
 ofSetupOpenGL(150, 150);

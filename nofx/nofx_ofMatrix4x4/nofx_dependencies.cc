@@ -2,6 +2,8 @@
 
 v8::Persistent<v8::Function> DEP_ofQuaternion;
 v8::Persistent<v8::Function> DEP_ofVec4f;
+v8::Persistent<v8::Function> DEP_ofVec3f;
+v8::Persistent<v8::Function> DEP_floatPtr;
 
 namespace nofx
 {
@@ -18,7 +20,11 @@ namespace nofx
 			NanAssignPersistent(DEP_ofQuaternion, v8::Handle<v8::Function>::Cast(
 				args[0]->ToObject()->Get(NanNew("ofQuaternion"))));        
 			NanAssignPersistent(DEP_ofVec4f, v8::Handle<v8::Function>::Cast(
-				args[0]->ToObject()->Get(NanNew("ofVec4f"))));
+				args[0]->ToObject()->Get(NanNew("ofVec4f"))));        
+			NanAssignPersistent(DEP_ofVec3f, v8::Handle<v8::Function>::Cast(
+				args[0]->ToObject()->Get(NanNew("ofVec3f"))));        
+			NanAssignPersistent(DEP_floatPtr, v8::Handle<v8::Function>::Cast(
+				args[0]->ToObject()->Get(NanNew("floatPtr"))));
         
             NanReturnValue(args.This());
         } // !nofx_dependencies

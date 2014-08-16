@@ -1,6 +1,9 @@
 #include "nofx_ofMatrix4x4.h"
 #include "..\nofx\nofx_types.h"
 #include "..\nofx_ofVec4f\nofx_ofVec4f.h"
+#include "..\nofx_ofVec3f\nofx_ofVec3f.h"
+#include "..\nofx_ofQuaternion\nofx_ofQuaternion.h"
+#include "..\nofx_pointer\nofx_pointer.h"
 
 namespace nofx
 {
@@ -168,81 +171,168 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::Decompose)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			ofVec3f translation, scale;
+			ofQuaternion rotation, so;
+			
+			auto JsTranslation = DepNewInstance(DEP_ofVec3f);
+			auto JsScale = DepNewInstance(DEP_ofVec3f);
+			auto JsRotation = DepNewInstance(DEP_ofQuaternion);
+			auto JsSo = DepNewInstance(DEP_ofQuaternion);
+
+			self->decompose(translation, rotation, scale, so);
+			
+			ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(JsTranslation->ToObject())->SetWrapped(translation);
+			ObjectWrap::Unwrap<nofx::OfQuaternion::OfQuaternionWrap>(JsRotation->ToObject())->SetWrapped(rotation);
+			ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(JsScale->ToObject())->SetWrapped(scale);
+			ObjectWrap::Unwrap<nofx::OfQuaternion::OfQuaternionWrap>(JsSo->ToObject())->SetWrapped(so);
+
+			auto toRet = NanNew<Array>();
+
+			toRet->Set(NanNew("translation"), JsTranslation);
+			toRet->Set(NanNew("rotation"), JsRotation);
+			toRet->Set(NanNew("scale"), JsScale);
+			toRet->Set(NanNew("so"), JsSo);
+
+			NanReturnValue(toRet);
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfMatrix4x4Wrap::GetFrustum)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			double left = 0,
+				right = 0,
+				bottom = 0,
+				top = 0,
+				zNear = 0,
+				zFar = 0;
+			if(self->getFrustum(left, right, bottom, top, zNear, zFar))
+			{
+				auto toRet = NanNew<Array>();
+				toRet->Set(NanNew("left"), NanNew(left));
+				toRet->Set(NanNew("right"), NanNew(right));
+				toRet->Set(NanNew("bottom"), NanNew(bottom));
+				toRet->Set(NanNew("top"), NanNew(top));
+				toRet->Set(NanNew("zNear"), NanNew(zNear));
+				toRet->Set(NanNew("zFar"), NanNew(zFar));
+				NanReturnValue(toRet);
+			}
+			else
+			{
+				NanReturnValue(false);
+			}
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfMatrix4x4Wrap::GetInverse)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			auto toRet = NanNew(Factory())->NewInstance();
+			ObjectWrap::Unwrap<OfMatrix4x4Wrap>(toRet)->SetWrapped(self->getInverse());
+			NanReturnValue(toRet);
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfMatrix4x4Wrap::GetInverseOf)
 		{
-			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
+			auto toRet = NanNew(Factory())->NewInstance();
+			ObjectWrap::Unwrap<OfMatrix4x4Wrap>(toRet)->SetWrapped(ofMatrix4x4::getInverseOf(*target));
+			NanReturnValue(toRet);
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfMatrix4x4Wrap::GetLookAt)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			ofVec3f eye, center, up;
+			float lookDistance = args[0]->IsNumber() ? args[0]->NumberValue() : 1.0f;
+			self->getLookAt(eye, center, up);
+			
+			auto JsEye = DepNewInstance(DEP_ofVec3f);
+			auto JsCenter = DepNewInstance(DEP_ofVec3f);
+			auto JsUp = DepNewInstance(DEP_ofVec3f);
+
+			ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(JsEye->ToObject())->SetWrapped(eye);
+			ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(JsCenter->ToObject())->SetWrapped(center);
+			ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(JsUp->ToObject())->SetWrapped(up);
+
+			auto toRet = NanNew<Array>();
+			toRet->Set(NanNew("eye"), JsEye);
+			toRet->Set(NanNew("center"), JsCenter);
+			toRet->Set(NanNew("up"), JsUp);
+
+			NanReturnValue(toRet);
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfMatrix4x4Wrap::GetOrtho)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			double left = 0,
+				right = 0,
+				bottom = 0,
+				top = 0,
+				zNear = 0,
+				zFar = 0;
+			if(self->getOrtho(left, right, bottom, top, zNear, zFar))
+			{
+				auto toRet = NanNew<Array>();
+				toRet->Set(NanNew("left"), NanNew(left));
+				toRet->Set(NanNew("right"), NanNew(right));
+				toRet->Set(NanNew("bottom"), NanNew(bottom));
+				toRet->Set(NanNew("top"), NanNew(top));
+				toRet->Set(NanNew("zNear"), NanNew(zNear));
+				toRet->Set(NanNew("zFar"), NanNew(zFar));
+				NanReturnValue(toRet);
+			}
+			else
+			{
+				NanReturnValue(false);
+			}
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfMatrix4x4Wrap::GetOrthoNormalOf)
 		{
-			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
+			auto toRet = NanNew(Factory())->NewInstance();
+			ObjectWrap::Unwrap<OfMatrix4x4Wrap>(toRet)->SetWrapped(ofMatrix4x4::getOrthoNormalOf(*target));
+			NanReturnValue(toRet);
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfMatrix4x4Wrap::GetPerspective)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			double fovy = 0,
+				aspectRatio = 0,
+				zNear = 0,
+				zFar = 0;
+			if (self->getPerspective(fovy, aspectRatio, zNear, zFar))
+			{
+				auto toRet = NanNew<Array>();
+				toRet->Set(NanNew("fovy"), NanNew(fovy));
+				toRet->Set(NanNew("aspectRatio"), NanNew(aspectRatio));
+				toRet->Set(NanNew("zNear"), NanNew(zNear));
+				toRet->Set(NanNew("zFar"), NanNew(zFar));
+				NanReturnValue(toRet);
+			}
+			else
+			{
+				NanReturnValue(false);
+			}
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfMatrix4x4Wrap::GetPtr)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			auto JsPtr = DepNewInstance(DEP_floatPtr);
+			auto CppBridge = ObjectWrap::Unwrap<nofx::Pointer::PointerWrap<float>>(JsPtr->ToObject());
+			CppBridge->SetDisplayLength(16);
+			CppBridge->SetWrapped(self->getPtr());
+			NanReturnValue(JsPtr);
 		}
 
 		//---------------------------------------------------------

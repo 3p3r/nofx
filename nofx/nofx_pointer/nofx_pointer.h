@@ -30,7 +30,6 @@ namespace nofx
 				inst->SetInternalFieldCount(1);
 
 				inst->SetAccessor(NanNew("data"), PointerWrap<T>::DataGetter, 0, v8::Handle<v8::Value>(), v8::PROHIBITS_OVERWRITING);
-				NanSetPrototypeTemplate(tpl, NanNew("toString"), NanNew<v8::FunctionTemplate>(ToString), v8::ReadOnly);
 
 				NanAssignPersistent(constructor, tpl->GetFunction());
 				exports->Set(NanNew(name), tpl->GetFunction());
@@ -51,24 +50,7 @@ namespace nofx
 			~PointerWrap() { if (internal_) delete internal_; };
 
 			static NAN_GETTER(DataGetter) {
-				const auto self = node::ObjectWrap::Unwrap<PointerWrap<T>>(args.This())->GetWrapped();
-				if (self != nullptr)
-				{
-					auto JsArr = NanNew<Array>();
-					for (auto i = 0; i < 3; ++i)
-					{
-						JsArr->Set(i, NanNew(self[i]));
-					}
-					NanReturnValue(JsArr);
-				}
-				else
-				{
-					NanReturnNull();
-				}
-			};
-
-			static NAN_METHOD(ToString) {
-				const auto self = ObjectWrap::Unwrap<PointerWrap<T>>(args.This());
+				const auto self = node::ObjectWrap::Unwrap<PointerWrap<T>>(args.This());
 				if (self != nullptr)
 				{
 					auto JsArr = NanNew<Array>();
