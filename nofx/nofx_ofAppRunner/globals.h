@@ -11,6 +11,7 @@
 
 extern v8::Persistent<v8::Function> DEP_ofApp;
 extern v8::Persistent<v8::Function> DEP_ofVec3f;
+extern v8::Persistent<v8::Function> DEP_ofRectangle;
 extern v8::Persistent<v8::Function> DEP_ofAppBaseWindow;
 
 #endif // !_NOFX_GLOBALS_H_
