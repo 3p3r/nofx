@@ -28,7 +28,11 @@ namespace nofx
 			if (args.IsConstructCall()) {
 				OfVec2fWrap* obj;
 
-				if (args.Length() == 0)
+				if (args[0]->IsNull())
+				{
+					obj = new OfVec2fWrap(nullptr);
+				}
+				else if (args.Length() == 0)
 				{
 					obj = new OfVec2fWrap(new ofVec2f());
 				}

@@ -24,7 +24,11 @@ namespace nofx
 			NanScope();
 			if (args.IsConstructCall()) {
 				OfColorWrap* obj;
-				if (args.Length() == 0)
+				if (args[0]->IsNull())
+				{
+					obj = new OfColorWrap(nullptr);
+				}
+				else if (args.Length() == 0)
 				{
 					//This is called by NewInstance method on constructors. We'll return a mock color to play with
 					obj = new OfColorWrap(new ofColor());

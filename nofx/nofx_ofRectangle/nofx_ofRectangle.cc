@@ -25,7 +25,11 @@ namespace nofx
 			NanScope();
 			if (args.IsConstructCall()) {
 				OfRectangleWrap* obj;
-				if (args.Length() == 0)
+				if (args[0]->IsNull())
+				{
+					obj = new OfRectangleWrap(nullptr);
+				}
+				else if (args.Length() == 0)
 				{
 					obj = new OfRectangleWrap(new ofRectangle());
 				}

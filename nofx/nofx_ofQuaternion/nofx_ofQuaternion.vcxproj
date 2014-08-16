@@ -1,0 +1,122 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LocalDebuggerCommand>$(NOFX_NODE)\node\Debug\node.exe</LocalDebuggerCommand>
+    <DebuggerFlavor>WindowsLocalDebugger</DebuggerFlavor>
+    <LocalDebuggerWorkingDirectory>$(OutDir)</LocalDebuggerWorkingDirectory>
+    <LocalDebuggerCommandArguments>$(ProjectDir)ofApp.js</LocalDebuggerCommandArguments>
+  </PropertyGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{A1224736-01C3-4616-87FA-EA3853DFA9AD}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>nofx_ofQuaternion</RootNamespace>
+    <ProjectName>nofx_ofQuaternion</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(NOFX_OF)\openFrameworks\libs\openFrameworksCompiled\project\vs\openFrameworksDebug.props" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="$(NOFX_OF)\openFrameworks\libs\openFrameworksCompiled\project\vs\openFrameworksRelease.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <TargetExt>.node</TargetExt>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>_VARIADIC_MAX=10;WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(NOFX_OF)\openFrameworks\libs\openFrameworks;$(NOFX_OF)\openFrameworks\libs\openFrameworks\graphics;$(NOFX_OF)\openFrameworks\libs\openFrameworks\app;$(NOFX_OF)\openFrameworks\libs\openFrameworks\sound;$(NOFX_OF)\openFrameworks\libs\openFrameworks\utils;$(NOFX_OF)\openFrameworks\libs\openFrameworks\communication;$(NOFX_OF)\openFrameworks\libs\openFrameworks\video;$(NOFX_OF)\openFrameworks\libs\openFrameworks\types;$(NOFX_OF)\openFrameworks\libs\openFrameworks\math;$(NOFX_OF)\openFrameworks\libs\openFrameworks\3d;$(NOFX_OF)\openFrameworks\libs\openFrameworks\gl;$(NOFX_OF)\openFrameworks\libs\openFrameworks\events;$(NOFX_OF)\openFrameworks\libs\glut\include;$(NOFX_OF)\openFrameworks\libs\rtAudio\include;$(NOFX_OF)\openFrameworks\libs\quicktime\include;$(NOFX_OF)\openFrameworks\libs\freetype\include;$(NOFX_OF)\openFrameworks\libs\freetype\include\freetype2;$(NOFX_OF)\openFrameworks\libs\freeImage\include;$(NOFX_OF)\openFrameworks\libs\fmodex\include;$(NOFX_OF)\openFrameworks\libs\videoInput\include;$(NOFX_OF)\openFrameworks\libs\glew\include;$(NOFX_OF)\openFrameworks\libs\glu\include;$(NOFX_OF)\openFrameworks\libs\tess2\include;$(NOFX_OF)\openFrameworks\libs\cairo\include\cairo;$(NOFX_OF)\openFrameworks\libs\poco\include;$(NOFX_OF)\openFrameworks\libs\glfw\include;$(NOFX_OF)\openFrameworks\libs\openssl\include;$(NOFX_OF)\openFrameworks\libs\addons;$(NOFX_NODE)\node\src;$(NOFX_NODE)\node\deps\v8\include;$(NOFX_NODE)\node\deps\uv\include;$(NOFX_NAN)\nan;$(NOFX_GTEST)\include</AdditionalIncludeDirectories>
+      <DisableSpecificWarnings>4250</DisableSpecificWarnings>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>$(NOFX_OF)\openFrameworks\libs\glut\lib\vs;$(NOFX_OF)\openFrameworks\libs\glfw\lib\vs;$(NOFX_OF)\openFrameworks\libs\rtAudio\lib\vs;$(NOFX_OF)\openFrameworks\libs\FreeImage\lib\vs;$(NOFX_OF)\openFrameworks\libs\freetype\lib\vs;$(NOFX_OF)\openFrameworks\libs\quicktime\lib\vs;$(NOFX_OF)\openFrameworks\libs\fmodex\lib\vs;$(NOFX_OF)\openFrameworks\libs\videoInput\lib\vs;$(NOFX_OF)\openFrameworks\libs\cairo\lib\vs;$(NOFX_OF)\openFrameworks\libs\glew\lib\vs;$(NOFX_OF)\openFrameworks\libs\glu\lib\vs;$(NOFX_OF)\openFrameworks\libs\Poco\lib\vs;$(NOFX_OF)\openFrameworks\libs\openssl\lib\vs;$(NOFX_OF)\openFrameworks\libs\tess2\lib\vs;$(NOFX_NODE)\node\Debug;$(NOFX_NODE)\node\Debug\lib</AdditionalLibraryDirectories>
+      <AdditionalDependencies>openssl.lib;http_parser.lib;libuv.lib;node.lib;cares.lib;zlib.lib;cairo-static.lib;pixman-1.lib;msimg32.lib;OpenGL32.lib;GLu32.lib;kernel32.lib;setupapi.lib;Vfw32.lib;comctl32.lib;glut32.lib;rtAudioD.lib;videoInputD.lib;libfreetype.lib;FreeImage.lib;qtmlClient.lib;dsound.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;glew32s.lib;fmodex_vc.lib;glu32.lib;ssleay32MD.lib;libeay32MD.lib;crypt32.lib;PocoFoundationmdd.lib;PocoNetmdd.lib;PocoUtilmdd.lib;PocoXMLmdd.lib;Ws2_32.lib;tess2.lib;glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+    </Link>
+    <PostBuildEvent>
+      <Command>xcopy /e /i /y "$(NOFX_OF)\openFrameworks\export\vs\*.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>IF DEFINED NOFX_NAN exit(0) ELSE exit(1)
+IF DEFINED NOFX_NODE exit(0) ELSE exit(1)
+IF DEFINED NOFX_OF exit(0) ELSE exit(1)</Command>
+    </PreBuildEvent>
+    <PreBuildEvent>
+      <Message>Checking if all ENV vars are defined...</Message>
+    </PreBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>
+      </PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ProjectReference Include="$(NOFX_OF)\openFrameworks\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
+      <Project>{5837595d-aca9-485c-8e76-729040ce4b0b}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cc" />
+    <ClCompile Include="nofx_dependencies.cc" />
+    <ClCompile Include="nofx_ofQuaternion.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="globals.h" />
+    <ClInclude Include="nofx_dependencies.h" />
+    <ClInclude Include="nofx_ofQuaternion.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -18,8 +18,7 @@ foreach($ofDocPage['ul.functionslist li a'] as $node) {
         } else if(!strstr($node->nodeValue, "operator")) {
             //this is a variable
             $temp = explode(" ", $node->nodeValue);
-            if(in_array(end($temp), ["a", "r", "g", "b"]))
-                array_push($variables, end($temp) );
+            array_push($variables, end($temp) );
         } else {
             //this is either unknown or an operator overload
         }

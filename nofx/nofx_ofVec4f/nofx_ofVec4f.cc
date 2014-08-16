@@ -27,7 +27,11 @@ namespace nofx
 			NanScope();
 			if (args.IsConstructCall()) {
 				OfVec4fWrap* obj;
-				if (args.Length() == 0)
+				if (args[0]->IsNull())
+				{
+					obj = new OfVec4fWrap(nullptr);
+				}
+				else if (args.Length() == 0)
 				{
 					obj = new OfVec4fWrap(new ofVec4f());
 				}
