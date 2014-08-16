@@ -16,6 +16,8 @@ var ofAppRunner = require("../bin/nofx_ofAppRunner").dependencies({
     "ofVec3f": function () { return new ofVec3f(null); }
 });
 
+var ofColor = require("../bin/nofx_ofColor").ofColor;
+
 // We do this to avoid calling "this" on every API call
 // Source code will get cleaner and more readable.
 var extend = require("./extend.js");
@@ -28,8 +30,7 @@ app.update = function () {
 }
 
 app.mousePressed = function () {
-    console.log(ofGetWindowPtr().getWindowSize());
-    console.log(ofGetWindowPtr().getWindowPosition());
+    console.log(ofColor.prototype);
 }
 
 ofSetupOpenGL(150, 150);
