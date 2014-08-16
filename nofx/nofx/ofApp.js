@@ -4,6 +4,10 @@ var ofVec3f = require("../bin/nofx_ofVec3f").dependencies({
     "floatPtr": function () { return new floatPtr(null); }
 }).ofVec3f;
 
+var ofVec4f = require("../bin/nofx_ofVec4f").dependencies({
+    "floatPtr": function () { return new floatPtr(null); }
+}).ofVec4f;
+
 var ofApp = require("../bin/nofx_ofBaseApp").ofApp;
 
 var ofAppBaseWindow = require("../bin/nofx_ofAppBaseWindow").dependencies({
@@ -18,6 +22,16 @@ var ofAppRunner = require("../bin/nofx_ofAppRunner").dependencies({
 
 var ofColor = require("../bin/nofx_ofColor").ofColor;
 
+var ofQuaternion = require("../bin/nofx_ofQuaternion").dependencies({
+    "ofVec3f": function () { return new ofVec3f(null); },
+    "ofVec4f": function () { return new ofVec4f(null); }
+}).ofQuaternion;
+
+var ofMatrix4x4 = require("../bin/nofx_ofMatrix4x4").dependencies({
+    "ofQuaternion": function () { return new ofQuaternion(null); },
+    "ofVec4f": function () { return new ofVec4f(null); }
+}).ofMatrix4x4;
+
 // We do this to avoid calling "this" on every API call
 // Source code will get cleaner and more readable.
 var extend = require("./extend.js");
@@ -30,7 +44,13 @@ app.update = function () {
 }
 
 app.mousePressed = function () {
-    console.log(ofColor.prototype);
+    var mat = new ofMatrix4x4(1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4);
+    console.log(mat[1]);
+    mat[1] = new ofVec4f(8, 8, 8, 8);
+    console.log(mat[1]);
+    mat[1][2] = 10;
+    console.log(mat[1]);
+
 }
 
 ofSetupOpenGL(150, 150);

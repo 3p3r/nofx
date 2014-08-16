@@ -5,10 +5,10 @@
 
 namespace nofx
 {
-	namespace OfQuaternion
+    namespace OfMatrix4x4
     {
         NAN_METHOD(nofx_dependencies);
-    } // !namespace dependencies 
+    } // !namespace OfMatrix4x4 
 } // !namespace nofx
 
 #endif // !_NOFX_DEPENENCIES_H_

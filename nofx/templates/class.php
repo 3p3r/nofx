@@ -130,7 +130,6 @@ function makeSource($methods, $variables, $className) {
     
     $template = <<<TMP
 #include "nofx_{$lClassName}.h"
-#include "nofx_noop.h"
 #include "..\\nofx\\nofx_types.h"
 
 namespace nofx
@@ -213,6 +212,7 @@ function makeMain($className) {
     $template = <<<TMP
 #include "globals.h"
 #include "nofx_{$lClassName}.h"
+#include "nofx_dependencies.h"
 
 namespace nofx
 {
@@ -225,6 +225,7 @@ namespace nofx
             v8::Handle<Context> context)
         {
 
+            //target->Set(NanNew<v8::String>("dependencies"), NanNew<v8::FunctionTemplate>(nofx_dependencies)->GetFunction());
             {$uClassName}Wrap::Initialize(target);
 
         } //!Initialize
