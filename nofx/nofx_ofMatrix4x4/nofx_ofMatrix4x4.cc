@@ -339,62 +339,68 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::GetRotate)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			auto toRet = DepNewInstance(DEP_ofQuaternion);
+			ObjectWrap::Unwrap<nofx::OfQuaternion::OfQuaternionWrap>(toRet->ToObject())->SetWrapped( self->getRotate() );
+			NanReturnValue(toRet);
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfMatrix4x4Wrap::GetRowAsVec3f)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			auto toRet = DepNewInstance(DEP_ofVec3f);
+			ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(toRet->ToObject())->SetWrapped( self->getRowAsVec3f(args[0]->NumberValue()) );
+			NanReturnValue(toRet);
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfMatrix4x4Wrap::GetRowAsVec4f)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			auto toRet = DepNewInstance(DEP_ofVec4f);
+			ObjectWrap::Unwrap<nofx::OfVec4f::OfVec4fWrap>(toRet->ToObject())->SetWrapped(self->getRowAsVec4f(args[0]->NumberValue()));
+			NanReturnValue(toRet);
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfMatrix4x4Wrap::GetScale)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			auto toRet = DepNewInstance(DEP_ofVec3f);
+			ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(toRet->ToObject())->SetWrapped(self->getScale());
+			NanReturnValue(toRet);
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfMatrix4x4Wrap::GetTranslation)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			auto toRet = DepNewInstance(DEP_ofVec3f);
+			ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(toRet->ToObject())->SetWrapped(self->getTranslation());
+			NanReturnValue(toRet);
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfMatrix4x4Wrap::GetTransposedOf)
 		{
-			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
+			auto toRet = NanNew(Factory())->NewInstance();
+			ObjectWrap::Unwrap<OfMatrix4x4Wrap>(toRet)->SetWrapped(ofMatrix4x4::getTransposedOf(*target));
+			NanReturnValue(toRet);
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfMatrix4x4Wrap::GlRotate)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			if (args.Length() == 4)
+			{
+				self->glRotate(args[0]->NumberValue(), args[1]->NumberValue(), args[2]->NumberValue(), args[3]->NumberValue());
+			}
+			else
+			{
+				self->glRotate(*ObjectWrap::Unwrap<nofx::OfQuaternion::OfQuaternionWrap>(args[0]->ToObject())->GetWrapped());
+			}
 			NanReturnUndefined();
 		}
 
@@ -402,8 +408,7 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::GlRotateRad)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			self->glRotateRad(args[0]->NumberValue(), args[1]->NumberValue(), args[2]->NumberValue(), args[3]->NumberValue());
 			NanReturnUndefined();
 		}
 
@@ -411,8 +416,14 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::GlScale)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			if (args.Length() == 3)
+			{
+				self->glScale(args[0]->NumberValue(), args[1]->NumberValue(), args[2]->NumberValue());
+			}
+			else
+			{
+				self->glScale(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
+			}
 			NanReturnUndefined();
 		}
 
@@ -420,8 +431,14 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::GlTranslate)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			if (args.Length() == 3)
+			{
+				self->glScale(args[0]->NumberValue(), args[1]->NumberValue(), args[2]->NumberValue());
+			}
+			else
+			{
+				self->glScale(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
+			}
 			NanReturnUndefined();
 		}
 
@@ -429,35 +446,30 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::IsIdentity)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			NanReturnValue(self->isIdentity());
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfMatrix4x4Wrap::IsNaN)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			NanReturnValue(self->isNaN());
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfMatrix4x4Wrap::IsValid)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			NanReturnValue(self->isValid());
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfMatrix4x4Wrap::MakeFromMultiplicationOf)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			auto target1 = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
+			auto target2 = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[1]->ToObject())->GetWrapped();
+			self->makeFromMultiplicationOf(*target1, *target2);
 			NanReturnUndefined();
 		}
 
@@ -465,8 +477,14 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::MakeFrustumMatrix)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			self->makeFrustumMatrix(
+				args[0]->NumberValue(),
+				args[1]->NumberValue(),
+				args[2]->NumberValue(),
+				args[3]->NumberValue(),
+				args[4]->NumberValue(),
+				args[5]->NumberValue()
+				);
 			NanReturnUndefined();
 		}
 
@@ -474,8 +492,7 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::MakeIdentityMatrix)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			self->makeIdentityMatrix();
 			NanReturnUndefined();
 		}
 
@@ -483,8 +500,8 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::MakeInvertOf)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
+			self->makeInvertOf(*target);
 			NanReturnUndefined();
 		}
 
@@ -492,8 +509,10 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::MakeLookAtMatrix)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			self->makeLookAtMatrix(
+				*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
+				*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[1]->ToObject())->GetWrapped(),
+				*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[2]->ToObject())->GetWrapped());
 			NanReturnUndefined();
 		}
 
@@ -501,8 +520,10 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::MakeLookAtViewMatrix)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			self->makeLookAtViewMatrix(
+				*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
+				*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[1]->ToObject())->GetWrapped(),
+				*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[2]->ToObject())->GetWrapped());
 			NanReturnUndefined();
 		}
 
@@ -510,8 +531,12 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::MakeOrtho2DMatrix)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			self->makeOrtho2DMatrix(
+				args[0]->NumberValue(),
+				args[1]->NumberValue(),
+				args[2]->NumberValue(),
+				args[3]->NumberValue()
+				);
 			NanReturnUndefined();
 		}
 
@@ -519,8 +544,14 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::MakeOrthoMatrix)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			self->makeOrthoMatrix(
+				args[0]->NumberValue(),
+				args[1]->NumberValue(),
+				args[2]->NumberValue(),
+				args[3]->NumberValue(),
+				args[4]->NumberValue(),
+				args[5]->NumberValue()
+				);
 			NanReturnUndefined();
 		}
 
@@ -528,8 +559,8 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::MakeOrthoNormalOf)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
+			self->makeOrthoNormalOf(*target);
 			NanReturnUndefined();
 		}
 
@@ -537,8 +568,12 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::MakePerspectiveMatrix)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			self->makePerspectiveMatrix(
+				args[0]->NumberValue(),
+				args[1]->NumberValue(),
+				args[2]->NumberValue(),
+				args[3]->NumberValue()
+				);
 			NanReturnUndefined();
 		}
 
@@ -546,8 +581,44 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::MakeRotationMatrix)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			if (args.Length() == 1)
+			{
+				self->makeRotationMatrix(*ObjectWrap::Unwrap<nofx::OfQuaternion::OfQuaternionWrap>(args[0]->ToObject())->GetWrapped());
+			}
+			else if (args.Length() == 2 && (args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFVEC3F))
+			{
+				self->makeRotationMatrix(
+					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
+					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[1]->ToObject())->GetWrapped()
+					);
+			}
+			else if (args.Length() == 2 && args[0]->IsNumber())
+			{
+				self->makeRotationMatrix(
+					args[0]->NumberValue(),
+					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[1]->ToObject())->GetWrapped()
+					);
+			}
+			else if (args.Length() == 4)
+			{
+				self->makeRotationMatrix(
+					args[0]->NumberValue(),
+					args[1]->NumberValue(),
+					args[2]->NumberValue(),
+					args[3]->NumberValue()
+					);
+			}
+			else
+			{
+				self->makeRotationMatrix(
+					args[0]->NumberValue(),
+					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[1]->ToObject())->GetWrapped(),
+					args[2]->NumberValue(),
+					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[3]->ToObject())->GetWrapped(),
+					args[4]->NumberValue(),
+					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[5]->ToObject())->GetWrapped()
+					);
+			}
 			NanReturnUndefined();
 		}
 
@@ -555,8 +626,18 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::MakeScaleMatrix)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			if (args.Length() == 1)
+			{
+				self->makeScaleMatrix(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
+			}
+			else
+			{
+				self->makeScaleMatrix(
+					args[0]->NumberValue(),
+					args[1]->NumberValue(),
+					args[2]->NumberValue()
+					);
+			}
 			NanReturnUndefined();
 		}
 
@@ -564,107 +645,226 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::MakeTranslationMatrix)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			if (args.Length() == 1)
+			{
+				self->makeTranslationMatrix(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
+			}
+			else
+			{
+				self->makeTranslationMatrix(
+					args[0]->NumberValue(),
+					args[1]->NumberValue(),
+					args[2]->NumberValue()
+					);
+			}			
 			NanReturnUndefined();
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfMatrix4x4Wrap::NewFrustumMatrix)
 		{
-			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			auto JsMat = NanNew(Factory())->NewInstance();
+			ObjectWrap::Unwrap<OfMatrix4x4Wrap>(JsMat)->SetWrapped(
+				ofMatrix4x4::newFrustumMatrix(
+				args[0]->NumberValue(),
+				args[1]->NumberValue(),
+				args[2]->NumberValue(),
+				args[3]->NumberValue(),
+				args[4]->NumberValue(),
+				args[5]->NumberValue()
+				));
+			NanReturnValue(JsMat);
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfMatrix4x4Wrap::NewIdentityMatrix)
 		{
-			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			auto JsMat = NanNew(Factory())->NewInstance();
+			ObjectWrap::Unwrap<OfMatrix4x4Wrap>(JsMat)->SetWrapped(ofMatrix4x4::newIdentityMatrix());
+			NanReturnValue(JsMat);
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfMatrix4x4Wrap::NewLookAtMatrix)
 		{
-			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			auto JsMat = NanNew(Factory())->NewInstance();
+			ObjectWrap::Unwrap<OfMatrix4x4Wrap>(JsMat)->SetWrapped(
+				ofMatrix4x4::newLookAtMatrix(
+				*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
+				*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[1]->ToObject())->GetWrapped(),
+				*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[2]->ToObject())->GetWrapped()
+				));
+			NanReturnValue(JsMat);
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfMatrix4x4Wrap::NewOrtho2DMatrix)
 		{
-			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			auto JsMat = NanNew(Factory())->NewInstance();
+			ObjectWrap::Unwrap<OfMatrix4x4Wrap>(JsMat)->SetWrapped(
+				ofMatrix4x4::newOrtho2DMatrix(
+				args[0]->NumberValue(),
+				args[1]->NumberValue(),
+				args[2]->NumberValue(),
+				args[3]->NumberValue()
+				));
+			NanReturnValue(JsMat);
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfMatrix4x4Wrap::NewOrthoMatrix)
 		{
-			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			auto JsMat = NanNew(Factory())->NewInstance();
+			ObjectWrap::Unwrap<OfMatrix4x4Wrap>(JsMat)->SetWrapped(
+				ofMatrix4x4::newOrthoMatrix(
+				args[0]->NumberValue(),
+				args[1]->NumberValue(),
+				args[2]->NumberValue(),
+				args[3]->NumberValue(),
+				args[4]->NumberValue(),
+				args[5]->NumberValue()
+				));
+			NanReturnValue(JsMat);
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfMatrix4x4Wrap::NewPerspectiveMatrix)
 		{
-			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			auto JsMat = NanNew(Factory())->NewInstance();
+			ObjectWrap::Unwrap<OfMatrix4x4Wrap>(JsMat)->SetWrapped(
+				ofMatrix4x4::newPerspectiveMatrix(
+				args[0]->NumberValue(),
+				args[1]->NumberValue(),
+				args[2]->NumberValue(),
+				args[3]->NumberValue()
+				));
+			NanReturnValue(JsMat);
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfMatrix4x4Wrap::NewRotationMatrix)
 		{
-			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			auto JsMat = NanNew(Factory())->NewInstance();
+			if (args.Length() == 1)
+			{
+				ObjectWrap::Unwrap<OfMatrix4x4Wrap>(JsMat)->SetWrapped(
+					ofMatrix4x4::newRotationMatrix(
+					*ObjectWrap::Unwrap<nofx::OfQuaternion::OfQuaternionWrap>(args[0]->ToObject())->GetWrapped()));
+			}
+			else if (args.Length() == 2 && (args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFVEC3F))
+			{
+				ObjectWrap::Unwrap<OfMatrix4x4Wrap>(JsMat)->SetWrapped(
+					ofMatrix4x4::newRotationMatrix(
+					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
+					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[1]->ToObject())->GetWrapped()
+					));
+			}
+			else if (args.Length() == 2 && args[0]->IsNumber())
+			{
+				ObjectWrap::Unwrap<OfMatrix4x4Wrap>(JsMat)->SetWrapped(ofMatrix4x4::newRotationMatrix(
+					args[0]->NumberValue(),
+					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[1]->ToObject())->GetWrapped()
+					));
+			}
+			else if (args.Length() == 4)
+			{
+				ObjectWrap::Unwrap<OfMatrix4x4Wrap>(JsMat)->SetWrapped(ofMatrix4x4::newRotationMatrix(
+					args[0]->NumberValue(),
+					args[1]->NumberValue(),
+					args[2]->NumberValue(),
+					args[3]->NumberValue()
+					));
+			}
+			else
+			{
+				ObjectWrap::Unwrap<OfMatrix4x4Wrap>(JsMat)->SetWrapped(ofMatrix4x4::newRotationMatrix(
+					args[0]->NumberValue(),
+					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[1]->ToObject())->GetWrapped(),
+					args[2]->NumberValue(),
+					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[3]->ToObject())->GetWrapped(),
+					args[4]->NumberValue(),
+					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[5]->ToObject())->GetWrapped()
+					));
+			}
+			NanReturnValue(JsMat);
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfMatrix4x4Wrap::NewScaleMatrix)
 		{
-			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			auto JsMat = NanNew(Factory())->NewInstance();
+			if (args.Length() == 1)
+			{
+				ObjectWrap::Unwrap<OfMatrix4x4Wrap>(JsMat)->SetWrapped(
+					ofMatrix4x4::newScaleMatrix(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped()));
+			}
+			else
+			{
+				ObjectWrap::Unwrap<OfMatrix4x4Wrap>(JsMat)->SetWrapped(
+					ofMatrix4x4::newScaleMatrix(args[0]->NumberValue(), args[1]->NumberValue(), args[2]->NumberValue()));
+			}
+			NanReturnValue(JsMat);
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfMatrix4x4Wrap::NewTranslationMatrix)
 		{
-			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			auto JsMat = NanNew(Factory())->NewInstance();
+			if (args.Length() == 1)
+			{
+				ObjectWrap::Unwrap<OfMatrix4x4Wrap>(JsMat)->SetWrapped(
+					ofMatrix4x4::newTranslationMatrix(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped()));
+			}
+			else
+			{
+				ObjectWrap::Unwrap<OfMatrix4x4Wrap>(JsMat)->SetWrapped(
+					ofMatrix4x4::newTranslationMatrix(args[0]->NumberValue(), args[1]->NumberValue(), args[2]->NumberValue()));
+			}
+			NanReturnValue(JsMat);
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfMatrix4x4Wrap::PostMult)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			if (args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFVEC3F)
+			{
+				auto toRet = DepNewInstance(DEP_ofVec3f);
+				ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(toRet->ToObject())->SetWrapped(
+					self->postMult( *ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped()) );
+				NanReturnValue(toRet);
+			}
+			else if (args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFVEC4F)
+			{
+				auto toRet = DepNewInstance(DEP_ofVec4f);
+				ObjectWrap::Unwrap<nofx::OfVec4f::OfVec4fWrap>(toRet->ToObject())->SetWrapped(
+					self->postMult(*ObjectWrap::Unwrap<nofx::OfVec4f::OfVec4fWrap>(args[0]->ToObject())->GetWrapped()));
+				NanReturnValue(toRet);
+			}
+			else
+			{
+				self->postMult( *ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped() );
+				NanReturnValue(args.This());
+			}
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfMatrix4x4Wrap::PostMultRotate)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			if (args.Length() == 1)
+			{
+				self->postMultRotate(*ObjectWrap::Unwrap<nofx::OfQuaternion::OfQuaternionWrap>(args[0]->ToObject())->GetWrapped());
+			}
+			else
+			{
+				self->postMultRotate(
+					args[0]->NumberValue(),
+					args[1]->NumberValue(),
+					args[2]->NumberValue(),
+					args[3]->NumberValue()
+					);
+			}
 			NanReturnUndefined();
 		}
 
@@ -672,8 +872,18 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::PostMultScale)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			if (args.Length() == 1)
+			{
+				self->postMultScale(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
+			}
+			else
+			{
+				self->postMultScale(
+					args[0]->NumberValue(),
+					args[1]->NumberValue(),
+					args[2]->NumberValue()
+					);
+			}
 			NanReturnUndefined();
 		}
 
@@ -681,8 +891,18 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::PostMultTranslate)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			if (args.Length() == 1)
+			{
+				self->postMultTranslate(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
+			}
+			else
+			{
+				self->postMultTranslate(
+					args[0]->NumberValue(),
+					args[1]->NumberValue(),
+					args[2]->NumberValue()
+					);
+			}
 			NanReturnUndefined();
 		}
 
@@ -690,17 +910,32 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::PreMult)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			if (args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFVEC3F)
+			{
+				auto toRet = DepNewInstance(DEP_ofVec3f);
+				ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(toRet->ToObject())->SetWrapped(
+					self->preMult(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped()));
+				NanReturnValue(toRet);
+			}
+			else if (args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFVEC4F)
+			{
+				auto toRet = DepNewInstance(DEP_ofVec4f);
+				ObjectWrap::Unwrap<nofx::OfVec4f::OfVec4fWrap>(toRet->ToObject())->SetWrapped(
+					self->preMult(*ObjectWrap::Unwrap<nofx::OfVec4f::OfVec4fWrap>(args[0]->ToObject())->GetWrapped()));
+				NanReturnValue(toRet);
+			}
+			else
+			{
+				self->preMult(*ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped());
+				NanReturnValue(args.This());
+			}
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfMatrix4x4Wrap::PreMultRotate)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			self->preMultRotate(*ObjectWrap::Unwrap<nofx::OfQuaternion::OfQuaternionWrap>(args[0]->ToObject())->GetWrapped());
 			NanReturnUndefined();
 		}
 
@@ -708,8 +943,7 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::PreMultScale)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			self->preMultScale(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
 			NanReturnUndefined();
 		}
 
@@ -717,8 +951,7 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::PreMultTranslate)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			self->preMultTranslate(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
 			NanReturnUndefined();
 		}
 
@@ -726,8 +959,19 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::Rotate)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			if (args.Length() == 1)
+			{
+				self->rotate(*ObjectWrap::Unwrap<nofx::OfQuaternion::OfQuaternionWrap>(args[0]->ToObject())->GetWrapped());
+			}
+			else
+			{
+				self->rotate(
+					args[0]->NumberValue(),
+					args[1]->NumberValue(),
+					args[2]->NumberValue(),
+					args[3]->NumberValue()
+					);
+			}
 			NanReturnUndefined();
 		}
 
@@ -735,8 +979,12 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::RotateRad)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+				self->rotateRad(
+					args[0]->NumberValue(),
+					args[1]->NumberValue(),
+					args[2]->NumberValue(),
+					args[3]->NumberValue()
+					);
 			NanReturnUndefined();
 		}
 
@@ -744,8 +992,18 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::Scale)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			if (args.Length() == 1)
+			{
+				self->scale(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
+			}
+			else
+			{
+				self->scale(
+					args[0]->NumberValue(),
+					args[1]->NumberValue(),
+					args[2]->NumberValue()
+					);
+			}
 			NanReturnUndefined();
 		}
 
@@ -753,8 +1011,31 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::Set)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			if (args.Length() == 16)
+			{
+				self->set(
+					args[0]->NumberValue(),
+					args[1]->NumberValue(),
+					args[2]->NumberValue(),
+					args[3]->NumberValue(),
+					args[4]->NumberValue(),
+					args[5]->NumberValue(),
+					args[6]->NumberValue(),
+					args[7]->NumberValue(),
+					args[8]->NumberValue(),
+					args[9]->NumberValue(),
+					args[10]->NumberValue(),
+					args[11]->NumberValue(),
+					args[12]->NumberValue(),
+					args[13]->NumberValue(),
+					args[14]->NumberValue(),
+					args[15]->NumberValue()
+					);
+			}
+			else
+			{
+				self->set(*ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped());
+			}
 			NanReturnUndefined();
 		}
 
