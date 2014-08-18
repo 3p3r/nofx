@@ -287,7 +287,7 @@ namespace nofx
 		NAN_METHOD(OfVec4fWrap::GetPtr)
 		{
 			auto JsFloatPtr = DepNewInstance(DEP_floatPtr);
-			auto PtrSelf = ObjectWrap::Unwrap<nofx::Pointer::PointerWrap<float>>(JsFloatPtr->ToObject());
+			auto PtrSelf = ObjectWrap::Unwrap<nofx::Pointer::NumberPointerWrap<float>>(JsFloatPtr->ToObject());
 			PtrSelf->SetDisplayLength(3);
 			PtrSelf->SetWrapped(ObjectWrap::Unwrap<OfVec4fWrap>(args.This())->GetWrapped()->getPtr());
 			NanReturnValue(JsFloatPtr);

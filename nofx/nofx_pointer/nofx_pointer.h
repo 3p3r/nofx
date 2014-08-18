@@ -18,7 +18,7 @@ namespace nofx
 		// double*
 
 		template<typename T>
-		class PointerWrap
+		class NumberPointerWrap
 			: public node::ObjectWrap
 		{
 		public:
@@ -29,8 +29,9 @@ namespace nofx
 				auto inst = tpl->InstanceTemplate();
 				inst->SetInternalFieldCount(1);
 
-				inst->SetAccessor(NanNew("data"), PointerWrap<T>::DataGetter, 0, v8::Handle<v8::Value>(), v8::PROHIBITS_OVERWRITING);
+				inst->SetAccessor(NanNew("data"), NumberPointerWrap<T>::DataGetter, 0, v8::Handle<v8::Value>(), v8::PROHIBITS_OVERWRITING);
 
+				NanSetPrototypeTemplate(tpl, NanNew("NOFX_TYPE"), NanNew(NOFX_TYPES::NUMBERPOINTER), v8::ReadOnly);
 				NanAssignPersistent(constructor, tpl->GetFunction());
 				exports->Set(NanNew(name), tpl->GetFunction());
 			}
@@ -45,12 +46,12 @@ namespace nofx
 			// from the beginning of the pointer.
 			size_t GetDisplayLength() { return displayLength_; }
 		private:
-			PointerWrap() : internal_(nullptr), displayLength_(0){};
-			PointerWrap(T* aInternal) : internal_(aInternal), displayLength_(0) {};
-			~PointerWrap() { if (internal_) delete internal_; };
+			NumberPointerWrap() : internal_(nullptr), displayLength_(0){};
+			NumberPointerWrap(T* aInternal) : internal_(aInternal), displayLength_(0) {};
+			~NumberPointerWrap() { if (internal_) delete internal_; };
 
 			static NAN_GETTER(DataGetter) {
-				const auto self = node::ObjectWrap::Unwrap<PointerWrap<T>>(args.This());
+				const auto self = node::ObjectWrap::Unwrap<NumberPointerWrap<T>>(args.This());
 				if (self != nullptr)
 				{
 					auto JsArr = NanNew<Array>();
@@ -71,19 +72,19 @@ namespace nofx
 			static NAN_METHOD(New) {
 				NanScope();
 				if (args.IsConstructCall()) {
-					PointerWrap* obj;
+					NumberPointerWrap* obj;
 					if (args.Length() == 0)
 					{
-						obj = new PointerWrap();
+						obj = new NumberPointerWrap();
 					}
 					else if (args[0]->IsNull())
 					{
-						obj = new PointerWrap(nullptr);
+						obj = new NumberPointerWrap(nullptr);
 					}
 					else
 					{
 						//copy constructor
-						obj = new PointerWrap(ObjectWrap::Unwrap<PointerWrap>(args[0]->ToObject())->GetWrapped());
+						obj = new NumberPointerWrap(ObjectWrap::Unwrap<NumberPointerWrap>(args[0]->ToObject())->GetWrapped());
 					}
 					obj->Wrap(args.This());
 					NanReturnValue(args.This());

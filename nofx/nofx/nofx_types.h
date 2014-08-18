@@ -14,7 +14,8 @@ enum NOFX_TYPES
 	OFRECTANGLE,
 	OFQUATERNION,
 	OFTRUETYPEFONT,
-	OFAPPBASEWINDOW
+	OFAPPBASEWINDOW,
+	NUMBERPOINTER
 };
 
 #define DepNewInstance(name) (NanNew(name)->Call(args.This(), 0, nullptr))
