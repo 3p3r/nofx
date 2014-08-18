@@ -26,7 +26,7 @@ namespace nofx
             ~OfMatrix4x4Wrap() {};
             
 			static NAN_INDEX_GETTER(IndexGetter);
-			static NAN_INDEX_SETTER(IndexSetter);;
+			static NAN_INDEX_SETTER(IndexSetter);
 
             static NAN_METHOD(Decompose);
             static NAN_METHOD(GetFrustum);
