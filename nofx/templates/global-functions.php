@@ -1,40 +1,29 @@
 <?php
-$methods = array(
-    "ofDoesHWOrientation",
-    "ofExit",
-    "ofGetAppPtr",
-    "ofGetFrameNum",
-    "ofGetFrameRate",
-    "ofGetHeight",
-    "ofGetLastFrameTime",
-    "ofGetOrientation",
-    "ofGetScreenHeight",
-    "ofGetScreenWidth",
-    "ofGetTargetFrameRate",
-    "ofGetWidth",
-    "ofGetWindowHeight",
-    "ofGetWindowMode",
-    "ofGetWindowPositionX",
-    "ofGetWindowPositionY",
-    "ofGetWindowPtr",
-    "ofGetWindowRect",
-    "ofGetWindowSize",
-    "ofGetWindowWidth",
-    "ofHideCursor",
-    "ofRunApp",
-    "ofSetAppPtr",
-    "ofSetFrameRate",
-    "ofSetFullscreen",
-    "ofSetOrientation",
-    "ofSetVerticalSync",
-    "ofSetWindowPosition",
-    "ofSetWindowShape",
-    "ofSetWindowTitle",
-    "ofSetupOpenGL",
-    "ofShowCursor",
-    "ofSleepMillis",
-    "ofToggleFullscreen"
-);
+require_once("phpQuery/phpQuery.php");
+$className = lcfirst($_GET["className"]);
+$url = $_GET["url"];
+$ofDocPageStr = file_get_contents($url);
+$ofDocPage = phpQuery::newDocument($ofDocPageStr);
+$methods = array();
+$functions = array();
+$variables = array();
+foreach($ofDocPage['ul.functionslist li a'] as $node) {
+    if($node->nodeValue != $className."()") {
+        if(substr($node->nodeValue, 0, 2) == "of" && substr($node->nodeValue, -2) == "()") {
+            //this is a global function
+            array_push($functions, str_replace("()", "", $node->nodeValue ));
+        } else if (substr($node->nodeValue, -2) == "()" && !strstr($node->nodeValue, "operator")) {
+            //this is a class method
+            array_push($methods, str_replace("()", "", $node->nodeValue ));
+        } else if(!strstr($node->nodeValue, "operator")) {
+            //this is a variable
+            $temp = explode(" ", $node->nodeValue);
+            array_push($variables, end($temp) );
+        } else {
+            //this is either unknown or an operator overload
+        }
+    }
+}
 
 function makeHeader($method, $headerName) {
     $header = "#ifndef _NOFX_".strtoupper($method)."_H_
@@ -103,9 +92,13 @@ NODE_MODULE_CONTEXT_AWARE(nofx_".lcfirst($headerName).", nofx::".ucfirst(substr(
 return $target_bindings;
 }
 
-foreach ($methods as $method) {
-    file_put_contents("nofx_".lcfirst($method).".h", makeHeader($method, "ofAppRunner"));
-    file_put_contents("nofx_".lcfirst($method).".cc", makeSource($method, "ofAppRunner"));
+if(isset($_GET["build"])) {
+    foreach ($functions as $method) {
+        file_put_contents("nofx_".lcfirst($method).".h", makeHeader($method, $className));
+        file_put_contents("nofx_".lcfirst($method).".cc", makeSource($method, $className));
+    }
+    file_put_contents("main.cc", makeTargetBindings($functions, $className));
+} else {
+    die(var_dump($functions));
 }
-file_put_contents("main.cc", makeTargetBindings($methods, "ofAppRunner"));
 ?>
