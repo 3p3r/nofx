@@ -10,6 +10,7 @@ namespace nofx
 		Persistent<Function> NumberPointerWrap<int>::constructor;
 		Persistent<Function> NumberPointerWrap<float>::constructor;
 		Persistent<Function> NumberPointerWrap<double>::constructor;
+		Persistent<Function> NumberPointerWrap<unsigned char>::constructor;
 
 		void Initialize(v8::Handle<Object> target,
 			v8::Handle<Value> unused,
@@ -19,6 +20,7 @@ namespace nofx
 			NumberPointerWrap<int>::Initialize(target, "intPtr");
 			NumberPointerWrap<float>::Initialize(target, "floatPtr");
 			NumberPointerWrap<double>::Initialize(target, "doublePtr");
+			NumberPointerWrap<unsigned char>::Initialize(target, "unsignedCharPtr");
 
 		} //!Initialize
 	}

@@ -16,7 +16,9 @@ enum NOFX_TYPES
 	OFQUATERNION,
 	OFTRUETYPEFONT,
 	OFAPPBASEWINDOW,
-	NUMBERPOINTER
+	NUMBERPOINTER,
+	OFPIXELS,
+	OFTEXTURE
 };
 
 #define DepNewInstance(name) (NanNew(name)->Call(args.This(), 0, nullptr))
