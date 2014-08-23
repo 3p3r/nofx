@@ -1,4 +1,5 @@
 #include "globals.h"
+#include "nofx_dependencies.h"
 #include "nofx_ofAngleDifferenceDegrees.h"
 #include "nofx_ofAngleDifferenceRadians.h"
 #include "nofx_ofBezierPoint.h"
@@ -46,7 +47,8 @@ namespace nofx
 			v8::Handle<Value> unused,
 			v8::Handle<Context> context)
 		{
-
+			
+			target->Set(NanNew<v8::String>("dependencies"), NanNew<v8::FunctionTemplate>(nofx_dependencies)->GetFunction());
 			target->Set(NanNew<v8::String>("ofAngleDifferenceDegrees"), NanNew<v8::FunctionTemplate>(nofx_ofAngleDifferenceDegrees)->GetFunction());
 			target->Set(NanNew<v8::String>("ofAngleDifferenceRadians"), NanNew<v8::FunctionTemplate>(nofx_ofAngleDifferenceRadians)->GetFunction());
 			target->Set(NanNew<v8::String>("ofBezierPoint"), NanNew<v8::FunctionTemplate>(nofx_ofBezierPoint)->GetFunction());
