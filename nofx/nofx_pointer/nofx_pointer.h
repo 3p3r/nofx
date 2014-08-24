@@ -12,79 +12,67 @@ namespace nofx
 	{
 		using namespace v8;
 
-		// currently only works with:
-		// int*
-		// float*
-		// double*
-
 		template<typename T>
-		class NumberPointerWrap
+		class RawPointerWrap
 			: public node::ObjectWrap
 		{
 		public:
-			static void Initialize(v8::Handle<Object> exports, std::string name) {
+			static void Initialize(v8::Handle<Object> exports, std::string name, NOFX_TYPES type) {
 				auto tpl = NanNew<v8::FunctionTemplate>(New);
 				tpl->SetClassName(NanNew(name));
 
 				auto inst = tpl->InstanceTemplate();
 				inst->SetInternalFieldCount(1);
 
-				inst->SetAccessor(NanNew("data"), NumberPointerWrap<T>::DataGetter, 0, v8::Handle<v8::Value>(), v8::PROHIBITS_OVERWRITING);
+//				inst->SetAccessor(NanNew("data"), NumberPointerWrap<T>::DataGetter, 0, v8::Handle<v8::Value>(), v8::PROHIBITS_OVERWRITING);
 
-				NanSetPrototypeTemplate(tpl, NanNew("NOFX_TYPE"), NanNew(NOFX_TYPES::NUMBERPOINTER), v8::ReadOnly);
+				NanSetPrototypeTemplate(tpl, NanNew("NOFX_TYPE"), NanNew(type), v8::ReadOnly);
 				NanAssignPersistent(constructor, tpl->GetFunction());
 				exports->Set(NanNew(name), tpl->GetFunction());
 			}
 			T* GetWrapped() const { return internal_; };
 			void SetWrapped(T* n)  { if (internal_) delete internal_; internal_ = n; };
-			
-			// Will be used by v8 to show the right number of elements
-			// from the beginning of the pointer.
-			void SetDisplayLength(size_t n) { displayLength_ = n; }
-			
-			// Will be used by v8 to show the right number of elements
-			// from the beginning of the pointer.
-			size_t GetDisplayLength() { return displayLength_; }
-		private:
-			NumberPointerWrap() : internal_(nullptr), displayLength_(0){};
-			NumberPointerWrap(T* aInternal) : internal_(aInternal), displayLength_(0) {};
-			~NumberPointerWrap() { if (internal_) delete internal_; };
 
-			static NAN_GETTER(DataGetter) {
-				const auto self = node::ObjectWrap::Unwrap<NumberPointerWrap<T>>(args.This());
-				if (self != nullptr)
-				{
-					auto JsArr = NanNew<Array>();
-					for (auto i = 0; i < self->GetDisplayLength(); ++i)
-					{
-						JsArr->Set(i, NanNew(self->GetWrapped()[i]));
-					}
-					NanReturnValue(JsArr);
-				}
-				else
-				{
-					NanReturnNull();
-				}
-			};
+		private:
+			RawPointerWrap() : internal_(nullptr) {};
+			RawPointerWrap(T* aInternal) : internal_(aInternal) {};
+			~RawPointerWrap() { if (internal_) delete internal_; };
+
+// 			static NAN_GETTER(DataGetter) {
+// 				const auto self = node::ObjectWrap::Unwrap<NumberPointerWrap<T>>(args.This());
+// 				if (self != nullptr)
+// 				{
+// 					auto JsArr = NanNew<Array>();
+// 					for (auto i = 0; i < self->GetDisplayLength(); ++i)
+// 					{
+// 						JsArr->Set(i, NanNew(self->GetWrapped()[i]));
+// 					}
+// 					NanReturnValue(JsArr);
+// 				}
+// 				else
+// 				{
+// 					NanReturnNull();
+// 				}
+// 			};
 
 			static Persistent<Function> constructor;
 
 			static NAN_METHOD(New) {
 				NanScope();
 				if (args.IsConstructCall()) {
-					NumberPointerWrap* obj;
+					RawPointerWrap* obj;
 					if (args.Length() == 0)
 					{
-						obj = new NumberPointerWrap();
+						obj = new RawPointerWrap();
 					}
 					else if (args[0]->IsNull())
 					{
-						obj = new NumberPointerWrap(nullptr);
+						obj = new RawPointerWrap(nullptr);
 					}
 					else
 					{
 						//copy constructor
-						obj = new NumberPointerWrap(ObjectWrap::Unwrap<NumberPointerWrap>(args[0]->ToObject())->GetWrapped());
+						obj = new RawPointerWrap(ObjectWrap::Unwrap<RawPointerWrap>(args[0]->ToObject())->GetWrapped());
 					}
 					obj->Wrap(args.This());
 					NanReturnValue(args.This());
@@ -98,7 +86,6 @@ namespace nofx
 				}
 			}
 			T* internal_;
-			size_t displayLength_;
 		};
 	}
 }

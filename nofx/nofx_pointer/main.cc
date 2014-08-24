@@ -7,20 +7,24 @@ namespace nofx
 	{
 		using namespace v8;
 
-		Persistent<Function> NumberPointerWrap<int>::constructor;
-		Persistent<Function> NumberPointerWrap<float>::constructor;
-		Persistent<Function> NumberPointerWrap<double>::constructor;
-		Persistent<Function> NumberPointerWrap<unsigned char>::constructor;
+		Persistent<Function> RawPointerWrap<int>::constructor;
+		Persistent<Function> RawPointerWrap<float>::constructor;
+		Persistent<Function> RawPointerWrap<double>::constructor;
+		Persistent<Function> RawPointerWrap<unsigned char>::constructor;
+		Persistent<Function> RawPointerWrap<unsigned short>::constructor;
+		Persistent<Function> RawPointerWrap<void>::constructor;
 
 		void Initialize(v8::Handle<Object> target,
 			v8::Handle<Value> unused,
 			v8::Handle<Context> context)
 		{
 
-			NumberPointerWrap<int>::Initialize(target, "intPtr");
-			NumberPointerWrap<float>::Initialize(target, "floatPtr");
-			NumberPointerWrap<double>::Initialize(target, "doublePtr");
-			NumberPointerWrap<unsigned char>::Initialize(target, "unsignedCharPtr");
+			RawPointerWrap<int>::Initialize(target, "intPtr", NOFX_TYPES::INTPTR);
+			RawPointerWrap<float>::Initialize(target, "floatPtr", NOFX_TYPES::FLOATPTR);
+			RawPointerWrap<double>::Initialize(target, "doublePtr", NOFX_TYPES::DOUBLEPTR);
+			RawPointerWrap<unsigned char>::Initialize(target, "unsignedCharPtr", NOFX_TYPES::UNSIGNEDCHARPTR);
+			RawPointerWrap<unsigned short>::Initialize(target, "unsignedShortPtr", NOFX_TYPES::UNSIGNEDSHORTPTR);
+			RawPointerWrap<void>::Initialize(target, "voidPtr", NOFX_TYPES::VOIDPTR);
 
 		} //!Initialize
 	}

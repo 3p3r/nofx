@@ -329,9 +329,7 @@ namespace nofx
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
 			auto JsPtr = DepNewInstance(DEP_floatPtr);
-			auto CppBridge = ObjectWrap::Unwrap<nofx::Pointer::NumberPointerWrap<float>>(JsPtr->ToObject());
-			CppBridge->SetDisplayLength(16);
-			CppBridge->SetWrapped(self->getPtr());
+			ObjectWrap::Unwrap<nofx::Pointer::RawPointerWrap<float>>(JsPtr->ToObject())->SetWrapped(self->getPtr());
 			NanReturnValue(JsPtr);
 		}
 
@@ -1035,7 +1033,7 @@ namespace nofx
 			else if (args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::NUMBERPOINTER)
 			{
 				// TODO(sepehr) This needs to be casted properly
-				self->set(ObjectWrap::Unwrap<nofx::Pointer::NumberPointerWrap<double>>(args[0]->ToObject())->GetWrapped());
+				self->set(ObjectWrap::Unwrap<nofx::Pointer::RawPointerWrap<double>>(args[0]->ToObject())->GetWrapped());
 			}
 			else
 			{

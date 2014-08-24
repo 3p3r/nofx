@@ -212,9 +212,7 @@ namespace nofx
 		{
 			const auto self = ObjectWrap::Unwrap<OfPixelsWrap>(args.This())->GetWrapped();
 			auto JsUcharPtr = DepNewInstance(DEP_unsignedCharPtr);
-			auto JsPtrWrapped = ObjectWrap::Unwrap<nofx::Pointer::NumberPointerWrap<unsigned char>>(JsUcharPtr->ToObject());
-			JsPtrWrapped->SetDisplayLength(sizeof(self->getPixels()) / sizeof(self->getPixels()[0]));
-			JsPtrWrapped->SetWrapped(self->getPixels());
+			ObjectWrap::Unwrap<nofx::Pointer::RawPointerWrap<unsigned char>>(JsUcharPtr->ToObject())->SetWrapped(self->getPixels());
 			NanReturnValue(JsUcharPtr);
 		}
 
@@ -341,7 +339,7 @@ namespace nofx
 		{
 			auto self = ObjectWrap::Unwrap<OfPixelsWrap>(args.This())->GetWrapped();
 			self->setFromAlignedPixels(
-				ObjectWrap::Unwrap<nofx::Pointer::NumberPointerWrap<unsigned char>>(args[0]->ToObject())->GetWrapped(),
+				ObjectWrap::Unwrap<nofx::Pointer::RawPointerWrap<unsigned char>>(args[0]->ToObject())->GetWrapped(),
 				args[1]->Int32Value(),
 				args[2]->Int32Value(),
 				args[3]->Int32Value(),
@@ -354,7 +352,7 @@ namespace nofx
 		{
 			auto self = ObjectWrap::Unwrap<OfPixelsWrap>(args.This())->GetWrapped();
 			self->setFromExternalPixels(
-				ObjectWrap::Unwrap<nofx::Pointer::NumberPointerWrap<unsigned char>>(args[0]->ToObject())->GetWrapped(),
+				ObjectWrap::Unwrap<nofx::Pointer::RawPointerWrap<unsigned char>>(args[0]->ToObject())->GetWrapped(),
 				args[1]->Int32Value(),
 				args[2]->Int32Value(),
 				args[3]->Int32Value());
@@ -366,7 +364,7 @@ namespace nofx
 		{
 			auto self = ObjectWrap::Unwrap<OfPixelsWrap>(args.This())->GetWrapped();
 			self->setFromPixels(
-				ObjectWrap::Unwrap<nofx::Pointer::NumberPointerWrap<unsigned char>>(args[0]->ToObject())->GetWrapped(),
+				ObjectWrap::Unwrap<nofx::Pointer::RawPointerWrap<unsigned char>>(args[0]->ToObject())->GetWrapped(),
 				args[1]->Int32Value(),
 				args[2]->Int32Value(),
 				args[2]->Int32Value());

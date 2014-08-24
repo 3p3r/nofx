@@ -33,10 +33,10 @@ function makeHeader($method, $headerName) {
 
 namespace nofx
 {
-    namespace ".ucfirst(substr($headerName, 2))."
+    namespace ".ucfirst(ucfirst($headerName))."
     {
         NAN_METHOD(nofx_".lcfirst($method).");
-    } // !namespace ".ucfirst(substr($headerName, 2))."
+    } // !namespace ".ucfirst(ucfirst($headerName))."
 } // !namespace nofx
 
 #endif // !_NOFX_".strtoupper($method)."_H_";
@@ -49,7 +49,7 @@ function makeSource($method, $headerName) {
 
 namespace nofx
 {
-    namespace ".ucfirst(substr($headerName, 2))."
+    namespace ".ucfirst(ucfirst($headerName))."
     {
         NAN_METHOD(nofx_".lcfirst($method).")
         {
@@ -58,7 +58,7 @@ namespace nofx
         
             NanReturnUndefined();
         } // !nofx_".lcfirst($method)."
-    } // !namespace ".ucfirst(substr($headerName, 2))."
+    } // !namespace ".ucfirst(ucfirst($headerName))."
 } // !namespace nofx";
 return $source;
 }
@@ -74,7 +74,7 @@ $target_bindings = "#include \"globals.h\"
 ".$includes."
 namespace nofx
 {
-    namespace ".ucfirst(substr($headerName, 2))."
+    namespace ".ucfirst(ucfirst($headerName))."
     {
         using namespace v8;
 
@@ -84,7 +84,7 @@ namespace nofx
         {
 ".$init."
         } //!Initialize
-    } //!namespace ".ucfirst(substr($headerName, 2))."
+    } //!namespace ".ucfirst(ucfirst($headerName))."
 } //!namespace nofx
 
 NODE_MODULE_CONTEXT_AWARE(nofx_".lcfirst($headerName).", nofx::".ucfirst(substr($headerName, 2))."::Initialize)
