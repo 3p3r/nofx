@@ -3,6 +3,7 @@
 
 #include "globals.h"
 #include "ofBaseApp.h"
+#include "..\nofx\nofx_objectWrap.h"
 
 using namespace v8;
 
@@ -55,17 +56,10 @@ namespace nofx
 		}; // !class OfAppImpl
 
 		class OfAppWrap
-			: public node::ObjectWrap
+			: public nofx::ObjectWrap < OfAppImpl >
 		{
-		public:
-			static void Initialize(v8::Handle<Object> target);
-			OfAppImpl* GetWrapped() const { return internal_.get(); };
-			void SetWrapped(OfAppImpl* n)  { internal_.reset(n); };
-			static const Persistent<Function>& Factory() { return constructor; }
-		private:
-			OfAppWrap();
-			OfAppWrap(OfAppImpl*);
-			~OfAppWrap() {};
+
+			DeclareObjectRoutinesLong(OfAppWrap, OfAppImpl);
 
 			// Mutators
 			static NAN_GETTER(GetMouseX);
@@ -105,9 +99,6 @@ namespace nofx
 			static NAN_SETTER(SetMessageReceived);
 			static NAN_SETTER(SetDragged);
 
-			static Persistent<Function> constructor;
-			static NAN_METHOD(New);
-			std::shared_ptr<OfAppImpl> internal_;
 		}; // !class OfAppWrap
 	} //!namespace BaseApp
 } // !namespace nofx

@@ -4,37 +4,30 @@
 #include "globals.h"
 #include <memory>
 #include "ofColor.h"
+#include "..\nofx\nofx_objectWrap.h"
 
 using namespace v8;
 
 namespace nofx
 {
-    namespace OfColor
-    {
-        class OfColorWrap
-            : public node::ObjectWrap
-        {
-        public:
-            static void Initialize(v8::Handle<Object> target);
-            ofColor* GetWrapped() const { return internal_.get(); };
-            void SetWrapped(ofColor* n)  { internal_.reset(n); };
-            void SetWrapped(ofColor& n)  { if (!internal_) { internal_.reset(new ofColor()); } internal_.get()->set(n); };
-            static const Persistent<Function>& Factory() { return constructor; }
-        private:
-            OfColorWrap();
-            OfColorWrap(ofColor*);
-            ~OfColorWrap() {};
+	namespace OfColor
+	{
+		class OfColorWrap
+			: public nofx::ObjectWrap < ofColor >
+		{
 
-            
-            static NAN_GETTER(GetA);
-            static NAN_GETTER(GetB);
-            static NAN_GETTER(GetG);
-            static NAN_GETTER(GetR);
-            
-            static NAN_SETTER(SetA);
-            static NAN_SETTER(SetB);
-            static NAN_SETTER(SetG);
-            static NAN_SETTER(SetR);
+			DeclareObjectRoutines(Color);
+
+
+			static NAN_GETTER(GetA);
+			static NAN_GETTER(GetB);
+			static NAN_GETTER(GetG);
+			static NAN_GETTER(GetR);
+
+			static NAN_SETTER(SetA);
+			static NAN_SETTER(SetB);
+			static NAN_SETTER(SetG);
+			static NAN_SETTER(SetR);
 
 			static NAN_PROPERTY_GETTER(GetAliceBlue);
 			static NAN_PROPERTY_GETTER(GetAntiqueWhite);
@@ -185,39 +178,32 @@ namespace nofx
 			static NAN_PROPERTY_GETTER(GetYellow);
 			static NAN_PROPERTY_GETTER(GetYellowGreen);
 
-            static NAN_METHOD(Clamp);
-            static NAN_METHOD(FromHex);
-            static NAN_METHOD(FromHsb);
-            static NAN_METHOD(GetBrightness);
-            static NAN_METHOD(GetClamped);
-            static NAN_METHOD(GetHex);
-            static NAN_METHOD(GetHsb);
-            static NAN_METHOD(GetHue);
-            static NAN_METHOD(GetHueAngle);
-            static NAN_METHOD(GetInverted);
-            static NAN_METHOD(GetLerped);
-            static NAN_METHOD(GetLightness);
-            static NAN_METHOD(GetSaturation);
-            static NAN_METHOD(Invert);
-            static NAN_METHOD(Lerp);
-            static NAN_METHOD(Limit);
-            static NAN_METHOD(Set);
-            static NAN_METHOD(SetBrightness);
-            static NAN_METHOD(SetHex);
-            static NAN_METHOD(SetHsb);
-            static NAN_METHOD(SetHue);
-            static NAN_METHOD(SetHueAngle);
-            static NAN_METHOD(SetSaturation);
-            
-            //Js ctor, can be used inside the class itself to construct ofColor
-            static Persistent<Function> constructor;
-            static NAN_METHOD(New);
-            
-            //Pointer to internal object
-            std::shared_ptr<ofColor> internal_;
-        }; // !class OfColorWrap
-    } //!namespace OfColor
+			static NAN_METHOD(Clamp);
+			static NAN_METHOD(FromHex);
+			static NAN_METHOD(FromHsb);
+			static NAN_METHOD(GetBrightness);
+			static NAN_METHOD(GetClamped);
+			static NAN_METHOD(GetHex);
+			static NAN_METHOD(GetHsb);
+			static NAN_METHOD(GetHue);
+			static NAN_METHOD(GetHueAngle);
+			static NAN_METHOD(GetInverted);
+			static NAN_METHOD(GetLerped);
+			static NAN_METHOD(GetLightness);
+			static NAN_METHOD(GetSaturation);
+			static NAN_METHOD(Invert);
+			static NAN_METHOD(Lerp);
+			static NAN_METHOD(Limit);
+			static NAN_METHOD(Set);
+			static NAN_METHOD(SetBrightness);
+			static NAN_METHOD(SetHex);
+			static NAN_METHOD(SetHsb);
+			static NAN_METHOD(SetHue);
+			static NAN_METHOD(SetHueAngle);
+			static NAN_METHOD(SetSaturation);
+
+		}; // !class OfColorWrap
+	} //!namespace OfColor
 } // !namespace nofx
 
 #endif // !_NOFX_OF_COLOR_H_
-    

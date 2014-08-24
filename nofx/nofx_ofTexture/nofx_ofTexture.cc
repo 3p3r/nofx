@@ -14,15 +14,6 @@ namespace nofx
 
 		Persistent<Function> OfTextureWrap::constructor;
 
-		OfTextureWrap::OfTextureWrap()
-			: internal_(nullptr)
-		{}
-
-		//--------------------------------------------------------------
-		OfTextureWrap::OfTextureWrap(ofTexture* aInternal)
-			: internal_(aInternal)
-		{}
-
 		//--------------------------------------------------------------
 		NAN_METHOD(OfTextureWrap::New)
 		{
@@ -93,7 +84,7 @@ namespace nofx
 		NAN_METHOD(OfTextureWrap::Allocate)
 		{
 			auto self = ObjectWrap::Unwrap<OfTextureWrap>(args.This())->GetWrapped();
-			
+
 			if (args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFTEXTUREDATA)
 			{
 				self->allocate(*ObjectWrap::Unwrap<nofx::OfTextureData::OfTextureDataWrap>(args[0]->ToObject())->GetWrapped());
@@ -145,7 +136,7 @@ namespace nofx
 		NAN_METHOD(OfTextureWrap::Draw)
 		{
 			auto self = ObjectWrap::Unwrap<OfTextureWrap>(args.This())->GetWrapped();
-			
+
 			if (args.Length() == 1)
 			{
 				if (args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFRECTANGLE)
@@ -192,7 +183,7 @@ namespace nofx
 			{
 				self->draw(args[0]->NumberValue(), args[1]->NumberValue(), args[2]->NumberValue(), args[3]->NumberValue(), args[4]->NumberValue());
 			}
-			
+
 			NanReturnUndefined();
 		}
 
@@ -200,7 +191,7 @@ namespace nofx
 		NAN_METHOD(OfTextureWrap::DrawSubsection)
 		{
 			auto self = ObjectWrap::Unwrap<OfTextureWrap>(args.This())->GetWrapped();
-			
+
 			if (args.Length() == 6)
 			{
 				self->drawSubsection(

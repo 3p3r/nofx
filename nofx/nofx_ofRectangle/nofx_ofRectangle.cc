@@ -10,15 +10,6 @@ namespace nofx
 
 		Persistent<Function> OfRectangleWrap::constructor;
 
-		OfRectangleWrap::OfRectangleWrap()
-			: internal_(nullptr)
-		{}
-
-		//--------------------------------------------------------------
-		OfRectangleWrap::OfRectangleWrap(ofRectangle* aInternal)
-			: internal_(aInternal)
-		{}
-
 		//--------------------------------------------------------------
 		NAN_METHOD(OfRectangleWrap::New)
 		{

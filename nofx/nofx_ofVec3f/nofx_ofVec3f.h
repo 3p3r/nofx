@@ -4,6 +4,7 @@
 #include "globals.h"
 #include <memory>
 #include "ofVec3f.h"
+#include "..\nofx\nofx_objectWrap.h"
 
 using namespace v8;
 
@@ -12,18 +13,10 @@ namespace nofx
     namespace OfVec3f
     {
         class OfVec3fWrap
-            : public node::ObjectWrap
+            : public nofx::ObjectWrap<ofVec3f>
         {
-        public:
-            static void Initialize(v8::Handle<Object> target);
-            ofVec3f* GetWrapped() const { return internal_.get(); };
-            void SetWrapped(ofVec3f* n)  { internal_.reset(n); };
-			void SetWrapped(ofVec3f& n)  { if (!internal_) { internal_.reset(new ofVec3f()); } internal_.get()->set(n); };
-            static const Persistent<Function>& Factory() { return constructor; }
-        private:
-            OfVec3fWrap();
-            OfVec3fWrap(ofVec3f*);
-            ~OfVec3fWrap() {};
+
+			DeclareObjectRoutines(Vec3f);
 
             // Mutators
             static NAN_GETTER(GetDIM);
@@ -75,12 +68,6 @@ namespace nofx
             static NAN_METHOD(SquareDistance);
             static NAN_METHOD(Zero);
 
-			//Js ctor, can be used inside the class itself to construct ofVec3f
-            static Persistent<Function> constructor;
-            static NAN_METHOD(New);
-			
-			//Pointer to internal object
-            std::shared_ptr<ofVec3f> internal_;
         }; // !class OfVec3fWrap
     } //!namespace OfVec3f
 } // !namespace nofx

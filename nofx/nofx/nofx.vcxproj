@@ -114,6 +114,7 @@ IF DEFINED NOFX_OF exit(0) ELSE exit(1)</Command>
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="nofx_objectWrap.h" />
     <ClInclude Include="nofx_types.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

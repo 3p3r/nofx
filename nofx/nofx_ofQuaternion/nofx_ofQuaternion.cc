@@ -11,15 +11,6 @@ namespace nofx
 
 		Persistent<Function> OfQuaternionWrap::constructor;
 
-		OfQuaternionWrap::OfQuaternionWrap()
-			: internal_(nullptr)
-		{}
-
-		//--------------------------------------------------------------
-		OfQuaternionWrap::OfQuaternionWrap(ofQuaternion* aInternal)
-			: internal_(aInternal)
-		{}
-
 		//--------------------------------------------------------------
 		NAN_METHOD(OfQuaternionWrap::New)
 		{

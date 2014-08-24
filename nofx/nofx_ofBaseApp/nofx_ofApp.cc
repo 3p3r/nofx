@@ -140,19 +140,10 @@ namespace nofx
 		}
 
 		/************************************************************************/
-		/* End if OfAppImpl														*/
+		/* End of OfAppImpl														*/
 		/************************************************************************/
 
 		Persistent<Function> OfAppWrap::constructor;
-
-		OfAppWrap::OfAppWrap()
-			: internal_(new OfAppImpl())
-		{}
-
-		//--------------------------------------------------------------
-		OfAppWrap::OfAppWrap(OfAppImpl* aInternal)
-			: internal_(aInternal)
-		{}
 
 		//--------------------------------------------------------------
 		NAN_METHOD(OfAppWrap::New)

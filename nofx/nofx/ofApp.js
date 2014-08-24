@@ -48,6 +48,9 @@ app.update = function () {
 app.mousePressed = function () {
     var mat = new ofMatrix4x4(1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4);
     console.log(mat.getPtr());
+
+    var vec = new ofVec3f(4, 5, 666666666);
+    console.log(vec);
 }
 
 ofSetupOpenGL(150, 150);

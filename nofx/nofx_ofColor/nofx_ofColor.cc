@@ -9,15 +9,6 @@ namespace nofx
 
 		Persistent<Function> OfColorWrap::constructor;
 
-		OfColorWrap::OfColorWrap()
-			: internal_(nullptr)
-		{}
-
-		//--------------------------------------------------------------
-		OfColorWrap::OfColorWrap(ofColor* aInternal)
-			: internal_(aInternal)
-		{}
-
 		//--------------------------------------------------------------
 		NAN_METHOD(OfColorWrap::New)
 		{

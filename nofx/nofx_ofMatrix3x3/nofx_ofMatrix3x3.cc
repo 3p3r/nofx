@@ -9,15 +9,6 @@ namespace nofx
 
 		Persistent<Function> OfMatrix3x3Wrap::constructor;
 
-		OfMatrix3x3Wrap::OfMatrix3x3Wrap()
-			: internal_(nullptr)
-		{}
-
-		//--------------------------------------------------------------
-		OfMatrix3x3Wrap::OfMatrix3x3Wrap(ofMatrix3x3* aInternal)
-			: internal_(aInternal)
-		{}
-
 		//--------------------------------------------------------------
 		NAN_METHOD(OfMatrix3x3Wrap::New)
 		{

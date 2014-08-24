@@ -10,15 +10,6 @@ namespace nofx
 
 		Persistent<Function> OfStyleWrap::constructor;
 
-		OfStyleWrap::OfStyleWrap()
-			: internal_(nullptr)
-		{}
-
-		//--------------------------------------------------------------
-		OfStyleWrap::OfStyleWrap(ofStyle* aInternal)
-			: internal_(aInternal)
-		{}
-
 		//--------------------------------------------------------------
 		NAN_METHOD(OfStyleWrap::New)
 		{

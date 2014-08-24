@@ -13,15 +13,6 @@ namespace nofx
 
 		Persistent<Function> OfMatrix4x4Wrap::constructor;
 
-		OfMatrix4x4Wrap::OfMatrix4x4Wrap()
-			: internal_(nullptr)
-		{}
-
-		//--------------------------------------------------------------
-		OfMatrix4x4Wrap::OfMatrix4x4Wrap(ofMatrix4x4* aInternal)
-			: internal_(aInternal)
-		{}
-
 		//--------------------------------------------------------------
 		NAN_METHOD(OfMatrix4x4Wrap::New)
 		{

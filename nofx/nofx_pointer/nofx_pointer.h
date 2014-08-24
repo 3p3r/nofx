@@ -24,8 +24,6 @@ namespace nofx
 				auto inst = tpl->InstanceTemplate();
 				inst->SetInternalFieldCount(1);
 
-//				inst->SetAccessor(NanNew("data"), NumberPointerWrap<T>::DataGetter, 0, v8::Handle<v8::Value>(), v8::PROHIBITS_OVERWRITING);
-
 				NanSetPrototypeTemplate(tpl, NanNew("NOFX_TYPE"), NanNew(type), v8::ReadOnly);
 				NanAssignPersistent(constructor, tpl->GetFunction());
 				exports->Set(NanNew(name), tpl->GetFunction());
@@ -37,23 +35,6 @@ namespace nofx
 			RawPointerWrap() : internal_(nullptr) {};
 			RawPointerWrap(T* aInternal) : internal_(aInternal) {};
 			~RawPointerWrap() { if (internal_) delete internal_; };
-
-// 			static NAN_GETTER(DataGetter) {
-// 				const auto self = node::ObjectWrap::Unwrap<NumberPointerWrap<T>>(args.This());
-// 				if (self != nullptr)
-// 				{
-// 					auto JsArr = NanNew<Array>();
-// 					for (auto i = 0; i < self->GetDisplayLength(); ++i)
-// 					{
-// 						JsArr->Set(i, NanNew(self->GetWrapped()[i]));
-// 					}
-// 					NanReturnValue(JsArr);
-// 				}
-// 				else
-// 				{
-// 					NanReturnNull();
-// 				}
-// 			};
 
 			static Persistent<Function> constructor;
 

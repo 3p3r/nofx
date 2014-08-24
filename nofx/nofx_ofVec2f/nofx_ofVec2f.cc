@@ -12,15 +12,6 @@ namespace nofx
 
 		Persistent<Function> OfVec2fWrap::constructor;
 
-		OfVec2fWrap::OfVec2fWrap()
-			: internal_(nullptr)
-		{}
-
-		//--------------------------------------------------------------
-		OfVec2fWrap::OfVec2fWrap(ofVec2f* aInternal)
-			: internal_(aInternal)
-		{}
-
 		//--------------------------------------------------------------
 		NAN_METHOD(OfVec2fWrap::New)
 		{

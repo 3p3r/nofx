@@ -11,15 +11,6 @@ namespace nofx
 
 		Persistent<Function> OfPixelsWrap::constructor;
 
-		OfPixelsWrap::OfPixelsWrap()
-			: internal_(nullptr)
-		{}
-
-		//--------------------------------------------------------------
-		OfPixelsWrap::OfPixelsWrap(ofPixels* aInternal)
-			: internal_(aInternal)
-		{}
-
 		//--------------------------------------------------------------
 		NAN_METHOD(OfPixelsWrap::New)
 		{

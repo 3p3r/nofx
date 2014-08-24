@@ -9,15 +9,6 @@ namespace nofx
 
 		Persistent<Function> OfTextureDataWrap::constructor;
 
-		OfTextureDataWrap::OfTextureDataWrap()
-			: internal_(nullptr)
-		{}
-
-		//--------------------------------------------------------------
-		OfTextureDataWrap::OfTextureDataWrap(ofTextureData* aInternal)
-			: internal_(aInternal)
-		{}
-
 		//--------------------------------------------------------------
 		NAN_METHOD(OfTextureDataWrap::New)
 		{

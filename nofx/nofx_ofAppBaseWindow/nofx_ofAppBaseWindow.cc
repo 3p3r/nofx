@@ -9,11 +9,6 @@ namespace nofx
 		Persistent<Function> OfAppBaseWindowWrap::constructor;
 
 		//--------------------------------------------------------------
-		OfAppBaseWindowWrap::OfAppBaseWindowWrap(ofAppBaseWindow* aInternal)
-			: internal_(aInternal)
-		{}
-
-		//--------------------------------------------------------------
 		NAN_METHOD(OfAppBaseWindowWrap::New)
 		{
 			NanScope();
