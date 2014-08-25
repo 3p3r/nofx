@@ -119,21 +119,21 @@ namespace nofx
 		NAN_METHOD(OfBufferWrap::GetFirstLine)
 		{
 			const auto self = ObjectWrap::Unwrap<OfBufferWrap>(args.This())->GetWrapped();
-			NanReturnValue(self->getFirstLine().c_str());
+			NanReturnValue(NanNew(self->getFirstLine()));
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfBufferWrap::GetNextLine)
 		{
 			const auto self = ObjectWrap::Unwrap<OfBufferWrap>(args.This())->GetWrapped();
-			NanReturnValue(self->getNextLine().c_str());
+			NanReturnValue(NanNew(self->getNextLine()));
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfBufferWrap::GetText)
 		{
 			const auto self = ObjectWrap::Unwrap<OfBufferWrap>(args.This())->GetWrapped();
-			NanReturnValue(self->getText().c_str());
+			NanReturnValue(NanNew(self->getText()));
 		}
 
 		//---------------------------------------------------------

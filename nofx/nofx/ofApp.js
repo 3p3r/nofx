@@ -34,6 +34,11 @@ var ofMatrix4x4 = require("../bin/nofx_ofMatrix4x4").dependencies({
     "floatPtr": function () { return new floatPtr(null); }
 }).ofMatrix4x4;
 
+var ofBuffer = require("../bin/nofx_ofBuffer").ofBuffer;
+var ofFile = require("../bin/nofx_ofFile").dependencies({
+    "ofBuffer": function () { return new ofBuffer(null); }
+}).ofFile;
+
 // We do this to avoid calling "this" on every API call
 // Source code will get cleaner and more readable.
 var extend = require("./extend.js");
@@ -51,6 +56,9 @@ app.mousePressed = function () {
 
     var vec = new ofVec3f(4, 5, 666666666);
     console.log(vec);
+
+    var file = new ofFile("C:\\Users\\sepehrl\\Desktop\\yo.ahk");
+    console.log(file.readToBuffer().getText());
 }
 
 ofSetupOpenGL(150, 150);

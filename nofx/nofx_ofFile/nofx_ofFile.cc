@@ -177,28 +177,28 @@ namespace nofx
 		NAN_METHOD(OfFileWrap::GetAbsolutePath)
 		{
 			const auto self = ObjectWrap::Unwrap<OfFileWrap>(args.This())->GetWrapped();
-			NanReturnValue(self->getAbsolutePath().c_str());
+			NanReturnValue(NanNew(self->getAbsolutePath()));
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfFileWrap::GetBaseName)
 		{
 			const auto self = ObjectWrap::Unwrap<OfFileWrap>(args.This())->GetWrapped();
-			NanReturnValue(self->getBaseName().c_str());
+			NanReturnValue(NanNew(self->getBaseName()));
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfFileWrap::GetEnclosingDirectory)
 		{
 			const auto self = ObjectWrap::Unwrap<OfFileWrap>(args.This())->GetWrapped();
-			NanReturnValue(self->getEnclosingDirectory().c_str());
+			NanReturnValue(NanNew(self->getEnclosingDirectory()));
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfFileWrap::GetExtension)
 		{
 			const auto self = ObjectWrap::Unwrap<OfFileWrap>(args.This())->GetWrapped();
-			NanReturnValue(self->getExtension().c_str());
+			NanReturnValue(NanNew(self->getExtension()));
 		}
 
 		//---------------------------------------------------------
@@ -213,7 +213,7 @@ namespace nofx
 		NAN_METHOD(OfFileWrap::GetFileName)
 		{
 			const auto self = ObjectWrap::Unwrap<OfFileWrap>(args.This())->GetWrapped();
-			NanReturnValue(self->getFileName().c_str());
+			NanReturnValue(NanNew(self->getFileName()));
 		}
 
 		//---------------------------------------------------------
@@ -297,7 +297,7 @@ namespace nofx
 		NAN_METHOD(OfFileWrap::Path)
 		{
 			const auto self = ObjectWrap::Unwrap<OfFileWrap>(args.This())->GetWrapped();
-			NanReturnValue(self->path().c_str());
+			NanReturnValue(NanNew(self->path()));
 		}
 
 		//---------------------------------------------------------
