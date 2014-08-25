@@ -13,6 +13,7 @@ namespace nofx
 		Persistent<Function> RawPointerWrap<unsigned char>::constructor;
 		Persistent<Function> RawPointerWrap<unsigned short>::constructor;
 		Persistent<Function> RawPointerWrap<void>::constructor;
+		Persistent<Function> RawPointerWrap<char>::constructor;
 
 		void Initialize(v8::Handle<Object> target,
 			v8::Handle<Value> unused,
@@ -25,6 +26,7 @@ namespace nofx
 			RawPointerWrap<unsigned char>::Initialize(target, "unsignedCharPtr", NOFX_TYPES::UNSIGNEDCHARPTR);
 			RawPointerWrap<unsigned short>::Initialize(target, "unsignedShortPtr", NOFX_TYPES::UNSIGNEDSHORTPTR);
 			RawPointerWrap<void>::Initialize(target, "voidPtr", NOFX_TYPES::VOIDPTR);
+			RawPointerWrap<char>::Initialize(target, "charPtr", NOFX_TYPES::CHARPTR);
 
 		} //!Initialize
 	}

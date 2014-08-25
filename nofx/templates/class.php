@@ -2,6 +2,8 @@
 require_once("phpQuery/phpQuery.php");
 $className = lcfirst($_GET["className"]);
 $url = $_GET["url"];
+$deps = isset($_GET['deps']) ? explode(",", $_GET['deps']) : false;
+
 $ofDocPageStr = file_get_contents($url);
 $ofDocPage = phpQuery::newDocument($ofDocPageStr);
 $methods = array();
@@ -29,6 +31,8 @@ function makeHeader($methods, $variables, $className) {
     $lClassName = lcfirst($className);
     $uClassName = ucfirst($className);
     $guard = strtoupper(preg_replace('/(?<=\\w)(?=[A-Z])/',"_$1", $className));
+    $count = 1;
+    $trimmedName = ucfirst(str_ireplace("of", "", $className, $count));
     $methodsTmpl = "";
     foreach($methods as $method) {
         $methodsTmpl .= "\n            static NAN_METHOD(".ucfirst($method).");";
@@ -48,6 +52,7 @@ function makeHeader($methods, $variables, $className) {
 #include "globals.h"
 #include <memory>
 #include "{$className}.h"
+#include "..\\nofx\\nofx_objectWrap.h"
 
 using namespace v8;
 
@@ -56,29 +61,14 @@ namespace nofx
     namespace {$uClassName}
     {
         class {$uClassName}Wrap
-            : public node::ObjectWrap
+            : public nofx::ObjectWrap< {$lClassName} >
         {
-        public:
-            static void Initialize(v8::Handle<Object> target);
-            {$lClassName}* GetWrapped() const { return internal_.get(); };
-            void SetWrapped({$lClassName}* n)  { internal_.reset(n); };
-            void SetWrapped({$lClassName}& n)  { if (!internal_) { internal_.reset(new {$lClassName}()); } internal_.get()->set(n); };
-            static const Persistent<Function>& Factory() { return constructor; }
-        private:
-            {$uClassName}Wrap();
-            {$uClassName}Wrap({$lClassName}*);
-            ~{$uClassName}Wrap() {};
 
+            DeclareObjectRoutines({$trimmedName});
             {$getters}
             {$setters}
-{$methodsTmpl}
-            
-            //Js ctor, can be used inside the class itself to construct {$lClassName}
-            static Persistent<Function> constructor;
-            static NAN_METHOD(New);
-            
-            //Pointer to internal object
-            std::shared_ptr<{$lClassName}> internal_;
+            {$methodsTmpl}
+
         }; // !class {$uClassName}Wrap
     } //!namespace {$uClassName}
 } // !namespace nofx
@@ -90,12 +80,20 @@ TMP;
     return $template;
 }
 
-function makeSource($methods, $variables, $className) {
+function makeSource($methods, $variables, $className, $deps = false) {
     $lClassName = lcfirst($className);
     $uClassName = ucfirst($className);
     $uuClassName = strtoupper($className);
     $protoTmpl = "";
     $methodsTmpl = "";
+    $depHeader = "";
+    
+    if($deps) {
+        foreach($deps as $dep) {
+            $depHeader .= "\n".'#include "..\nofx_'.$dep.'\nofx_'.$dep.'.h"';
+        }
+    }
+    
     foreach($methods as $method) {
         $protoTmpl .= "\n            NanSetPrototypeTemplate(tpl, NanNew(\"".lcfirst($method)."\"), NanNew<v8::FunctionTemplate>(".ucfirst($method)."), v8::ReadOnly);";
 
@@ -130,7 +128,7 @@ function makeSource($methods, $variables, $className) {
     
     $template = <<<TMP
 #include "nofx_{$lClassName}.h"
-#include "..\\nofx\\nofx_types.h"
+#include "..\\nofx\\nofx_types.h"{$depHeader}
 
 namespace nofx
 {
@@ -140,28 +138,18 @@ namespace nofx
     
         Persistent<Function> {$uClassName}Wrap::constructor;
 
-        {$uClassName}Wrap::{$uClassName}Wrap()
-            : internal_(nullptr)
-        {}
-
-        //--------------------------------------------------------------
-        {$uClassName}Wrap::{$uClassName}Wrap({$lClassName}* aInternal)
-            : internal_(aInternal)
-        {}
-
-        //--------------------------------------------------------------
         NAN_METHOD({$uClassName}Wrap::New)
         {
             NanScope();
             if (args.IsConstructCall()) {
                 {$uClassName}Wrap* obj;
-                if (args.Length() == 0)
-                {
-                    //obj = new {$uClassName}Wrap(); //implement me
-                }
-                else if (args[0]->IsNull())
+                if (args[0]->IsNull())
                 {
                     obj = new {$uClassName}Wrap(nullptr);
+                }
+                else if (args.Length() == 0)
+                {
+                    obj = new {$uClassName}Wrap();
                 }
                 else
                 {
@@ -206,13 +194,21 @@ TMP;
     return $template;
 }
 
-function makeMain($className) {
+function makeMain($className, $deps = false) {
     $lClassName = lcfirst($className);
     $uClassName = ucfirst($className);
+    
+    $depHeader = "";
+    $depBody = "";
+    
+    if($deps) {
+        $depHeader = "\n".'#include "nofx_dependencies.h"';
+        $depBody = "\n".'            target->Set(NanNew<v8::String>("dependencies"), NanNew<v8::FunctionTemplate>(nofx_dependencies)->GetFunction());';
+    }
+    
     $template = <<<TMP
 #include "globals.h"
-#include "nofx_{$lClassName}.h"
-#include "nofx_dependencies.h"
+#include "nofx_{$lClassName}.h"{$depHeader}
 
 namespace nofx
 {
@@ -224,8 +220,7 @@ namespace nofx
             v8::Handle<Value> unused,
             v8::Handle<Context> context)
         {
-
-            //target->Set(NanNew<v8::String>("dependencies"), NanNew<v8::FunctionTemplate>(nofx_dependencies)->GetFunction());
+            {$depBody}
             {$uClassName}Wrap::Initialize(target);
 
         } //!Initialize
@@ -237,13 +232,98 @@ TMP;
     return $template;
 }
 
+function makeDepSource($className, $deps) {
+    $ctors = "";
+    $body = "";
+    
+    $lClassName = lcfirst($className);
+    $uClassName = ucfirst($className);
+    
+    foreach($deps as $dep) {
+        $ctors .= "\n".'v8::Persistent<v8::Function> DEP_'.$dep.';';
+        $body .= "\n            NanAssignPersistent(DEP_{$dep}, v8::Handle<v8::Function>::Cast(
+                args[0]->ToObject()->Get(NanNew(\"{$dep}\"))));";
+    }
+    
+    $templ = <<<TPL
+#include "nofx_dependencies.h"
+{$ctors}
+
+namespace nofx
+{
+    namespace {$uClassName}
+    {
+        NAN_METHOD(nofx_dependencies)
+        {
+
+            if (args.Length() != 1)
+            {
+                NanThrowTypeError("{$lClassName} module has dependencies. Please pass the right dependencies first.");
+            }
+            {$body}
+        
+            NanReturnValue(args.This());
+        } // !nofx_dependencies
+    } // !namespace {$uClassName}
+} // !namespace nofx
+TPL;
+    return $templ;
+}
+function makeDepHeader($calssName) {
+    $uCalssName = ucfirst($calssName);
+    $templ = <<<TPL
+#ifndef _NOFX_DEPENENCIES_H_
+#define _NOFX_DEPENENCIES_H_
+
+#include "globals.h"
+
+namespace nofx
+{
+    namespace {$uCalssName}
+    {
+        NAN_METHOD(nofx_dependencies);
+    } // !namespace {$uCalssName}
+} // !namespace nofx
+
+#endif // !_NOFX_DEPENENCIES_H_    
+TPL;
+return $templ;
+}
+
+function makeGlobals($deps) {
+$body = "";
+foreach($deps as $dep) {
+    $body .= "\n".'extern v8::Persistent<v8::Function> DEP_'.$dep.";";
+}
+    $templ = <<<TPL
+#ifndef _NOFX_GLOBALS_H_
+#define _NOFX_GLOBALS_H_
+
+// Make sure you always include node.h first. Otherwise you'll
+// get random weird errors about mixing C/C++ routines.
+
+#include "node.h"
+#include "v8.h"
+#include "nan.h"
+{$body}
+
+#endif // !_NOFX_GLOBALS_H_    
+TPL;
+    return $templ;
+}
+
 function savePath($filename) {
     return dirname($_SERVER["SCRIPT_FILENAME"])."/".$filename;
 }
 if(isset($_GET["build"])) {
     file_put_contents(savePath("nofx_".lcfirst($className).".h"), makeHeader($methods, $variables, $className));
-    file_put_contents(savePath("nofx_".lcfirst($className).".cc"), makeSource($methods, $variables, $className));
-    file_put_contents(savePath("main.cc"), makeMain($className));
+    file_put_contents(savePath("nofx_".lcfirst($className).".cc"), makeSource($methods, $variables, $className, $deps));
+    file_put_contents(savePath("main.cc"), makeMain($className, $deps));
+    if($deps) {
+        file_put_contents(savePath("nofx_dependencies.h"), makeDepHeader($className));    
+        file_put_contents(savePath("nofx_dependencies.cc"), makeDepSource($className, $deps));    
+        file_put_contents(savePath("globals.h"), makeGlobals($deps));    
+    }
     die("done");
 }
 else {

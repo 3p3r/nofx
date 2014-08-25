@@ -25,7 +25,10 @@ enum NOFX_TYPES
 	DOUBLEPTR,
 	UNSIGNEDCHARPTR,
 	UNSIGNEDSHORTPTR,
-	VOIDPTR
+	VOIDPTR,
+	OFBUFFER,
+	OFFILE,
+	CHARPTR
 };
 
 #define DepNewInstance(name) (NanNew(name)->Call(args.This(), 0, nullptr))
