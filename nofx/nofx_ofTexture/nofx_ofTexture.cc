@@ -22,7 +22,7 @@ namespace nofx
 				OfTextureWrap* obj;
 				if (args.Length() == 0)
 				{
-					//obj = new OfTextureWrap(); //implement me
+					obj = new OfTextureWrap();
 				}
 				else if (args[0]->IsNull())
 				{

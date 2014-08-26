@@ -3,6 +3,7 @@
 v8::Persistent<v8::Function> DEP_ofColor;
 v8::Persistent<v8::Function> DEP_ofPixels;
 v8::Persistent<v8::Function> DEP_ofTexture;
+v8::Persistent<v8::Function> DEP_unsignedCharPtr;
 
 namespace nofx
 {
@@ -22,6 +23,8 @@ namespace nofx
 				args[0]->ToObject()->Get(NanNew("ofPixels"))));
 			NanAssignPersistent(DEP_ofTexture, v8::Handle<v8::Function>::Cast(
 				args[0]->ToObject()->Get(NanNew("ofTexture"))));
+			NanAssignPersistent(DEP_unsignedCharPtr, v8::Handle<v8::Function>::Cast(
+				args[0]->ToObject()->Get(NanNew("unsignedCharPtr"))));
 
 			NanReturnValue(args.This());
 		} // !nofx_dependencies

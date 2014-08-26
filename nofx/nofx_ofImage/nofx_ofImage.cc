@@ -3,6 +3,11 @@
 #include "..\nofx_ofColor\nofx_ofColor.h"
 #include "..\nofx_ofPixels\nofx_ofPixels.h"
 #include "..\nofx_ofTexture\nofx_ofTexture.h"
+#include "..\nofx_ofFile\nofx_ofFile.h"
+#include "..\nofx_ofVec3f\nofx_ofVec3f.h"
+#include "..\nofx_ofRectangle\nofx_ofRectangle.h"
+#include "..\nofx_pointer\nofx_pointer.h"
+#include "..\nofx_ofBuffer\nofx_ofBuffer.h"
 
 namespace nofx
 {
@@ -24,6 +29,25 @@ namespace nofx
 				else if (args.Length() == 0)
 				{
 					obj = new OfImageWrap();
+				}
+				else if (args.Length() == 1)
+				{
+					if (args[0]->IsString())
+					{
+						obj = new OfImageWrap(new ofImage(*NanUtf8String(args[0])));
+					}
+					else if (args[0]->IsObject() && args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFFILE)
+					{
+						obj = new OfImageWrap(new ofImage(*ObjectWrap::Unwrap<nofx::OfFile::OfFileWrap>(args[0]->ToObject())->GetWrapped()));
+					}
+					else if (args[0]->IsObject() && args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFPIXELS)
+					{
+						obj = new OfImageWrap(new ofImage(*ObjectWrap::Unwrap<nofx::OfPixels::OfPixelsWrap>(args[0]->ToObject())->GetWrapped()));
+					}
+					else if (args[0]->IsObject() && args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFIMAGE)
+					{
+						obj = new OfImageWrap(ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped());
+					}
 				}
 				else
 				{
@@ -160,26 +184,22 @@ namespace nofx
 		NAN_METHOD(OfImageWrap::Allocate)
 		{
 			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			self->allocate(args[0]->Int32Value(), args[1]->Int32Value(), static_cast<ofImageType>(args[2]->Int32Value()));
 			NanReturnUndefined();
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfImageWrap::BAllocated)
 		{
-			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			const auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
+			NanReturnValue(self->bAllocated());
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfImageWrap::Bind)
 		{
 			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			self->bind( args[0]->IsUndefined() ? 0 : args[0]->Int32Value() );
 			NanReturnUndefined();
 		}
 
@@ -187,8 +207,7 @@ namespace nofx
 		NAN_METHOD(OfImageWrap::Clear)
 		{
 			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			self->clear();
 			NanReturnUndefined();
 		}
 
@@ -196,8 +215,7 @@ namespace nofx
 		NAN_METHOD(OfImageWrap::Clone)
 		{
 			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			self->clone(*ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped());
 			NanReturnUndefined();
 		}
 
@@ -205,8 +223,7 @@ namespace nofx
 		NAN_METHOD(OfImageWrap::Crop)
 		{
 			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			self->crop(args[0]->Int32Value(), args[1]->Int32Value(), args[2]->Int32Value(), args[3]->Int32Value());
 			NanReturnUndefined();
 		}
 
@@ -214,8 +231,8 @@ namespace nofx
 		NAN_METHOD(OfImageWrap::CropFrom)
 		{
 			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			self->cropFrom(*ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped(),
+				args[1]->Int32Value(), args[2]->Int32Value(), args[3]->Int32Value(), args[4]->Int32Value());
 			NanReturnUndefined();
 		}
 
@@ -223,8 +240,41 @@ namespace nofx
 		NAN_METHOD(OfImageWrap::Draw)
 		{
 			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			if (args.Length() == 1)
+			{
+				if (args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFRECTANGLE)
+				{
+					self->draw(*ObjectWrap::Unwrap<nofx::OfRectangle::OfRectangleWrap>(args[0]->ToObject())->GetWrapped());
+				}
+				else
+				{
+					self->draw(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
+				}
+			}
+			else if (args.Length() == 2)
+			{
+				self->draw(args[0]->NumberValue(), args[1]->NumberValue());
+			}
+			else if (args.Length() == 3)
+			{
+				if (args[0]->IsNumber())
+				{
+					self->draw(args[0]->NumberValue(), args[1]->NumberValue(), args[2]->NumberValue());
+				}
+				else
+				{
+					self->draw(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped()
+						, args[1]->NumberValue(), args[2]->NumberValue());
+				}
+			}
+			else if (args.Length() == 4)
+			{
+				self->draw(args[0]->NumberValue(), args[1]->NumberValue(), args[2]->NumberValue(), args[3]->NumberValue());
+			}
+			else if (args.Length() == 5)
+			{
+				self->draw(args[0]->NumberValue(), args[1]->NumberValue(), args[2]->NumberValue(), args[3]->NumberValue(), args[4]->NumberValue());
+			}
 			NanReturnUndefined();
 		}
 
@@ -232,107 +282,153 @@ namespace nofx
 		NAN_METHOD(OfImageWrap::DrawSubsection)
 		{
 			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			if (args.Length() == 6)
+			{
+				self->drawSubsection(
+					args[0]->NumberValue(),
+					args[1]->NumberValue(),
+					args[2]->NumberValue(),
+					args[3]->NumberValue(),
+					args[4]->NumberValue(),
+					args[5]->NumberValue());
+			}
+			else if (args.Length() == 7)
+			{
+				self->drawSubsection(
+					args[0]->NumberValue(),
+					args[1]->NumberValue(),
+					args[2]->NumberValue(),
+					args[3]->NumberValue(),
+					args[4]->NumberValue(),
+					args[5]->NumberValue(),
+					args[6]->NumberValue());
+			}
+			else if (args.Length() == 8)
+			{
+				self->drawSubsection(
+					args[0]->NumberValue(),
+					args[1]->NumberValue(),
+					args[2]->NumberValue(),
+					args[3]->NumberValue(),
+					args[4]->NumberValue(),
+					args[5]->NumberValue(),
+					args[6]->NumberValue(),
+					args[7]->NumberValue());
+			}
+			else
+			{
+				self->drawSubsection(
+					args[0]->NumberValue(),
+					args[1]->NumberValue(),
+					args[2]->NumberValue(),
+					args[3]->NumberValue(),
+					args[4]->NumberValue(),
+					args[5]->NumberValue(),
+					args[6]->NumberValue(),
+					args[7]->NumberValue(),
+					args[8]->NumberValue());
+			}
 			NanReturnUndefined();
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfImageWrap::GetColor)
 		{
-			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			const auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
+			auto JsColor = DepNewInstance(DEP_ofColor);
+			ObjectWrap::Unwrap<nofx::OfColor::OfColorWrap>(JsColor->ToObject())->SetWrapped(self->getColor(
+				args[0]->Int32Value(), args[1]->Int32Value()));
+			NanReturnValue(JsColor);
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfImageWrap::GetHeight)
 		{
-			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			const auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
+			NanReturnValue(self->getHeight());
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfImageWrap::GetPixels)
 		{
-			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			const auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
+			auto JsPtr = DepNewInstance(DEP_unsignedCharPtr);
+			ObjectWrap::Unwrap<nofx::Pointer::RawPointerWrap<unsigned char>>(JsPtr->ToObject())->SetWrapped(self->getPixels());
+			NanReturnValue(JsPtr);
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfImageWrap::GetPixelsRef)
 		{
 			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			auto JsPixels = DepNewInstance(DEP_ofPixels);
+			ObjectWrap::Unwrap<nofx::OfPixels::OfPixelsWrap>(JsPixels->ToObject())->SetWrapped(self->getPixelsRef());
+			NanReturnValue(JsPixels);
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfImageWrap::GetTextureReference)
 		{
 			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			auto JsTexture = DepNewInstance(DEP_ofTexture);
+			ObjectWrap::Unwrap<nofx::OfTexture::OfTextureWrap>(JsTexture->ToObject())->SetWrapped(self->getTextureReference());
+			NanReturnValue(JsTexture);
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfImageWrap::GetWidth)
 		{
-			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			const auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
+			NanReturnValue(self->getWidth());
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfImageWrap::GrabScreen)
 		{
 			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			self->grabScreen(args[0]->Int32Value(), args[1]->Int32Value(), args[2]->Int32Value(), args[3]->Int32Value());
 			NanReturnUndefined();
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfImageWrap::IsAllocated)
 		{
-			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			const auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
+			NanReturnValue(self->isAllocated());
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfImageWrap::IsUsingTexture)
 		{
-			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			const auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
+			NanReturnValue(self->isUsingTexture());
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfImageWrap::LoadImage)
 		{
 			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
-			NanReturnUndefined();
+			bool result = false;
+			if (args[0]->IsString())
+			{
+				result = self->loadImage(*NanUtf8String(args[0]));
+			}
+			else if (args[0]->IsObject() && args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFFILE)
+			{
+				result = self->loadImage(*ObjectWrap::Unwrap<nofx::OfFile::OfFileWrap>(args[0]->ToObject())->GetWrapped());
+			}
+			else if (args[0]->IsObject() && args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFBUFFER)
+			{
+				result = self->loadImage(*ObjectWrap::Unwrap<nofx::OfBuffer::OfBufferWrap>(args[0]->ToObject())->GetWrapped());
+			}
+			NanReturnValue(result);
 		}
 
 		//---------------------------------------------------------
 		NAN_METHOD(OfImageWrap::Mirror)
 		{
 			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			self->mirror(args[0]->BooleanValue(), args[1]->BooleanValue());
 			NanReturnUndefined();
 		}
 
@@ -340,8 +436,7 @@ namespace nofx
 		NAN_METHOD(OfImageWrap::ReloadTexture)
 		{
 			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			self->reloadTexture();
 			NanReturnUndefined();
 		}
 
@@ -349,8 +444,7 @@ namespace nofx
 		NAN_METHOD(OfImageWrap::ResetAnchor)
 		{
 			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			self->resetAnchor();
 			NanReturnUndefined();
 		}
 
@@ -358,8 +452,7 @@ namespace nofx
 		NAN_METHOD(OfImageWrap::Resize)
 		{
 			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			self->resize(args[0]->Int32Value(), args[1]->Int32Value());
 			NanReturnUndefined();
 		}
 
@@ -367,8 +460,7 @@ namespace nofx
 		NAN_METHOD(OfImageWrap::Rotate90)
 		{
 			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			self->rotate90(args[0]->Int32Value());
 			NanReturnUndefined();
 		}
 
@@ -376,8 +468,19 @@ namespace nofx
 		NAN_METHOD(OfImageWrap::SaveImage)
 		{
 			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			ofImageQualityType type = args[1]->IsUndefined() ? OF_IMAGE_QUALITY_BEST : static_cast<ofImageQualityType>(args[1]->Int32Value());
+			if (args[0]->IsString())
+			{
+				self->saveImage(*NanUtf8String(args[0]), type);
+			}
+			else if (args[0]->IsObject() && args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFFILE)
+			{
+				self->saveImage(*ObjectWrap::Unwrap<nofx::OfFile::OfFileWrap>(args[0]->ToObject())->GetWrapped(), type);
+			}
+			else if (args[0]->IsObject() && args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFBUFFER)
+			{
+				self->saveImage(*ObjectWrap::Unwrap<nofx::OfBuffer::OfBufferWrap>(args[0]->ToObject())->GetWrapped(), type);
+			}
 			NanReturnUndefined();
 		}
 
@@ -385,8 +488,7 @@ namespace nofx
 		NAN_METHOD(OfImageWrap::SetAnchorPercent)
 		{
 			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			self->setAnchorPercent(args[0]->NumberValue(), args[1]->NumberValue());
 			NanReturnUndefined();
 		}
 
@@ -394,8 +496,7 @@ namespace nofx
 		NAN_METHOD(OfImageWrap::SetAnchorPoint)
 		{
 			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			self->setAnchorPoint(args[0]->NumberValue(), args[1]->NumberValue());
 			NanReturnUndefined();
 		}
 
@@ -403,8 +504,19 @@ namespace nofx
 		NAN_METHOD(OfImageWrap::SetColor)
 		{
 			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			if (args.Length() == 1)
+			{
+				self->setColor(*ObjectWrap::Unwrap<nofx::OfColor::OfColorWrap>(args[0]->ToObject())->GetWrapped());
+			}
+			else if (args.Length() == 2)
+			{
+				self->setColor(args[0]->Int32Value(),
+					*ObjectWrap::Unwrap<nofx::OfColor::OfColorWrap>(args[1]->ToObject())->GetWrapped());
+			}
+			else {
+				self->setColor(args[0]->Int32Value(), args[1]->Int32Value(),
+					*ObjectWrap::Unwrap<nofx::OfColor::OfColorWrap>(args[2]->ToObject())->GetWrapped());
+			}
 			NanReturnUndefined();
 		}
 
@@ -412,8 +524,7 @@ namespace nofx
 		NAN_METHOD(OfImageWrap::SetCompression)
 		{
 			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			self->setCompression(static_cast<ofTexCompression>(args[0]->Int32Value()));
 			NanReturnUndefined();
 		}
 
@@ -421,8 +532,15 @@ namespace nofx
 		NAN_METHOD(OfImageWrap::SetFromPixels)
 		{
 			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			if (args.Length() == 1)
+			{
+				self->setFromPixels(*ObjectWrap::Unwrap<nofx::OfPixels::OfPixelsWrap>(args[0]->ToObject())->GetWrapped());
+			}
+			else
+			{
+				self->setFromPixels(ObjectWrap::Unwrap<nofx::Pointer::RawPointerWrap<unsigned char>>(args[0]->ToObject())->GetWrapped(),
+					args[1]->Int32Value(), args[2]->Int32Value(), static_cast<ofImageType>(args[3]->Int32Value()), args[4]->BooleanValue());
+			}
 			NanReturnUndefined();
 		}
 
@@ -430,8 +548,7 @@ namespace nofx
 		NAN_METHOD(OfImageWrap::SetImageType)
 		{
 			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			self->setImageType(static_cast<ofImageType>(args[0]->Int32Value()));
 			NanReturnUndefined();
 		}
 
@@ -439,8 +556,7 @@ namespace nofx
 		NAN_METHOD(OfImageWrap::SetUseTexture)
 		{
 			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			self->setUseTexture(args[0]->BooleanValue());
 			NanReturnUndefined();
 		}
 
@@ -448,8 +564,7 @@ namespace nofx
 		NAN_METHOD(OfImageWrap::Unbind)
 		{
 			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			self->unbind(args[0]->IsUndefined() ? 0 : args[0]->Int32Value());
 			NanReturnUndefined();
 		}
 
@@ -457,8 +572,7 @@ namespace nofx
 		NAN_METHOD(OfImageWrap::Update)
 		{
 			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
-			//auto target = ObjectWrap::Unwrap<OfImageWrap>(args[0]->ToObject())->GetWrapped();
-			//implementation
+			self->update();
 			NanReturnUndefined();
 		}
 

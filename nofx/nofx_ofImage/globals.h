@@ -11,5 +11,6 @@
 extern v8::Persistent<v8::Function> DEP_ofColor;
 extern v8::Persistent<v8::Function> DEP_ofPixels;
 extern v8::Persistent<v8::Function> DEP_ofTexture;
+extern v8::Persistent<v8::Function> DEP_unsignedCharPtr;
 
 #endif // !_NOFX_GLOBALS_H_    
