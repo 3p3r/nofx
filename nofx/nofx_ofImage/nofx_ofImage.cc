@@ -11,7 +11,7 @@
 
 namespace nofx
 {
-	namespace OfImage
+	namespace ClassWrappers
 	{
 		using node::ObjectWrap;
 
@@ -38,7 +38,7 @@ namespace nofx
 					}
 					else if (args[0]->IsObject() && args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFFILE)
 					{
-						obj = new OfImageWrap(new ofImage(*ObjectWrap::Unwrap<nofx::OfFile::OfFileWrap>(args[0]->ToObject())->GetWrapped()));
+						obj = new OfImageWrap(new ofImage(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfFileWrap>(args[0]->ToObject())->GetWrapped()));
 					}
 					else if (args[0]->IsObject() && args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFPIXELS)
 					{
@@ -336,7 +336,7 @@ namespace nofx
 		{
 			const auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
 			auto JsColor = DepNewInstance(DEP_ofColor);
-			ObjectWrap::Unwrap<nofx::OfColor::OfColorWrap>(JsColor->ToObject())->SetWrapped(self->getColor(
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfColorWrap>(JsColor->ToObject())->SetWrapped(self->getColor(
 				args[0]->Int32Value(), args[1]->Int32Value()));
 			NanReturnValue(JsColor);
 		}
@@ -415,7 +415,7 @@ namespace nofx
 			}
 			else if (args[0]->IsObject() && args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFFILE)
 			{
-				result = self->loadImage(*ObjectWrap::Unwrap<nofx::OfFile::OfFileWrap>(args[0]->ToObject())->GetWrapped());
+				result = self->loadImage(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfFileWrap>(args[0]->ToObject())->GetWrapped());
 			}
 			else if (args[0]->IsObject() && args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFBUFFER)
 			{
@@ -475,7 +475,7 @@ namespace nofx
 			}
 			else if (args[0]->IsObject() && args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFFILE)
 			{
-				self->saveImage(*ObjectWrap::Unwrap<nofx::OfFile::OfFileWrap>(args[0]->ToObject())->GetWrapped(), type);
+				self->saveImage(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfFileWrap>(args[0]->ToObject())->GetWrapped(), type);
 			}
 			else if (args[0]->IsObject() && args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFBUFFER)
 			{
@@ -506,16 +506,16 @@ namespace nofx
 			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
 			if (args.Length() == 1)
 			{
-				self->setColor(*ObjectWrap::Unwrap<nofx::OfColor::OfColorWrap>(args[0]->ToObject())->GetWrapped());
+				self->setColor(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfColorWrap>(args[0]->ToObject())->GetWrapped());
 			}
 			else if (args.Length() == 2)
 			{
 				self->setColor(args[0]->Int32Value(),
-					*ObjectWrap::Unwrap<nofx::OfColor::OfColorWrap>(args[1]->ToObject())->GetWrapped());
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfColorWrap>(args[1]->ToObject())->GetWrapped());
 			}
 			else {
 				self->setColor(args[0]->Int32Value(), args[1]->Int32Value(),
-					*ObjectWrap::Unwrap<nofx::OfColor::OfColorWrap>(args[2]->ToObject())->GetWrapped());
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfColorWrap>(args[2]->ToObject())->GetWrapped());
 			}
 			NanReturnUndefined();
 		}
@@ -576,5 +576,5 @@ namespace nofx
 			NanReturnUndefined();
 		}
 
-	} //!namespace OfImage
+	} //!namespace ClassWrappers
 } //!namespace nofx

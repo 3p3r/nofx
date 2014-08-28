@@ -3,7 +3,7 @@
 
 namespace nofx
 {
-	namespace OfColor
+	namespace ClassWrappers
 	{
 		using node::ObjectWrap;
 
@@ -1730,5 +1730,5 @@ namespace nofx
 		}
 		//-------------------------------------------------------
 
-	} //!namespace OfColor
+	} //!namespace ClassWrappers
 } //!namespace nofx

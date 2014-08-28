@@ -82,7 +82,7 @@ namespace nofx
 		{
 			const auto self = ObjectWrap::Unwrap<OfStyleWrap>(args.This())->GetWrapped();
 			auto JsColor = DepNewInstance(DEP_ofColor);
-			node::ObjectWrap::Unwrap<nofx::OfColor::OfColorWrap>(JsColor->ToObject())->SetWrapped(self->bgColor);
+			node::ObjectWrap::Unwrap<nofx::ClassWrappers::OfColorWrap>(JsColor->ToObject())->SetWrapped(self->bgColor);
 			NanReturnValue(JsColor);
 		}
 		//----------------------------------------------------
@@ -105,7 +105,7 @@ namespace nofx
 		{
 			const auto self = ObjectWrap::Unwrap<OfStyleWrap>(args.This())->GetWrapped();
 			auto JsColor = DepNewInstance(DEP_ofColor);
-			node::ObjectWrap::Unwrap<nofx::OfColor::OfColorWrap>(JsColor->ToObject())->SetWrapped(self->color);
+			node::ObjectWrap::Unwrap<nofx::ClassWrappers::OfColorWrap>(JsColor->ToObject())->SetWrapped(self->color);
 			NanReturnValue(JsColor);
 		}
 		//----------------------------------------------------
@@ -170,7 +170,7 @@ namespace nofx
 		NAN_SETTER(OfStyleWrap::SetBgColor)
 		{
 			auto self = ObjectWrap::Unwrap<OfStyleWrap>(args.This())->GetWrapped();
-			self->bgColor.set(*node::ObjectWrap::Unwrap<nofx::OfColor::OfColorWrap>(value->ToObject())->GetWrapped());
+			self->bgColor.set(*node::ObjectWrap::Unwrap<nofx::ClassWrappers::OfColorWrap>(value->ToObject())->GetWrapped());
 		}
 		//----------------------------------------------------
 
@@ -191,7 +191,7 @@ namespace nofx
 		NAN_SETTER(OfStyleWrap::SetColor)
 		{
 			auto self = ObjectWrap::Unwrap<OfStyleWrap>(args.This())->GetWrapped();
-			self->color.set(*node::ObjectWrap::Unwrap<nofx::OfColor::OfColorWrap>(value->ToObject())->GetWrapped());
+			self->color.set(*node::ObjectWrap::Unwrap<nofx::ClassWrappers::OfColorWrap>(value->ToObject())->GetWrapped());
 		}
 		//----------------------------------------------------
 

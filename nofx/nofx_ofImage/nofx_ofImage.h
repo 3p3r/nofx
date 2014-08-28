@@ -10,7 +10,7 @@ using namespace v8;
 
 namespace nofx
 {
-	namespace OfImage
+	namespace ClassWrappers
 	{
 		class OfImageWrap
 			: public nofx::ObjectWrap < ofImage >
@@ -64,7 +64,7 @@ namespace nofx
 			static NAN_METHOD(Update);
 
 		}; // !class OfImageWrap
-	} //!namespace OfImage
+	} //!namespace ClassWrappers
 } // !namespace nofx
 
 #endif // !_NOFX_OF_IMAGE_H_

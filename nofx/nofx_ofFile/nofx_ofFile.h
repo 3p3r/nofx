@@ -10,7 +10,7 @@ using namespace v8;
 
 namespace nofx
 {
-    namespace OfFile
+    namespace ClassWrappers
     {
         class OfFileWrap
             : public nofx::ObjectWrap< ofFile >
@@ -55,7 +55,7 @@ namespace nofx
             static NAN_METHOD(WriteFromBuffer);
 
         }; // !class OfFileWrap
-    } //!namespace OfFile
+    } //!namespace ClassWrappers
 } // !namespace nofx
 
 #endif // !_NOFX_OF_FILE_H_

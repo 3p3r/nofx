@@ -3,7 +3,7 @@
 
 namespace nofx
 {
-    namespace OfColor
+    namespace ClassWrappers
     {
         using namespace v8;
 
@@ -15,7 +15,7 @@ namespace nofx
             OfColorWrap::Initialize(target);
 
         } //!Initialize
-    } //!namespace OfColor
+    } //!namespace ClassWrappers
 } //!namespace nofx
 
-NODE_MODULE_CONTEXT_AWARE(nofx_ofColor, nofx::OfColor::Initialize)
+NODE_MODULE_CONTEXT_AWARE(nofx_ofColor, nofx::ClassWrappers::Initialize)

@@ -7,7 +7,7 @@ v8::Persistent<v8::Function> DEP_unsignedCharPtr;
 
 namespace nofx
 {
-	namespace OfImage
+	namespace ClassWrappers
 	{
 		NAN_METHOD(nofx_dependencies)
 		{
@@ -28,5 +28,5 @@ namespace nofx
 
 			NanReturnValue(args.This());
 		} // !nofx_dependencies
-	} // !namespace OfImage
+	} // !namespace ClassWrappers
 } // !namespace nofx

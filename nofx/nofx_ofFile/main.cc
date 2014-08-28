@@ -4,7 +4,7 @@
 
 namespace nofx
 {
-	namespace OfFile
+	namespace ClassWrappers
 	{
 		using namespace v8;
 
@@ -17,7 +17,7 @@ namespace nofx
 			OfFileWrap::Initialize(target);
 
 		} //!Initialize
-	} //!namespace OfFile
+	} //!namespace ClassWrappers
 } //!namespace nofx
 
-NODE_MODULE_CONTEXT_AWARE(nofx_ofFile, nofx::OfFile::Initialize)
+NODE_MODULE_CONTEXT_AWARE(nofx_ofFile, nofx::ClassWrappers::Initialize)

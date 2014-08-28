@@ -4,7 +4,7 @@ v8::Persistent<v8::Function> DEP_ofBuffer;
 
 namespace nofx
 {
-	namespace OfFile
+	namespace ClassWrappers
 	{
 		NAN_METHOD(nofx_dependencies)
 		{
@@ -19,5 +19,5 @@ namespace nofx
 
 			NanReturnValue(args.This());
 		} // !nofx_dependencies
-	} // !namespace OfFile
+	} // !namespace ClassWrappers
 } // !namespace nofx

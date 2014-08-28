@@ -4,7 +4,7 @@
 
 namespace nofx
 {
-	namespace OfFile
+	namespace ClassWrappers
 	{
 		using node::ObjectWrap;
 
@@ -366,5 +366,5 @@ namespace nofx
 			NanReturnUndefined();
 		}
 
-	} //!namespace OfFile
+	} //!namespace ClassWrappers
 } //!namespace nofx

@@ -166,7 +166,7 @@ namespace nofx
 		{
 			const auto self = ObjectWrap::Unwrap<OfPixelsWrap>(args.This())->GetWrapped();
 			auto JsColor = DepNewInstance(DEP_ofColor);
-			ObjectWrap::Unwrap<nofx::OfColor::OfColorWrap>(JsColor->ToObject())->SetWrapped(self->getColor(args[0]->Int32Value(), args[1]->Int32Value()));
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfColorWrap>(JsColor->ToObject())->SetWrapped(self->getColor(args[0]->Int32Value(), args[1]->Int32Value()));
 			NanReturnValue(JsColor);
 		}
 
@@ -309,7 +309,7 @@ namespace nofx
 		NAN_METHOD(OfPixelsWrap::SetColor)
 		{
 			auto self = ObjectWrap::Unwrap<OfPixelsWrap>(args.This())->GetWrapped();
-			auto target = ObjectWrap::Unwrap<nofx::OfColor::OfColorWrap>(args[args.Length() - 1]->ToObject())->GetWrapped();
+			auto target = ObjectWrap::Unwrap<nofx::ClassWrappers::OfColorWrap>(args[args.Length() - 1]->ToObject())->GetWrapped();
 			if (args.Length() == 1)
 			{
 				self->setColor(*target);

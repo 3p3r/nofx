@@ -10,7 +10,7 @@ using namespace v8;
 
 namespace nofx
 {
-	namespace OfColor
+	namespace ClassWrappers
 	{
 		class OfColorWrap
 			: public nofx::ObjectWrap < ofColor >
@@ -203,7 +203,7 @@ namespace nofx
 			static NAN_METHOD(SetSaturation);
 
 		}; // !class OfColorWrap
-	} //!namespace OfColor
+	} //!namespace ClassWrappers
 } // !namespace nofx
 
 #endif // !_NOFX_OF_COLOR_H_
