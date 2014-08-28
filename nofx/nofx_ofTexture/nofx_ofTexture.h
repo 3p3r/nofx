@@ -10,7 +10,7 @@ using namespace v8;
 
 namespace nofx
 {
-	namespace OfTexture
+	namespace ClassWrappers
 	{
 		class OfTextureWrap
 			: public nofx::ObjectWrap < ofTexture >
@@ -40,7 +40,7 @@ namespace nofx
 			static NAN_METHOD(SetUseExternalTextureID);
 
 		}; // !class OfTextureWrap
-	} //!namespace OfTexture
+	} //!namespace ClassWrappers
 } // !namespace nofx
 
 #endif // !_NOFX_OF_TEXTURE_H_

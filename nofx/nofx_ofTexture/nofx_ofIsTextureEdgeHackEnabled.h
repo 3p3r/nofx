@@ -5,10 +5,10 @@
 
 namespace nofx
 {
-    namespace OfTexture
+    namespace ClassWrappers
     {
         NAN_METHOD(nofx_ofIsTextureEdgeHackEnabled);
-    } // !namespace OfTexture
+    } // !namespace ClassWrappers
 } // !namespace nofx
 
 #endif // !_NOFX_OFISTEXTUREEDGEHACKENABLED_H_

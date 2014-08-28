@@ -3,7 +3,7 @@
 
 namespace nofx
 {
-	namespace OfTextureData
+	namespace ClassWrappers
 	{
 		using node::ObjectWrap;
 
@@ -239,5 +239,5 @@ namespace nofx
 		//----------------------------------------------------
 
 
-	} //!namespace OfTextureData
+	} //!namespace ClassWrappers
 } //!namespace nofx

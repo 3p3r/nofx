@@ -30,7 +30,7 @@ namespace nofx
 				{
 					if (args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() == NOFX_TYPES::OFVEC2F)
 					{
-						obj = new OfVec4fWrap(new ofVec4f(*ObjectWrap::Unwrap<nofx::OfVec2f::OfVec2fWrap>(args[0]->ToObject())->GetWrapped()));
+						obj = new OfVec4fWrap(new ofVec4f(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec2fWrap>(args[0]->ToObject())->GetWrapped()));
 					}
 					else if (args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() == NOFX_TYPES::OFVEC3F)
 					{

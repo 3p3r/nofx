@@ -3,11 +3,11 @@
 
 namespace nofx
 {
-    namespace OfTexture
+    namespace ClassWrappers
     {
         NAN_METHOD(nofx_ofGetUsingArbTex)
         {
 			NanReturnValue(ofGetUsingArbTex());
         } // !nofx_ofGetUsingArbTex
-    } // !namespace OfTexture
+    } // !namespace ClassWrappers
 } // !namespace nofx

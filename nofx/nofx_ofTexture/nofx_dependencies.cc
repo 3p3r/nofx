@@ -5,7 +5,7 @@ v8::Persistent<v8::Function> DEP_ofTextureData;
 
 namespace nofx
 {
-	namespace OfTexture
+	namespace ClassWrappers
     {
         NAN_METHOD(nofx_dependencies)
         {

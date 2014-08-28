@@ -3,7 +3,7 @@
 
 namespace nofx
 {
-    namespace OfTextureData
+    namespace ClassWrappers
     {
         using namespace v8;
 
@@ -15,7 +15,7 @@ namespace nofx
             OfTextureDataWrap::Initialize(target);
 
         } //!Initialize
-    } //!namespace OfTextureData
+    } //!namespace ClassWrappers
 } //!namespace nofx
 
-NODE_MODULE_CONTEXT_AWARE(nofx_ofTextureData, nofx::OfTextureData::Initialize)
+NODE_MODULE_CONTEXT_AWARE(nofx_ofTextureData, nofx::ClassWrappers::Initialize)

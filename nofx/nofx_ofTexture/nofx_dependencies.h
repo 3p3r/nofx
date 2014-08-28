@@ -5,7 +5,7 @@
 
 namespace nofx
 {
-	namespace OfTexture
+	namespace ClassWrappers
     {
         NAN_METHOD(nofx_dependencies);
     } // !namespace dependencies 

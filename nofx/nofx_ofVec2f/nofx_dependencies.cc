@@ -4,7 +4,7 @@ v8::Persistent<v8::Function> DEP_floatPtr;
 
 namespace nofx
 {
-    namespace OfVec2f
+    namespace ClassWrappers
     {
         NAN_METHOD(nofx_dependencies)
         {
@@ -19,5 +19,5 @@ namespace nofx
         
             NanReturnValue(args.This());
         } // !nofx_dependencies
-    } // !namespace OfVec2f
+    } // !namespace ClassWrappers
 } // !namespace nofx

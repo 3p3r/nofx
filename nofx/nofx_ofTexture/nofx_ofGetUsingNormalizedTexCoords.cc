@@ -3,11 +3,11 @@
 
 namespace nofx
 {
-    namespace OfTexture
+    namespace ClassWrappers
     {
         NAN_METHOD(nofx_ofGetUsingNormalizedTexCoords)
         {
 			NanReturnValue(ofGetUsingNormalizedTexCoords());
         } // !nofx_ofGetUsingNormalizedTexCoords
-    } // !namespace OfTexture
+    } // !namespace ClassWrappers
 } // !namespace nofx

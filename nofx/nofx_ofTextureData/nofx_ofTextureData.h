@@ -10,7 +10,7 @@ using namespace v8;
 
 namespace nofx
 {
-	namespace OfTextureData
+	namespace ClassWrappers
 	{
 		class OfTextureDataWrap
 			: public nofx::ObjectWrap < ofTextureData >
@@ -46,7 +46,7 @@ namespace nofx
 			static NAN_SETTER(SetWidth);
 
 		}; // !class OfTextureDataWrap
-	} //!namespace OfTextureData
+	} //!namespace ClassWrappers
 } // !namespace nofx
 
 #endif // !_NOFX_OF_TEXTURE_DATA_H_

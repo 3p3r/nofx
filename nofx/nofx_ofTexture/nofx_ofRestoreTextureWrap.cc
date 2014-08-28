@@ -3,7 +3,7 @@
 
 namespace nofx
 {
-    namespace OfTexture
+    namespace ClassWrappers
     {
         NAN_METHOD(nofx_ofRestoreTextureWrap)
         {
@@ -12,5 +12,5 @@ namespace nofx
         
             NanReturnUndefined();
         } // !nofx_ofRestoreTextureWrap
-    } // !namespace OfTexture
+    } // !namespace ClassWrappers
 } // !namespace nofx

@@ -3,11 +3,11 @@
 
 namespace nofx
 {
-    namespace OfTexture
+    namespace ClassWrappers
     {
         NAN_METHOD(nofx_ofGetUsingCustomMinMagFilters)
         {
 			NanReturnValue(ofGetUsingCustomMinMagFilters());
         } // !nofx_ofGetUsingCustomMinMagFilters
-    } // !namespace OfTexture
+    } // !namespace ClassWrappers
 } // !namespace nofx

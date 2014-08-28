@@ -371,7 +371,7 @@ namespace nofx
 		{
 			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
 			auto JsTexture = DepNewInstance(DEP_ofTexture);
-			ObjectWrap::Unwrap<nofx::OfTexture::OfTextureWrap>(JsTexture->ToObject())->SetWrapped(self->getTextureReference());
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfTextureWrap>(JsTexture->ToObject())->SetWrapped(self->getTextureReference());
 			NanReturnValue(JsTexture);
 		}
 

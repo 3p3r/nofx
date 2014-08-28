@@ -19,7 +19,7 @@
 
 namespace nofx
 {
-    namespace OfTexture
+    namespace ClassWrappers
     {
         using namespace v8;
 
@@ -47,7 +47,7 @@ namespace nofx
 			target->Set(NanNew<v8::String>("ofSetTextureWrap"), NanNew<v8::FunctionTemplate>(nofx_ofSetTextureWrap)->GetFunction());
 
         } //!Initialize
-    } //!namespace OfTexture
+    } //!namespace ClassWrappers
 } //!namespace nofx
 
-NODE_MODULE_CONTEXT_AWARE(nofx_ofTexture, nofx::OfTexture::Initialize)
+NODE_MODULE_CONTEXT_AWARE(nofx_ofTexture, nofx::ClassWrappers::Initialize)

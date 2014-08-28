@@ -6,7 +6,7 @@
 
 namespace nofx
 {
-	namespace OfVec2f
+	namespace ClassWrappers
 	{
 		using node::ObjectWrap;
 
@@ -577,5 +577,5 @@ namespace nofx
 			NanReturnValue(newInst);
 		}
 
-	} //!namespace OfVec2f
+	} //!namespace ClassWrappers
 } //!namespace nofx

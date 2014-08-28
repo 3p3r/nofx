@@ -3,7 +3,7 @@
 
 namespace nofx
 {
-    namespace OfTexture
+    namespace ClassWrappers
     {
         NAN_METHOD(nofx_ofSetMinMagFilters)
         {
@@ -14,5 +14,5 @@ namespace nofx
         
             NanReturnUndefined();
         } // !nofx_ofSetMinMagFilters
-    } // !namespace OfTexture
+    } // !namespace ClassWrappers
 } // !namespace nofx

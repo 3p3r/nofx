@@ -8,7 +8,7 @@
 
 namespace nofx
 {
-	namespace OfTexture
+	namespace ClassWrappers
 	{
 		using node::ObjectWrap;
 
@@ -87,7 +87,7 @@ namespace nofx
 
 			if (args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFTEXTUREDATA)
 			{
-				self->allocate(*ObjectWrap::Unwrap<nofx::OfTextureData::OfTextureDataWrap>(args[0]->ToObject())->GetWrapped());
+				self->allocate(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfTextureDataWrap>(args[0]->ToObject())->GetWrapped());
 			}
 			else if (args.Length() == 1)
 			{
@@ -274,7 +274,7 @@ namespace nofx
 		{
 			const auto self = ObjectWrap::Unwrap<OfTextureWrap>(args.This())->GetWrapped();
 			auto JsTexData = DepNewInstance(DEP_ofTextureData);
-			ObjectWrap::Unwrap<nofx::OfTextureData::OfTextureDataWrap>(JsTexData->ToObject())->SetWrapped(self->getTextureData());
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfTextureDataWrap>(JsTexData->ToObject())->SetWrapped(self->getTextureData());
 			NanReturnValue(JsTexData);
 		}
 
@@ -389,5 +389,5 @@ namespace nofx
 			NanReturnUndefined();
 		}
 
-	} //!namespace OfTexture
+	} //!namespace ClassWrappers
 } //!namespace nofx

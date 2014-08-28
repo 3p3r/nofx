@@ -5,10 +5,10 @@
 
 namespace nofx
 {
-    namespace OfVec2f
+    namespace ClassWrappers
     {
         NAN_METHOD(nofx_dependencies);
-    } // !namespace OfVec2f 
+    } // !namespace ClassWrappers 
 } // !namespace nofx
 
 #endif // !_NOFX_DEPENENCIES_H_

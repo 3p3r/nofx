@@ -3,7 +3,7 @@
 
 namespace nofx
 {
-    namespace OfTexture
+    namespace ClassWrappers
     {
         NAN_METHOD(nofx_ofDisableTextureEdgeHack)
         {
@@ -12,5 +12,5 @@ namespace nofx
         
             NanReturnUndefined();
         } // !nofx_ofDisableTextureEdgeHack
-    } // !namespace OfTexture
+    } // !namespace ClassWrappers
 } // !namespace nofx
