@@ -4,7 +4,7 @@ v8::Persistent<v8::Function> DEP_ofColor;
 
 namespace nofx
 {
-    namespace OfStyle
+    namespace ClassWrappers
     {
         NAN_METHOD(nofx_dependencies)
         {

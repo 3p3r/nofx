@@ -4,7 +4,7 @@
 
 namespace nofx
 {
-    namespace OfStyle
+    namespace ClassWrappers
     {
         using namespace v8;
 
@@ -17,7 +17,7 @@ namespace nofx
             OfStyleWrap::Initialize(target);
 
         } //!Initialize
-    } //!namespace OfStyle
+    } //!namespace ClassWrappers
 } //!namespace nofx
 
-NODE_MODULE_CONTEXT_AWARE(nofx_ofStyle, nofx::OfStyle::Initialize)
+NODE_MODULE_CONTEXT_AWARE(nofx_ofStyle, nofx::ClassWrappers::Initialize)

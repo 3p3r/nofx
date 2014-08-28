@@ -3,7 +3,7 @@
 
 namespace nofx
 {
-	namespace OfMatrix3x3
+	namespace ClassWrappers
 	{
 		using node::ObjectWrap;
 
@@ -295,5 +295,5 @@ namespace nofx
 			NanReturnUndefined();
 		}
 
-	} //!namespace OfMatrix3x3
+	} //!namespace ClassWrappers
 } //!namespace nofx

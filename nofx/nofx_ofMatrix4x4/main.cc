@@ -4,7 +4,7 @@
 
 namespace nofx
 {
-    namespace OfMatrix4x4
+    namespace ClassWrappers
     {
         using namespace v8;
 
@@ -17,7 +17,7 @@ namespace nofx
 			OfMatrix4x4Wrap::Initialize(target);
 
         } //!Initialize
-    } //!namespace OfMatrix4x4
+    } //!namespace ClassWrappers
 } //!namespace nofx
 
-NODE_MODULE_CONTEXT_AWARE(nofx_ofMatrix4x4, nofx::OfMatrix4x4::Initialize)
+NODE_MODULE_CONTEXT_AWARE(nofx_ofMatrix4x4, nofx::ClassWrappers::Initialize)

@@ -10,7 +10,7 @@ using namespace v8;
 
 namespace nofx
 {
-	namespace OfMatrix3x3
+	namespace ClassWrappers
 	{
 		class OfMatrix3x3Wrap
 			: public nofx::ObjectWrap < ofMatrix3x3 >
@@ -49,7 +49,7 @@ namespace nofx
 			static NAN_METHOD(Transpose);
 
 		}; // !class OfMatrix3x3Wrap
-	} //!namespace OfMatrix3x3
+	} //!namespace ClassWrappers
 } // !namespace nofx
 
 #endif // !_NOFX_OF_MATRIX3X3_H_

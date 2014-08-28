@@ -5,7 +5,7 @@
 
 namespace nofx
 {
-    namespace OfStyle
+    namespace ClassWrappers
     {
         NAN_METHOD(nofx_dependencies);
     } // !namespace Style 

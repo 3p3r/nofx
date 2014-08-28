@@ -10,7 +10,7 @@ using namespace v8;
 
 namespace nofx
 {
-	namespace OfStyle
+	namespace ClassWrappers
 	{
 		class OfStyleWrap
 			: public nofx::ObjectWrap < ofStyle >
@@ -45,7 +45,7 @@ namespace nofx
 			static NAN_SETTER(SetSphereResolution);
 
 		}; // !class OfStyleWrap
-	} //!namespace OfStyle
+	} //!namespace ClassWrappers
 } // !namespace nofx
 
 #endif // !_NOFX_OF_STYLE_H_

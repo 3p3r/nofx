@@ -5,10 +5,10 @@
 
 namespace nofx
 {
-    namespace OfMatrix4x4
+    namespace ClassWrappers
     {
         NAN_METHOD(nofx_dependencies);
-    } // !namespace OfMatrix4x4 
+    } // !namespace ClassWrappers 
 } // !namespace nofx
 
 #endif // !_NOFX_DEPENENCIES_H_

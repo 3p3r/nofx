@@ -7,7 +7,7 @@
 
 namespace nofx
 {
-	namespace OfMatrix4x4
+	namespace ClassWrappers
 	{
 		using node::ObjectWrap;
 
@@ -1099,5 +1099,5 @@ namespace nofx
 			NanReturnUndefined();
 		}
 
-	} //!namespace OfMatrix4x4
+	} //!namespace ClassWrappers
 } //!namespace nofx

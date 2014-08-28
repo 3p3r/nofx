@@ -10,7 +10,7 @@ using namespace v8;
 
 namespace nofx
 {
-	namespace OfMatrix4x4
+	namespace ClassWrappers
 	{
 		class OfMatrix4x4Wrap
 			: public nofx::ObjectWrap < ofMatrix4x4 >
@@ -83,7 +83,7 @@ namespace nofx
 			static NAN_METHOD(Translate);
 
 		}; // !class OfMatrix4x4Wrap
-	} //!namespace OfMatrix4x4
+	} //!namespace ClassWrappers
 } // !namespace nofx
 
 #endif // !_NOFX_OF_MATRIX4X4_H_

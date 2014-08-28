@@ -4,7 +4,7 @@
 
 namespace nofx
 {
-	namespace OfStyle
+	namespace ClassWrappers
 	{
 		using node::ObjectWrap;
 
@@ -245,5 +245,5 @@ namespace nofx
 		//----------------------------------------------------
 
 
-	} //!namespace OfStyle
+	} //!namespace ClassWrappers
 } //!namespace nofx
