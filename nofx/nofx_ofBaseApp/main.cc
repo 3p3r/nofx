@@ -3,7 +3,7 @@
 
 namespace nofx
 {
-	namespace BaseApp
+	namespace ClassWrappers
 	{
 		using namespace v8;
 
@@ -15,7 +15,7 @@ namespace nofx
 			OfAppWrap::Initialize(target);
 
 		} //!Initialize
-	} //!namespace BaseApp
+	} //!namespace ClassWrappers
 } //!namespace nofx
 
-NODE_MODULE_CONTEXT_AWARE(nofx_ofBaseApp, nofx::BaseApp::Initialize)
+NODE_MODULE_CONTEXT_AWARE(nofx_ofBaseApp, nofx::ClassWrappers::Initialize)

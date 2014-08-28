@@ -6,8 +6,8 @@ namespace nofx
 {
     namespace AppRunner
     {
-		using nofx::BaseApp::OfAppImpl;
-		using nofx::BaseApp::OfAppWrap;
+		using nofx::ClassWrappers::OfAppImpl;
+		using nofx::ClassWrappers::OfAppWrap;
 
         NAN_METHOD(nofx_ofGetAppPtr)
         {

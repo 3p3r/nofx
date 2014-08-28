@@ -9,7 +9,7 @@ using namespace v8;
 
 namespace nofx
 {
-	namespace OfAppBaseWindow
+	namespace ClassWrappers
 	{
 		class OfAppBaseWindowWrap
 			: public nofx::ObjectWrap < ofAppBaseWindow >
@@ -42,7 +42,7 @@ namespace nofx
 			static NAN_METHOD(ToggleFullscreen);
 
 		}; // !class OfAppBaseWindowWrap
-	} //!namespace OfAppBaseWindow
+	} //!namespace ClassWrappers
 } // !namespace nofx
 
 #endif // !_NOFX_OF_APP_BASE_WINDOW_H_

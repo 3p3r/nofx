@@ -9,7 +9,7 @@ using namespace v8;
 
 namespace nofx
 {
-	namespace BaseApp
+	namespace ClassWrappers
 	{
 		class OfAppImpl
 			: public ofBaseApp
@@ -100,7 +100,7 @@ namespace nofx
 			static NAN_SETTER(SetDragged);
 
 		}; // !class OfAppWrap
-	} //!namespace BaseApp
+	} //!namespace ClassWrappers
 } // !namespace nofx
 
 #endif // !_NOFX_BASE_APP_H_

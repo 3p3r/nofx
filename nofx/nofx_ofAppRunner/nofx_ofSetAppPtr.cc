@@ -9,7 +9,7 @@ namespace nofx
         NAN_METHOD(nofx_ofSetAppPtr)
         {
         
-			ofSetAppPtr( static_cast<std::shared_ptr<ofBaseApp>>( node::ObjectWrap::Unwrap<BaseApp::OfAppWrap>(args[0]->ToObject())->GetWrapped() ));
+			ofSetAppPtr( static_cast<std::shared_ptr<ofBaseApp>>( node::ObjectWrap::Unwrap<ClassWrappers::OfAppWrap>(args[0]->ToObject())->GetWrapped() ));
         
             NanReturnUndefined();
         } // !nofx_ofSetAppPtr

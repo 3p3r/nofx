@@ -10,7 +10,7 @@ using namespace v8;
 
 namespace nofx
 {
-	namespace OfBuffer
+	namespace ClassWrappers
 	{
 		class OfBufferWrap
 			: public nofx::ObjectWrap < ofBuffer >
@@ -32,7 +32,7 @@ namespace nofx
 			static NAN_METHOD(WriteTo);
 
 		}; // !class OfBufferWrap
-	} //!namespace OfBuffer
+	} //!namespace ClassWrappers
 } // !namespace nofx
 
 #endif // !_NOFX_OF_BUFFER_H_

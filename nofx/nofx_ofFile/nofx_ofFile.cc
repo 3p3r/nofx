@@ -305,7 +305,7 @@ namespace nofx
 		{
 			auto self = ObjectWrap::Unwrap<OfFileWrap>(args.This())->GetWrapped();
 			auto JsBuffer = DepNewInstance(DEP_ofBuffer);
-			ObjectWrap::Unwrap<nofx::OfBuffer::OfBufferWrap>(JsBuffer->ToObject())->SetWrapped(self->readToBuffer());
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfBufferWrap>(JsBuffer->ToObject())->SetWrapped(self->readToBuffer());
 			NanReturnValue(JsBuffer);
 		}
 
@@ -362,7 +362,7 @@ namespace nofx
 		NAN_METHOD(OfFileWrap::WriteFromBuffer)
 		{
 			auto self = ObjectWrap::Unwrap<OfFileWrap>(args.This())->GetWrapped();
-			self->writeFromBuffer(*ObjectWrap::Unwrap<nofx::OfBuffer::OfBufferWrap>(args[0]->ToObject())->GetWrapped());
+			self->writeFromBuffer(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfBufferWrap>(args[0]->ToObject())->GetWrapped());
 			NanReturnUndefined();
 		}
 

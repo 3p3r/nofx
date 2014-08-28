@@ -10,7 +10,7 @@ namespace nofx
         {
         
 			auto JsWindowPtr = DepNewInstance(DEP_ofAppBaseWindow);
-			node::ObjectWrap::Unwrap<OfAppBaseWindow::OfAppBaseWindowWrap>(JsWindowPtr->ToObject())->SetWrapped(ofGetWindowPtr());
+			node::ObjectWrap::Unwrap<ClassWrappers::OfAppBaseWindowWrap>(JsWindowPtr->ToObject())->SetWrapped(ofGetWindowPtr());
         
             NanReturnValue(JsWindowPtr);
         } // !nofx_ofGetWindowPtr

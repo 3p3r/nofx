@@ -4,7 +4,7 @@
 
 namespace nofx
 {
-	namespace BaseApp
+	namespace ClassWrappers
 	{
 		OfAppImpl::OfAppImpl()
 			: inherited()
@@ -447,5 +447,5 @@ namespace nofx
 			auto self = node::ObjectWrap::Unwrap<OfAppWrap>(args.This())->GetWrapped();
 			self->draggedCallback_->SetFunction(Local<Function>::Cast(value));
 		}
-	} //!namespace BaseApp
+	} //!namespace ClassWrappers
 } //!nofx

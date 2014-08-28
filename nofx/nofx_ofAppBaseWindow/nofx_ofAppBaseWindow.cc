@@ -4,7 +4,7 @@
 
 namespace nofx
 {
-	namespace OfAppBaseWindow
+	namespace ClassWrappers
 	{
 		Persistent<Function> OfAppBaseWindowWrap::constructor;
 
@@ -174,7 +174,7 @@ namespace nofx
 		NAN_METHOD(OfAppBaseWindowWrap::RunAppViaInfiniteLoop)
 		{
 			auto self = node::ObjectWrap::Unwrap<OfAppBaseWindowWrap>(args.This())->GetWrapped();
-			self->runAppViaInfiniteLoop(node::ObjectWrap::Unwrap<BaseApp::OfAppWrap>(args[0]->ToObject())->GetWrapped());
+			self->runAppViaInfiniteLoop(node::ObjectWrap::Unwrap<ClassWrappers::OfAppWrap>(args[0]->ToObject())->GetWrapped());
 		}
 
 		//---------------------------------------------------------
@@ -240,5 +240,5 @@ namespace nofx
 			self->toggleFullscreen();
 		}
 
-	} //!namespace OfAppBaseWindow
+	} //!namespace ClassWrappers
 } //!namespace nofx

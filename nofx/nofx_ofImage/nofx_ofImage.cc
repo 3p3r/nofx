@@ -419,7 +419,7 @@ namespace nofx
 			}
 			else if (args[0]->IsObject() && args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFBUFFER)
 			{
-				result = self->loadImage(*ObjectWrap::Unwrap<nofx::OfBuffer::OfBufferWrap>(args[0]->ToObject())->GetWrapped());
+				result = self->loadImage(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfBufferWrap>(args[0]->ToObject())->GetWrapped());
 			}
 			NanReturnValue(result);
 		}
@@ -479,7 +479,7 @@ namespace nofx
 			}
 			else if (args[0]->IsObject() && args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFBUFFER)
 			{
-				self->saveImage(*ObjectWrap::Unwrap<nofx::OfBuffer::OfBufferWrap>(args[0]->ToObject())->GetWrapped(), type);
+				self->saveImage(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfBufferWrap>(args[0]->ToObject())->GetWrapped(), type);
 			}
 			NanReturnUndefined();
 		}
