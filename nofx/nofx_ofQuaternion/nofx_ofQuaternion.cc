@@ -28,12 +28,12 @@ namespace nofx
 				else if (args.Length() == 1 &&
 					(args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFVEC4F))
 				{
-					obj = new OfQuaternionWrap(new ofQuaternion(*ObjectWrap::Unwrap<nofx::OfVec4f::OfVec4fWrap>(args[0]->ToObject())->GetWrapped()));
+					obj = new OfQuaternionWrap(new ofQuaternion(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec4fWrap>(args[0]->ToObject())->GetWrapped()));
 				}
 				else if (args.Length() == 2 &&
 					(args[1]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFVEC3F))
 				{
-					obj = new OfQuaternionWrap(new ofQuaternion(args[0]->NumberValue(), *ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[1]->ToObject())->GetWrapped()));
+					obj = new OfQuaternionWrap(new ofQuaternion(args[0]->NumberValue(), *ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[1]->ToObject())->GetWrapped()));
 				}
 				else if (args.Length() == 4)
 				{
@@ -48,11 +48,11 @@ namespace nofx
 				{
 					obj = new OfQuaternionWrap(new ofQuaternion(
 						args[0]->NumberValue(),
-						*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[1]->ToObject())->GetWrapped(),
+						*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[1]->ToObject())->GetWrapped(),
 						args[2]->NumberValue(),
-						*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[3]->ToObject())->GetWrapped(),
+						*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[3]->ToObject())->GetWrapped(),
 						args[4]->NumberValue(),
-						*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[5]->ToObject())->GetWrapped()
+						*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[5]->ToObject())->GetWrapped()
 						));
 				}
 				else
@@ -113,7 +113,7 @@ namespace nofx
 		{
 			const auto self = ObjectWrap::Unwrap<OfQuaternionWrap>(args.This())->GetWrapped();
 			auto JsVec4f = DepNewInstance(DEP_ofVec4f);
-			ObjectWrap::Unwrap<nofx::OfVec4f::OfVec4fWrap>(JsVec4f->ToObject())->SetWrapped(self->_v);
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec4fWrap>(JsVec4f->ToObject())->SetWrapped(self->_v);
 			NanReturnValue(JsVec4f);
 		}
 		//----------------------------------------------------
@@ -122,7 +122,7 @@ namespace nofx
 		NAN_SETTER(OfQuaternionWrap::Set_v)
 		{
 			auto self = ObjectWrap::Unwrap<OfQuaternionWrap>(args.This())->GetWrapped();
-			self->_v.set( *ObjectWrap::Unwrap<nofx::OfVec4f::OfVec4fWrap>(value->ToObject())->GetWrapped() );
+			self->_v.set( *ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec4fWrap>(value->ToObject())->GetWrapped() );
 		}
 
 
@@ -131,7 +131,7 @@ namespace nofx
 		{
 			const auto self = ObjectWrap::Unwrap<OfQuaternionWrap>(args.This())->GetWrapped();
 			auto JsVec3f = DepNewInstance(DEP_ofVec3f);
-			ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(JsVec3f->ToObject())->SetWrapped(self->asVec3());
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(JsVec3f->ToObject())->SetWrapped(self->asVec3());
 			NanReturnValue(JsVec3f);
 		}
 
@@ -140,7 +140,7 @@ namespace nofx
 		{
 			const auto self = ObjectWrap::Unwrap<OfQuaternionWrap>(args.This())->GetWrapped();
 			auto JsVec4f = DepNewInstance(DEP_ofVec4f);
-			ObjectWrap::Unwrap<nofx::OfVec4f::OfVec4fWrap>(JsVec4f->ToObject())->SetWrapped(self->asVec4());
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec4fWrap>(JsVec4f->ToObject())->SetWrapped(self->asVec4());
 			NanReturnValue(JsVec4f);
 		}
 
@@ -166,7 +166,7 @@ namespace nofx
 		{
 			auto self = ObjectWrap::Unwrap<OfQuaternionWrap>(args.This())->GetWrapped();
 			auto toRet = NanNew(Factory())->NewInstance();
-			ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(toRet)->SetWrapped( self->getEuler() );
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(toRet)->SetWrapped( self->getEuler() );
 			NanReturnValue(toRet);
 		}
 
@@ -178,7 +178,7 @@ namespace nofx
 			ofVec3f vec;
 			self->getRotate(angle, vec);
 			auto lVec3 = DepNewInstance(DEP_ofVec3f);
-			ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(lVec3->ToObject())->SetWrapped(vec);
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(lVec3->ToObject())->SetWrapped(vec);
 			auto toRet = NanNew<v8::Object>();
 			toRet->Set(NanNew("angle"), NanNew(angle));
 			toRet->Set(NanNew("vec"), NanNew(lVec3));
@@ -225,25 +225,25 @@ namespace nofx
 			{
 				self->makeRotate(
 					args[0]->NumberValue(),
-					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[1]->ToObject())->GetWrapped()
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[1]->ToObject())->GetWrapped()
 					);
 			}
 			else if (args.Length() == 2 && args[0]->IsObject())
 			{
 				self->makeRotate(
-					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
-					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[1]->ToObject())->GetWrapped()
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[1]->ToObject())->GetWrapped()
 					);
 			}
 			else
 			{
 				self->makeRotate(
 					args[0]->NumberValue(),
-					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[1]->ToObject())->GetWrapped(),
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[1]->ToObject())->GetWrapped(),
 					args[2]->NumberValue(),
-					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[3]->ToObject())->GetWrapped(),
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[3]->ToObject())->GetWrapped(),
 					args[4]->NumberValue(),
-					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[5]->ToObject())->GetWrapped()
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[5]->ToObject())->GetWrapped()
 					);
 			}
 			NanReturnUndefined();
@@ -272,7 +272,7 @@ namespace nofx
 			}
 			else if (args.Length() == 1 && (args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFVEC4F))
 			{
-				self->set(*ObjectWrap::Unwrap<nofx::OfVec4f::OfVec4fWrap>(args[0]->ToObject())->GetWrapped());
+				self->set(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec4fWrap>(args[0]->ToObject())->GetWrapped());
 			}
 			else
 			{

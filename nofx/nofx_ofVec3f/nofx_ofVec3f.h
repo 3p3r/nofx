@@ -10,7 +10,7 @@ using namespace v8;
 
 namespace nofx
 {
-    namespace OfVec3f
+    namespace ClassWrappers
     {
         class OfVec3fWrap
             : public nofx::ObjectWrap<ofVec3f>
@@ -69,7 +69,7 @@ namespace nofx
             static NAN_METHOD(Zero);
 
         }; // !class OfVec3fWrap
-    } //!namespace OfVec3f
+    } //!namespace ClassWrappers
 } // !namespace nofx
 
 #endif // !_NOFX_OF_VEC3F_H_

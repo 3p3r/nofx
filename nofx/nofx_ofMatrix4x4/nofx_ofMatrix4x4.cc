@@ -148,13 +148,13 @@ namespace nofx
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
 			auto JsVec4f = DepNewInstance(DEP_ofVec4f);
-			ObjectWrap::Unwrap<nofx::OfVec4f::OfVec4fWrap>(JsVec4f->ToObject())->SetWrapped(&self->_mat[index]);
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec4fWrap>(JsVec4f->ToObject())->SetWrapped(&self->_mat[index]);
 			NanReturnValue(JsVec4f);
 		}
 		NAN_INDEX_SETTER(OfMatrix4x4Wrap::IndexSetter)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			self->_mat[index].set(*ObjectWrap::Unwrap<nofx::OfVec4f::OfVec4fWrap>(value->ToObject())->GetWrapped());
+			self->_mat[index].set(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec4fWrap>(value->ToObject())->GetWrapped());
 		}
 
 
@@ -172,9 +172,9 @@ namespace nofx
 
 			self->decompose(translation, rotation, scale, so);
 			
-			ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(JsTranslation->ToObject())->SetWrapped(translation);
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(JsTranslation->ToObject())->SetWrapped(translation);
 			ObjectWrap::Unwrap<nofx::OfQuaternion::OfQuaternionWrap>(JsRotation->ToObject())->SetWrapped(rotation);
-			ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(JsScale->ToObject())->SetWrapped(scale);
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(JsScale->ToObject())->SetWrapped(scale);
 			ObjectWrap::Unwrap<nofx::OfQuaternion::OfQuaternionWrap>(JsSo->ToObject())->SetWrapped(so);
 
 			auto toRet = NanNew<Array>();
@@ -244,9 +244,9 @@ namespace nofx
 			auto JsCenter = DepNewInstance(DEP_ofVec3f);
 			auto JsUp = DepNewInstance(DEP_ofVec3f);
 
-			ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(JsEye->ToObject())->SetWrapped(eye);
-			ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(JsCenter->ToObject())->SetWrapped(center);
-			ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(JsUp->ToObject())->SetWrapped(up);
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(JsEye->ToObject())->SetWrapped(eye);
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(JsCenter->ToObject())->SetWrapped(center);
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(JsUp->ToObject())->SetWrapped(up);
 
 			auto toRet = NanNew<Array>();
 			toRet->Set(NanNew("eye"), JsEye);
@@ -338,7 +338,7 @@ namespace nofx
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
 			auto toRet = DepNewInstance(DEP_ofVec3f);
-			ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(toRet->ToObject())->SetWrapped( self->getRowAsVec3f(args[0]->NumberValue()) );
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(toRet->ToObject())->SetWrapped( self->getRowAsVec3f(args[0]->NumberValue()) );
 			NanReturnValue(toRet);
 		}
 
@@ -347,7 +347,7 @@ namespace nofx
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
 			auto toRet = DepNewInstance(DEP_ofVec4f);
-			ObjectWrap::Unwrap<nofx::OfVec4f::OfVec4fWrap>(toRet->ToObject())->SetWrapped(self->getRowAsVec4f(args[0]->NumberValue()));
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec4fWrap>(toRet->ToObject())->SetWrapped(self->getRowAsVec4f(args[0]->NumberValue()));
 			NanReturnValue(toRet);
 		}
 
@@ -356,7 +356,7 @@ namespace nofx
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
 			auto toRet = DepNewInstance(DEP_ofVec3f);
-			ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(toRet->ToObject())->SetWrapped(self->getScale());
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(toRet->ToObject())->SetWrapped(self->getScale());
 			NanReturnValue(toRet);
 		}
 
@@ -365,7 +365,7 @@ namespace nofx
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
 			auto toRet = DepNewInstance(DEP_ofVec3f);
-			ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(toRet->ToObject())->SetWrapped(self->getTranslation());
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(toRet->ToObject())->SetWrapped(self->getTranslation());
 			NanReturnValue(toRet);
 		}
 
@@ -411,7 +411,7 @@ namespace nofx
 			}
 			else
 			{
-				self->glScale(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
+				self->glScale(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
 			}
 			NanReturnUndefined();
 		}
@@ -426,7 +426,7 @@ namespace nofx
 			}
 			else
 			{
-				self->glScale(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
+				self->glScale(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
 			}
 			NanReturnUndefined();
 		}
@@ -499,9 +499,9 @@ namespace nofx
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
 			self->makeLookAtMatrix(
-				*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
-				*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[1]->ToObject())->GetWrapped(),
-				*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[2]->ToObject())->GetWrapped());
+				*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
+				*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[1]->ToObject())->GetWrapped(),
+				*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[2]->ToObject())->GetWrapped());
 			NanReturnUndefined();
 		}
 
@@ -510,9 +510,9 @@ namespace nofx
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
 			self->makeLookAtViewMatrix(
-				*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
-				*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[1]->ToObject())->GetWrapped(),
-				*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[2]->ToObject())->GetWrapped());
+				*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
+				*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[1]->ToObject())->GetWrapped(),
+				*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[2]->ToObject())->GetWrapped());
 			NanReturnUndefined();
 		}
 
@@ -577,15 +577,15 @@ namespace nofx
 			else if (args.Length() == 2 && (args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFVEC3F))
 			{
 				self->makeRotationMatrix(
-					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
-					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[1]->ToObject())->GetWrapped()
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[1]->ToObject())->GetWrapped()
 					);
 			}
 			else if (args.Length() == 2 && args[0]->IsNumber())
 			{
 				self->makeRotationMatrix(
 					args[0]->NumberValue(),
-					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[1]->ToObject())->GetWrapped()
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[1]->ToObject())->GetWrapped()
 					);
 			}
 			else if (args.Length() == 4)
@@ -601,11 +601,11 @@ namespace nofx
 			{
 				self->makeRotationMatrix(
 					args[0]->NumberValue(),
-					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[1]->ToObject())->GetWrapped(),
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[1]->ToObject())->GetWrapped(),
 					args[2]->NumberValue(),
-					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[3]->ToObject())->GetWrapped(),
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[3]->ToObject())->GetWrapped(),
 					args[4]->NumberValue(),
-					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[5]->ToObject())->GetWrapped()
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[5]->ToObject())->GetWrapped()
 					);
 			}
 			NanReturnUndefined();
@@ -617,7 +617,7 @@ namespace nofx
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
 			if (args.Length() == 1)
 			{
-				self->makeScaleMatrix(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
+				self->makeScaleMatrix(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
 			}
 			else
 			{
@@ -636,7 +636,7 @@ namespace nofx
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
 			if (args.Length() == 1)
 			{
-				self->makeTranslationMatrix(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
+				self->makeTranslationMatrix(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
 			}
 			else
 			{
@@ -679,9 +679,9 @@ namespace nofx
 			auto JsMat = NanNew(Factory())->NewInstance();
 			ObjectWrap::Unwrap<OfMatrix4x4Wrap>(JsMat)->SetWrapped(
 				ofMatrix4x4::newLookAtMatrix(
-				*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
-				*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[1]->ToObject())->GetWrapped(),
-				*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[2]->ToObject())->GetWrapped()
+				*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
+				*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[1]->ToObject())->GetWrapped(),
+				*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[2]->ToObject())->GetWrapped()
 				));
 			NanReturnValue(JsMat);
 		}
@@ -744,15 +744,15 @@ namespace nofx
 			{
 				ObjectWrap::Unwrap<OfMatrix4x4Wrap>(JsMat)->SetWrapped(
 					ofMatrix4x4::newRotationMatrix(
-					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
-					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[1]->ToObject())->GetWrapped()
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[1]->ToObject())->GetWrapped()
 					));
 			}
 			else if (args.Length() == 2 && args[0]->IsNumber())
 			{
 				ObjectWrap::Unwrap<OfMatrix4x4Wrap>(JsMat)->SetWrapped(ofMatrix4x4::newRotationMatrix(
 					args[0]->NumberValue(),
-					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[1]->ToObject())->GetWrapped()
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[1]->ToObject())->GetWrapped()
 					));
 			}
 			else if (args.Length() == 4)
@@ -768,11 +768,11 @@ namespace nofx
 			{
 				ObjectWrap::Unwrap<OfMatrix4x4Wrap>(JsMat)->SetWrapped(ofMatrix4x4::newRotationMatrix(
 					args[0]->NumberValue(),
-					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[1]->ToObject())->GetWrapped(),
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[1]->ToObject())->GetWrapped(),
 					args[2]->NumberValue(),
-					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[3]->ToObject())->GetWrapped(),
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[3]->ToObject())->GetWrapped(),
 					args[4]->NumberValue(),
-					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[5]->ToObject())->GetWrapped()
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[5]->ToObject())->GetWrapped()
 					));
 			}
 			NanReturnValue(JsMat);
@@ -785,7 +785,7 @@ namespace nofx
 			if (args.Length() == 1)
 			{
 				ObjectWrap::Unwrap<OfMatrix4x4Wrap>(JsMat)->SetWrapped(
-					ofMatrix4x4::newScaleMatrix(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped()));
+					ofMatrix4x4::newScaleMatrix(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped()));
 			}
 			else
 			{
@@ -802,7 +802,7 @@ namespace nofx
 			if (args.Length() == 1)
 			{
 				ObjectWrap::Unwrap<OfMatrix4x4Wrap>(JsMat)->SetWrapped(
-					ofMatrix4x4::newTranslationMatrix(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped()));
+					ofMatrix4x4::newTranslationMatrix(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped()));
 			}
 			else
 			{
@@ -819,15 +819,15 @@ namespace nofx
 			if (args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFVEC3F)
 			{
 				auto toRet = DepNewInstance(DEP_ofVec3f);
-				ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(toRet->ToObject())->SetWrapped(
-					self->postMult( *ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped()) );
+				ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(toRet->ToObject())->SetWrapped(
+					self->postMult( *ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped()) );
 				NanReturnValue(toRet);
 			}
 			else if (args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFVEC4F)
 			{
 				auto toRet = DepNewInstance(DEP_ofVec4f);
-				ObjectWrap::Unwrap<nofx::OfVec4f::OfVec4fWrap>(toRet->ToObject())->SetWrapped(
-					self->postMult(*ObjectWrap::Unwrap<nofx::OfVec4f::OfVec4fWrap>(args[0]->ToObject())->GetWrapped()));
+				ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec4fWrap>(toRet->ToObject())->SetWrapped(
+					self->postMult(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec4fWrap>(args[0]->ToObject())->GetWrapped()));
 				NanReturnValue(toRet);
 			}
 			else
@@ -863,7 +863,7 @@ namespace nofx
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
 			if (args.Length() == 1)
 			{
-				self->postMultScale(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
+				self->postMultScale(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
 			}
 			else
 			{
@@ -882,7 +882,7 @@ namespace nofx
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
 			if (args.Length() == 1)
 			{
-				self->postMultTranslate(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
+				self->postMultTranslate(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
 			}
 			else
 			{
@@ -902,15 +902,15 @@ namespace nofx
 			if (args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFVEC3F)
 			{
 				auto toRet = DepNewInstance(DEP_ofVec3f);
-				ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(toRet->ToObject())->SetWrapped(
-					self->preMult(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped()));
+				ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(toRet->ToObject())->SetWrapped(
+					self->preMult(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped()));
 				NanReturnValue(toRet);
 			}
 			else if (args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFVEC4F)
 			{
 				auto toRet = DepNewInstance(DEP_ofVec4f);
-				ObjectWrap::Unwrap<nofx::OfVec4f::OfVec4fWrap>(toRet->ToObject())->SetWrapped(
-					self->preMult(*ObjectWrap::Unwrap<nofx::OfVec4f::OfVec4fWrap>(args[0]->ToObject())->GetWrapped()));
+				ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec4fWrap>(toRet->ToObject())->SetWrapped(
+					self->preMult(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec4fWrap>(args[0]->ToObject())->GetWrapped()));
 				NanReturnValue(toRet);
 			}
 			else
@@ -932,7 +932,7 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::PreMultScale)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			self->preMultScale(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
+			self->preMultScale(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
 			NanReturnUndefined();
 		}
 
@@ -940,7 +940,7 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::PreMultTranslate)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			self->preMultTranslate(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
+			self->preMultTranslate(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
 			NanReturnUndefined();
 		}
 
@@ -983,7 +983,7 @@ namespace nofx
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
 			if (args.Length() == 1)
 			{
-				self->scale(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
+				self->scale(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
 			}
 			else
 			{
@@ -1047,7 +1047,7 @@ namespace nofx
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
 			if (args.Length() == 1)
 			{
-				self->setTranslation(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
+				self->setTranslation(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
 			}
 			else
 			{
@@ -1064,17 +1064,17 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::Transform3x3)
 		{
 			auto JsVec3f = DepNewInstance(DEP_ofVec3f);
-			auto self = ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(JsVec3f->ToObject());
+			auto self = ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(JsVec3f->ToObject());
 			if (args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFMATRIX4X4)
 			{
 				self->SetWrapped( ofMatrix4x4::transform3x3(
 					*ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped(),
-					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped()) );
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped()) );
 			}
 			else
 			{
 				self->SetWrapped( ofMatrix4x4::transform3x3(
-					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
 					*ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args[0]->ToObject())->GetWrapped()) );
 			}
 			NanReturnValue(JsVec3f);
@@ -1086,7 +1086,7 @@ namespace nofx
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
 			if (args.Length() == 1)
 			{
-				self->translate(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
+				self->translate(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
 			}
 			else
 			{

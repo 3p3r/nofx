@@ -145,7 +145,7 @@ namespace nofx
 				}
 				else
 				{
-					self->draw(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
+					self->draw(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
 				}
 			}
 			else if (args.Length() == 2)
@@ -160,7 +160,7 @@ namespace nofx
 				}
 				else
 				{
-					self->draw(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped()
+					self->draw(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped()
 						, args[1]->NumberValue(), args[2]->NumberValue());
 				}
 			}
@@ -173,10 +173,10 @@ namespace nofx
 				else
 				{
 					self->draw(
-						*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
-						*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[1]->ToObject())->GetWrapped(),
-						*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[2]->ToObject())->GetWrapped(),
-						*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[3]->ToObject())->GetWrapped());
+						*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
+						*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[1]->ToObject())->GetWrapped(),
+						*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[2]->ToObject())->GetWrapped(),
+						*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[3]->ToObject())->GetWrapped());
 				}
 			}
 			else if (args.Length() == 5)
@@ -247,7 +247,7 @@ namespace nofx
 		{
 			auto self = ObjectWrap::Unwrap<OfTextureWrap>(args.This())->GetWrapped();
 			auto JsVec = DepNewInstance(DEP_ofVec3f);
-			ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(JsVec->ToObject())->SetWrapped(
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(JsVec->ToObject())->SetWrapped(
 				self->getCoordFromPercent(args[0]->NumberValue(), args[1]->NumberValue()));
 			NanReturnValue(JsVec);
 		}
@@ -257,7 +257,7 @@ namespace nofx
 		{
 			auto self = ObjectWrap::Unwrap<OfTextureWrap>(args.This())->GetWrapped();
 			auto JsVec = DepNewInstance(DEP_ofVec3f);
-			ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(JsVec->ToObject())->SetWrapped(
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(JsVec->ToObject())->SetWrapped(
 				self->getCoordFromPoint(args[0]->NumberValue(), args[1]->NumberValue()));
 			NanReturnValue(JsVec);
 		}

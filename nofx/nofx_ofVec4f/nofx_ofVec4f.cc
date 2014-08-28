@@ -6,7 +6,7 @@
 
 namespace nofx
 {
-	namespace OfVec4f
+	namespace ClassWrappers
 	{
 		using node::ObjectWrap;
 
@@ -34,7 +34,7 @@ namespace nofx
 					}
 					else if (args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() == NOFX_TYPES::OFVEC3F)
 					{
-						obj = new OfVec4fWrap(new ofVec4f(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped()));
+						obj = new OfVec4fWrap(new ofVec4f(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped()));
 					}
 					else
 					{
@@ -419,5 +419,5 @@ namespace nofx
 			NanReturnValue(newInst);
 		}
 
-	} //!namespace OfVec4f
+	} //!namespace ClassWrappers
 } //!namespace nofx

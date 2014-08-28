@@ -10,7 +10,7 @@ namespace nofx
         {
         
 			auto JsVec3f = DepNewInstance(DEP_ofVec3f);
-			node::ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(JsVec3f->ToObject())->SetWrapped(ofGetWindowSize());
+			node::ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(JsVec3f->ToObject())->SetWrapped(ofGetWindowSize());
 			NanReturnValue(JsVec3f);
 
         } // !nofx_ofGetWindowSize

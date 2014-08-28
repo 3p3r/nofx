@@ -27,14 +27,14 @@ namespace nofx
 				else if (args.Length() == 2)
 				{
 					obj = new OfRectangleWrap(new ofRectangle(
-						*node::ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
-						*node::ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[1]->ToObject())->GetWrapped()
+						*node::ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
+						*node::ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[1]->ToObject())->GetWrapped()
 						));
 				}
 				else if (args.Length() == 3)
 				{
 					obj = new OfRectangleWrap(new ofRectangle(
-						*node::ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
+						*node::ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
 						args[1]->NumberValue(),
 						args[2]->NumberValue()
 						));
@@ -152,7 +152,7 @@ namespace nofx
 		{
 			const auto self = ObjectWrap::Unwrap<OfRectangleWrap>(args.This())->GetWrapped();
 			auto JsVec3f = DepNewInstance(DEP_ofVec3f);
-			ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(JsVec3f->ToObject())->SetWrapped(self->position);
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(JsVec3f->ToObject())->SetWrapped(self->position);
 			NanReturnValue( JsVec3f );
 		}
 		//----------------------------------------------------
@@ -189,7 +189,7 @@ namespace nofx
 		NAN_SETTER(OfRectangleWrap::SetPosition)
 		{
 			auto self = ObjectWrap::Unwrap<OfRectangleWrap>(args.This())->GetWrapped();
-			self->position.set(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(value->ToObject())->GetWrapped());
+			self->position.set(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(value->ToObject())->GetWrapped());
 		}
 		//----------------------------------------------------
 
@@ -223,7 +223,7 @@ namespace nofx
 				ofAlignHorz thisHorzAnchor = (args[1]->IsUndefined()) ? OF_ALIGN_HORZ_CENTER : (ofAlignHorz)args[1]->Uint32Value();
 				ofAlignVert thisVertAnchor = (args[2]->IsUndefined()) ? OF_ALIGN_VERT_CENTER : (ofAlignVert)args[2]->Uint32Value();
 				self->alignTo(
-					*node::ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
+					*node::ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
 					thisHorzAnchor,
 					thisVertAnchor
 					);
@@ -350,7 +350,7 @@ namespace nofx
 		{
 			auto self = ObjectWrap::Unwrap<OfRectangleWrap>(args.This())->GetWrapped();
 			auto JsVec3f = DepNewInstance(DEP_ofVec3f);
-			ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(JsVec3f->ToObject())->SetWrapped(self->getBottomLeft());
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(JsVec3f->ToObject())->SetWrapped(self->getBottomLeft());
 			NanReturnValue(JsVec3f);
 		}
 
@@ -359,7 +359,7 @@ namespace nofx
 		{
 			auto self = ObjectWrap::Unwrap<OfRectangleWrap>(args.This())->GetWrapped();
 			auto JsVec3f = DepNewInstance(DEP_ofVec3f);
-			ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(JsVec3f->ToObject())->SetWrapped(self->getBottomRight());
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(JsVec3f->ToObject())->SetWrapped(self->getBottomRight());
 			NanReturnValue(JsVec3f);
 		}
 
@@ -368,7 +368,7 @@ namespace nofx
 		{
 			auto self = ObjectWrap::Unwrap<OfRectangleWrap>(args.This())->GetWrapped();
 			auto JsVec3f = DepNewInstance(DEP_ofVec3f);
-			ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(JsVec3f->ToObject())->SetWrapped(self->getCenter());
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(JsVec3f->ToObject())->SetWrapped(self->getCenter());
 			NanReturnValue(JsVec3f);
 		}
 
@@ -407,7 +407,7 @@ namespace nofx
 		{
 			auto self = ObjectWrap::Unwrap<OfRectangleWrap>(args.This())->GetWrapped();
 			auto JsVec3f = DepNewInstance(DEP_ofVec3f);
-			ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(JsVec3f->ToObject())->SetWrapped(self->getMax());
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(JsVec3f->ToObject())->SetWrapped(self->getMax());
 			NanReturnValue(JsVec3f);
 		}
 
@@ -430,7 +430,7 @@ namespace nofx
 		{
 			auto self = ObjectWrap::Unwrap<OfRectangleWrap>(args.This())->GetWrapped();
 			auto JsVec3f = DepNewInstance(DEP_ofVec3f);
-			ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(JsVec3f->ToObject())->SetWrapped(self->getMin());
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(JsVec3f->ToObject())->SetWrapped(self->getMin());
 			NanReturnValue(JsVec3f);
 		}
 
@@ -460,7 +460,7 @@ namespace nofx
 		{
 			auto self = ObjectWrap::Unwrap<OfRectangleWrap>(args.This())->GetWrapped();
 			auto JsVec3f = DepNewInstance(DEP_ofVec3f);
-			ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(JsVec3f->ToObject())->SetWrapped(self->getPosition());
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(JsVec3f->ToObject())->SetWrapped(self->getPosition());
 			NanReturnValue(JsVec3f);
 		}
 
@@ -469,7 +469,7 @@ namespace nofx
 		{
 			auto self = ObjectWrap::Unwrap<OfRectangleWrap>(args.This())->GetWrapped();
 			auto JsVec3f = DepNewInstance(DEP_ofVec3f);
-			ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(JsVec3f->ToObject())->SetWrapped(self->getPositionRef());
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(JsVec3f->ToObject())->SetWrapped(self->getPositionRef());
 			NanReturnValue(JsVec3f);
 		}
 
@@ -501,7 +501,7 @@ namespace nofx
 		{
 			auto self = ObjectWrap::Unwrap<OfRectangleWrap>(args.This())->GetWrapped();
 			auto JsVec3f = DepNewInstance(DEP_ofVec3f);
-			ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(JsVec3f->ToObject())->SetWrapped(self->getTopLeft());
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(JsVec3f->ToObject())->SetWrapped(self->getTopLeft());
 			NanReturnValue(JsVec3f);
 		}
 
@@ -510,7 +510,7 @@ namespace nofx
 		{
 			auto self = ObjectWrap::Unwrap<OfRectangleWrap>(args.This())->GetWrapped();
 			auto JsVec3f = DepNewInstance(DEP_ofVec3f);
-			ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(JsVec3f->ToObject())->SetWrapped(self->getTopRight());
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(JsVec3f->ToObject())->SetWrapped(self->getTopRight());
 			NanReturnValue(JsVec3f);
 		}
 
@@ -557,7 +557,7 @@ namespace nofx
 			auto self = ObjectWrap::Unwrap<OfRectangleWrap>(args.This())->GetWrapped();
 			if (args.Length() == 1 && args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFVEC3F)
 			{
-				self->growToInclude(*node::ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
+				self->growToInclude(*node::ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
 			}
 			else if (args.Length() == 1 && args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFRECTANGLE)
 			{
@@ -573,8 +573,8 @@ namespace nofx
 			else
 			{
 				self->growToInclude(
-					*node::ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
-					*node::ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[1]->ToObject())->GetWrapped()
+					*node::ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
+					*node::ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[1]->ToObject())->GetWrapped()
 					);
 			}
 			NanReturnUndefined();
@@ -587,7 +587,7 @@ namespace nofx
 			bool result = false;
 			if (args.Length() == 1 && args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFVEC3F)
 			{
-				result = self->inside(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
+				result = self->inside(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
 			}
 			else if (args.Length() == 1 && args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFRECTANGLE)
 			{
@@ -603,8 +603,8 @@ namespace nofx
 			else
 			{
 				result = self->inside(
-					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
-					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[1]->ToObject())->GetWrapped()
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[1]->ToObject())->GetWrapped()
 					);
 			}
 			NanReturnValue(result);
@@ -622,8 +622,8 @@ namespace nofx
 			else
 			{
 				result = self->intersects(
-					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
-					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[1]->ToObject())->GetWrapped()
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[1]->ToObject())->GetWrapped()
 					);
 			}
 			NanReturnValue(result);
@@ -649,7 +649,7 @@ namespace nofx
 			auto self = ObjectWrap::Unwrap<OfRectangleWrap>(args.This())->GetWrapped();
 			if (args.Length() == 1 && args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFVEC3F)
 			{
-				self->scale(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
+				self->scale(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
 			}
 			else if (args.Length() == 1)
 			{
@@ -668,7 +668,7 @@ namespace nofx
 			auto self = ObjectWrap::Unwrap<OfRectangleWrap>(args.This())->GetWrapped();
 			if (args.Length() == 1 && args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFVEC3F)
 			{
-				self->scaleFromCenter(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
+				self->scaleFromCenter(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
 			}
 			else if (args.Length() == 1)
 			{
@@ -742,14 +742,14 @@ namespace nofx
 			if (args.Length() == 2)
 			{
 				self->set(
-					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
-					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[1]->ToObject())->GetWrapped()
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[1]->ToObject())->GetWrapped()
 					);
 			}
 			else if (args.Length() == 3)
 			{
 				self->set(
-					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
 					args[1]->NumberValue(),
 					args[2]->NumberValue()
 					);
@@ -780,7 +780,7 @@ namespace nofx
 			if (args.Length() == 3)
 			{
 				self->setFromCenter(
-					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped(),
 					args[1]->NumberValue(),
 					args[2]->NumberValue()
 					);
@@ -820,7 +820,7 @@ namespace nofx
 			else if (args.Length() == 4)
 			{
 				self->setPosition(
-					*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped()
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped()
 					);
 			}
 			NanReturnUndefined();
@@ -868,7 +868,7 @@ namespace nofx
 			}
 			else
 			{
-				self->translate(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args.This())->GetWrapped());
+				self->translate(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args.This())->GetWrapped());
 			}
 			NanReturnUndefined();
 		}

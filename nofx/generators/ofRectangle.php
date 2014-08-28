@@ -1,6 +1,6 @@
 <?php
 
-require_once('parser.php');
+require_once('compiler.php');
 $main_class = 'ofRectangle';
 
 $header = new Parser(OFROOT
@@ -38,23 +38,13 @@ if (isset($class['methods']['public']) && !empty($class['methods']['public']))
             array_push($methods_defs[$method['name']], $method);
         }
     }
-
+    
+    echo ParserUtils::NOFX_JS_CTOR_IMPLEMENTATION_CC($main_class, $ctor_defs);
     foreach($methods_defs as $method_name => $method_def) {
-        /*
-        Things we care about:
-        
-        'line_number' => int //original line no in source
-        'returns_pointer' => int
-        'rtnType' => string
-        'returns_reference' => boolean
-        'const' => boolean
-        'parameters' => array
-        'returns' => string
-        'static' => boolean
-        'name' => string
-        'debug' => string //original signature
-        'inline' => boolean
-        */
+        foreach($method_def as $index => $def) {
+            //echo ParserUtils::NOFX_SINGLE_METHOD_SIGNATURE_H($methods_defs,$method_name,$def,$main_class);
+            //echo ParserUtils::NOFX_SINGLE_METHOD_IMPLEMENTATION_CC($methods_defs,$method_name,$def,$main_class);
+        }
     }
 }
 

@@ -248,7 +248,7 @@ namespace nofx
 				}
 				else
 				{
-					self->draw(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
+					self->draw(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped());
 				}
 			}
 			else if (args.Length() == 2)
@@ -263,7 +263,7 @@ namespace nofx
 				}
 				else
 				{
-					self->draw(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped()
+					self->draw(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped()
 						, args[1]->NumberValue(), args[2]->NumberValue());
 				}
 			}

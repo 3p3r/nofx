@@ -120,7 +120,7 @@ namespace nofx
 		{
 			const auto self = node::ObjectWrap::Unwrap<OfAppBaseWindowWrap>(args.This())->GetWrapped();
 			auto JsOfVec3f = DepNewInstance(DEP_ofVec3f);
-			node::ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(JsOfVec3f->ToObject())->SetWrapped(self->getScreenSize());
+			node::ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(JsOfVec3f->ToObject())->SetWrapped(self->getScreenSize());
 			NanReturnValue(JsOfVec3f);
 		}
 
@@ -143,7 +143,7 @@ namespace nofx
 		{
 			const auto self = node::ObjectWrap::Unwrap<OfAppBaseWindowWrap>(args.This())->GetWrapped();
 			auto JsOfVec3f = DepNewInstance(DEP_ofVec3f);
-			node::ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(JsOfVec3f->ToObject())->SetWrapped(self->getWindowPosition());
+			node::ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(JsOfVec3f->ToObject())->SetWrapped(self->getWindowPosition());
 			NanReturnValue(JsOfVec3f);
 		}
 
@@ -152,7 +152,7 @@ namespace nofx
 		{
 			const auto self = node::ObjectWrap::Unwrap<OfAppBaseWindowWrap>(args.This())->GetWrapped();
 			auto JsOfVec3f = DepNewInstance(DEP_ofVec3f);
-			node::ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(JsOfVec3f->ToObject())->SetWrapped(self->getWindowSize());
+			node::ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(JsOfVec3f->ToObject())->SetWrapped(self->getWindowSize());
 			NanReturnValue(JsOfVec3f);
 		}
 

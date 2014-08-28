@@ -31,11 +31,11 @@ namespace nofx
 				{
 					if (args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() == NOFX_TYPES::OFVEC3F)
 					{
-						obj = new OfVec2fWrap(new ofVec2f(*ObjectWrap::Unwrap<nofx::OfVec3f::OfVec3fWrap>(args[0]->ToObject())->GetWrapped()));
+						obj = new OfVec2fWrap(new ofVec2f(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(args[0]->ToObject())->GetWrapped()));
 					}
 					else if (args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() == NOFX_TYPES::OFVEC4F)
 					{
-						obj = new OfVec2fWrap(new ofVec2f(*ObjectWrap::Unwrap<nofx::OfVec4f::OfVec4fWrap>(args[0]->ToObject())->GetWrapped()));
+						obj = new OfVec2fWrap(new ofVec2f(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec4fWrap>(args[0]->ToObject())->GetWrapped()));
 					}
 					else
 					{

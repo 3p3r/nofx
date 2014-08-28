@@ -4,7 +4,7 @@
 
 namespace nofx
 {
-    namespace OfVec4f
+    namespace ClassWrappers
     {
         using namespace v8;
 
@@ -17,7 +17,7 @@ namespace nofx
 			OfVec4fWrap::Initialize(target);
 
         } //!Initialize
-    } //!namespace OfVec4f
+    } //!namespace ClassWrappers
 } //!namespace nofx
 
-NODE_MODULE_CONTEXT_AWARE(nofx_ofVec4f, nofx::OfVec4f::Initialize)
+NODE_MODULE_CONTEXT_AWARE(nofx_ofVec4f, nofx::ClassWrappers::Initialize)
