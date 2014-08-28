@@ -173,9 +173,9 @@ namespace nofx
 			self->decompose(translation, rotation, scale, so);
 			
 			ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(JsTranslation->ToObject())->SetWrapped(translation);
-			ObjectWrap::Unwrap<nofx::OfQuaternion::OfQuaternionWrap>(JsRotation->ToObject())->SetWrapped(rotation);
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfQuaternionWrap>(JsRotation->ToObject())->SetWrapped(rotation);
 			ObjectWrap::Unwrap<nofx::ClassWrappers::OfVec3fWrap>(JsScale->ToObject())->SetWrapped(scale);
-			ObjectWrap::Unwrap<nofx::OfQuaternion::OfQuaternionWrap>(JsSo->ToObject())->SetWrapped(so);
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfQuaternionWrap>(JsSo->ToObject())->SetWrapped(so);
 
 			auto toRet = NanNew<Array>();
 
@@ -329,7 +329,7 @@ namespace nofx
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
 			auto toRet = DepNewInstance(DEP_ofQuaternion);
-			ObjectWrap::Unwrap<nofx::OfQuaternion::OfQuaternionWrap>(toRet->ToObject())->SetWrapped( self->getRotate() );
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfQuaternionWrap>(toRet->ToObject())->SetWrapped( self->getRotate() );
 			NanReturnValue(toRet);
 		}
 
@@ -388,7 +388,7 @@ namespace nofx
 			}
 			else
 			{
-				self->glRotate(*ObjectWrap::Unwrap<nofx::OfQuaternion::OfQuaternionWrap>(args[0]->ToObject())->GetWrapped());
+				self->glRotate(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfQuaternionWrap>(args[0]->ToObject())->GetWrapped());
 			}
 			NanReturnUndefined();
 		}
@@ -572,7 +572,7 @@ namespace nofx
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
 			if (args.Length() == 1)
 			{
-				self->makeRotationMatrix(*ObjectWrap::Unwrap<nofx::OfQuaternion::OfQuaternionWrap>(args[0]->ToObject())->GetWrapped());
+				self->makeRotationMatrix(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfQuaternionWrap>(args[0]->ToObject())->GetWrapped());
 			}
 			else if (args.Length() == 2 && (args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFVEC3F))
 			{
@@ -738,7 +738,7 @@ namespace nofx
 			{
 				ObjectWrap::Unwrap<OfMatrix4x4Wrap>(JsMat)->SetWrapped(
 					ofMatrix4x4::newRotationMatrix(
-					*ObjectWrap::Unwrap<nofx::OfQuaternion::OfQuaternionWrap>(args[0]->ToObject())->GetWrapped()));
+					*ObjectWrap::Unwrap<nofx::ClassWrappers::OfQuaternionWrap>(args[0]->ToObject())->GetWrapped()));
 			}
 			else if (args.Length() == 2 && (args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFVEC3F))
 			{
@@ -843,7 +843,7 @@ namespace nofx
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
 			if (args.Length() == 1)
 			{
-				self->postMultRotate(*ObjectWrap::Unwrap<nofx::OfQuaternion::OfQuaternionWrap>(args[0]->ToObject())->GetWrapped());
+				self->postMultRotate(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfQuaternionWrap>(args[0]->ToObject())->GetWrapped());
 			}
 			else
 			{
@@ -924,7 +924,7 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::PreMultRotate)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			self->preMultRotate(*ObjectWrap::Unwrap<nofx::OfQuaternion::OfQuaternionWrap>(args[0]->ToObject())->GetWrapped());
+			self->preMultRotate(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfQuaternionWrap>(args[0]->ToObject())->GetWrapped());
 			NanReturnUndefined();
 		}
 
@@ -950,7 +950,7 @@ namespace nofx
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
 			if (args.Length() == 1)
 			{
-				self->rotate(*ObjectWrap::Unwrap<nofx::OfQuaternion::OfQuaternionWrap>(args[0]->ToObject())->GetWrapped());
+				self->rotate(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfQuaternionWrap>(args[0]->ToObject())->GetWrapped());
 			}
 			else
 			{
@@ -1037,7 +1037,7 @@ namespace nofx
 		NAN_METHOD(OfMatrix4x4Wrap::SetRotate)
 		{
 			auto self = ObjectWrap::Unwrap<OfMatrix4x4Wrap>(args.This())->GetWrapped();
-			self->setRotate(*ObjectWrap::Unwrap<nofx::OfQuaternion::OfQuaternionWrap>(args[0]->ToObject())->GetWrapped());
+			self->setRotate(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfQuaternionWrap>(args[0]->ToObject())->GetWrapped());
 			NanReturnUndefined();
 		}
 

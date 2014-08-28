@@ -4,7 +4,7 @@
 
 namespace nofx
 {
-    namespace OfPixels
+    namespace ClassWrappers
     {
         using namespace v8;
 
@@ -17,7 +17,7 @@ namespace nofx
             OfPixelsWrap::Initialize(target);
 
         } //!Initialize
-    } //!namespace OfPixels
+    } //!namespace ClassWrappers
 } //!namespace nofx
 
-NODE_MODULE_CONTEXT_AWARE(nofx_ofPixels, nofx::OfPixels::Initialize)
+NODE_MODULE_CONTEXT_AWARE(nofx_ofPixels, nofx::ClassWrappers::Initialize)

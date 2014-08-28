@@ -10,7 +10,7 @@ using namespace v8;
 
 namespace nofx
 {
-	namespace OfRectangle
+	namespace ClassWrappers
 	{
 		class OfRectangleWrap
 			: public nofx::ObjectWrap < ofRectangle >
@@ -85,7 +85,7 @@ namespace nofx
 			static NAN_METHOD(TranslateY);
 
 		}; // !class OfRectangleWrap
-	} //!namespace OfRectangle
+	} //!namespace ClassWrappers
 } // !namespace nofx
 
 #endif // !_NOFX_OF_RECTANGLE_H_

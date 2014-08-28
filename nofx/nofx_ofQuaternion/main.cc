@@ -4,7 +4,7 @@
 
 namespace nofx
 {
-    namespace OfQuaternion
+    namespace ClassWrappers
     {
         using namespace v8;
 
@@ -17,7 +17,7 @@ namespace nofx
 			OfQuaternionWrap::Initialize(target);
 
         } //!Initialize
-    } //!namespace OfQuaternion
+    } //!namespace ClassWrappers
 } //!namespace nofx
 
-NODE_MODULE_CONTEXT_AWARE(nofx_ofQuaternion, nofx::OfQuaternion::Initialize)
+NODE_MODULE_CONTEXT_AWARE(nofx_ofQuaternion, nofx::ClassWrappers::Initialize)

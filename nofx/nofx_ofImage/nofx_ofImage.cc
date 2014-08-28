@@ -42,7 +42,7 @@ namespace nofx
 					}
 					else if (args[0]->IsObject() && args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFPIXELS)
 					{
-						obj = new OfImageWrap(new ofImage(*ObjectWrap::Unwrap<nofx::OfPixels::OfPixelsWrap>(args[0]->ToObject())->GetWrapped()));
+						obj = new OfImageWrap(new ofImage(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfPixelsWrap>(args[0]->ToObject())->GetWrapped()));
 					}
 					else if (args[0]->IsObject() && args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFIMAGE)
 					{
@@ -244,7 +244,7 @@ namespace nofx
 			{
 				if (args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFRECTANGLE)
 				{
-					self->draw(*ObjectWrap::Unwrap<nofx::OfRectangle::OfRectangleWrap>(args[0]->ToObject())->GetWrapped());
+					self->draw(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfRectangleWrap>(args[0]->ToObject())->GetWrapped());
 				}
 				else
 				{
@@ -362,7 +362,7 @@ namespace nofx
 		{
 			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
 			auto JsPixels = DepNewInstance(DEP_ofPixels);
-			ObjectWrap::Unwrap<nofx::OfPixels::OfPixelsWrap>(JsPixels->ToObject())->SetWrapped(self->getPixelsRef());
+			ObjectWrap::Unwrap<nofx::ClassWrappers::OfPixelsWrap>(JsPixels->ToObject())->SetWrapped(self->getPixelsRef());
 			NanReturnValue(JsPixels);
 		}
 
@@ -534,7 +534,7 @@ namespace nofx
 			auto self = ObjectWrap::Unwrap<OfImageWrap>(args.This())->GetWrapped();
 			if (args.Length() == 1)
 			{
-				self->setFromPixels(*ObjectWrap::Unwrap<nofx::OfPixels::OfPixelsWrap>(args[0]->ToObject())->GetWrapped());
+				self->setFromPixels(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfPixelsWrap>(args[0]->ToObject())->GetWrapped());
 			}
 			else
 			{

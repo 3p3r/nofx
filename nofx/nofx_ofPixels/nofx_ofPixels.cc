@@ -5,7 +5,7 @@
 
 namespace nofx
 {
-	namespace OfPixels
+	namespace ClassWrappers
 	{
 		using node::ObjectWrap;
 
@@ -402,5 +402,5 @@ namespace nofx
 			NanReturnUndefined();
 		}
 
-	} //!namespace OfPixels
+	} //!namespace ClassWrappers
 } //!namespace nofx

@@ -5,10 +5,10 @@
 
 namespace nofx
 {
-    namespace OfPixels
+    namespace ClassWrappers
     {
         NAN_METHOD(nofx_dependencies);
-    } // !namespace OfPixels 
+    } // !namespace ClassWrappers 
 } // !namespace nofx
 
 #endif // !_NOFX_DEPENENCIES_H_

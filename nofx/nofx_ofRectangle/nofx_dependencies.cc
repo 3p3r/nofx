@@ -4,7 +4,7 @@ v8::Persistent<v8::Function> DEP_ofVec3f;
 
 namespace nofx
 {
-    namespace OfRectangle
+    namespace ClassWrappers
     {
         NAN_METHOD(nofx_dependencies)
         {
@@ -19,5 +19,5 @@ namespace nofx
         
             NanReturnValue(args.This());
         } // !nofx_dependencies
-    } // !namespace OfRectangle
+    } // !namespace ClassWrappers
 } // !namespace nofx

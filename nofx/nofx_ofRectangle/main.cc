@@ -4,7 +4,7 @@
 
 namespace nofx
 {
-    namespace OfRectangle
+    namespace ClassWrappers
     {
         using namespace v8;
 
@@ -17,7 +17,7 @@ namespace nofx
 			OfRectangleWrap::Initialize(target);
 
         } //!Initialize
-    } //!namespace OfRectangle
+    } //!namespace ClassWrappers
 } //!namespace nofx
 
-NODE_MODULE_CONTEXT_AWARE(nofx_ofRectangle, nofx::OfRectangle::Initialize)
+NODE_MODULE_CONTEXT_AWARE(nofx_ofRectangle, nofx::ClassWrappers::Initialize)

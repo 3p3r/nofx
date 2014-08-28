@@ -5,7 +5,7 @@
 
 namespace nofx
 {
-	namespace OfQuaternion
+	namespace ClassWrappers
 	{
 		using node::ObjectWrap;
 
@@ -327,5 +327,5 @@ namespace nofx
 			NanReturnValue(self->zeroRotation());
 		}
 
-	} //!namespace OfQuaternion
+	} //!namespace ClassWrappers
 } //!namespace nofx

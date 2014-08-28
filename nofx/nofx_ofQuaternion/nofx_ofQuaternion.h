@@ -10,7 +10,7 @@ using namespace v8;
 
 namespace nofx
 {
-	namespace OfQuaternion
+	namespace ClassWrappers
 	{
 		class OfQuaternionWrap
 			: public nofx::ObjectWrap < ofQuaternion >
@@ -41,7 +41,7 @@ namespace nofx
 			static NAN_METHOD(ZeroRotation);
 
 		}; // !class OfQuaternionWrap
-	} //!namespace OfQuaternion
+	} //!namespace ClassWrappers
 } // !namespace nofx
 
 #endif // !_NOFX_OF_QUATERNION_H_

@@ -5,10 +5,10 @@
 
 namespace nofx
 {
-    namespace OfRectangle
+    namespace ClassWrappers
     {
         NAN_METHOD(nofx_dependencies);
-    } // !namespace OfRectangle 
+    } // !namespace ClassWrappers 
 } // !namespace nofx
 
 #endif // !_NOFX_DEPENENCIES_H_

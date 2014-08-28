@@ -5,7 +5,7 @@ v8::Persistent<v8::Function> DEP_ofVec4f;
 
 namespace nofx
 {
-	namespace OfQuaternion
+	namespace ClassWrappers
     {
         NAN_METHOD(nofx_dependencies)
         {

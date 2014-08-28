@@ -4,7 +4,7 @@
 
 namespace nofx
 {
-	namespace OfRectangle
+	namespace ClassWrappers
 	{
 		using node::ObjectWrap;
 
@@ -889,5 +889,5 @@ namespace nofx
 			NanReturnUndefined();
 		}
 
-	} //!namespace OfRectangle
+	} //!namespace ClassWrappers
 } //!namespace nofx

@@ -10,7 +10,7 @@ namespace nofx
         {
         
 			auto JsRectangle = DepNewInstance(DEP_ofRectangle);
-			node::ObjectWrap::Unwrap<nofx::OfRectangle::OfRectangleWrap>(JsRectangle->ToObject())->SetWrapped(ofGetWindowRect());
+			node::ObjectWrap::Unwrap<nofx::ClassWrappers::OfRectangleWrap>(JsRectangle->ToObject())->SetWrapped(ofGetWindowRect());
             NanReturnValue(JsRectangle);
 
         } // !nofx_ofGetWindowRect

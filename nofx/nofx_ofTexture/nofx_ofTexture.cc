@@ -91,11 +91,11 @@ namespace nofx
 			}
 			else if (args.Length() == 1)
 			{
-				self->allocate(*ObjectWrap::Unwrap<nofx::OfPixels::OfPixelsWrap>(args[0]->ToObject())->GetWrapped());
+				self->allocate(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfPixelsWrap>(args[0]->ToObject())->GetWrapped());
 			}
 			else if (args.Length() == 2)
 			{
-				self->allocate(*ObjectWrap::Unwrap<nofx::OfPixels::OfPixelsWrap>(args[0]->ToObject())->GetWrapped(), args[1]->BooleanValue());
+				self->allocate(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfPixelsWrap>(args[0]->ToObject())->GetWrapped(), args[1]->BooleanValue());
 			}
 			else if (args.Length() == 3)
 			{
@@ -141,7 +141,7 @@ namespace nofx
 			{
 				if (args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::OFRECTANGLE)
 				{
-					self->draw(*ObjectWrap::Unwrap<nofx::OfRectangle::OfRectangleWrap>(args[0]->ToObject())->GetWrapped());
+					self->draw(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfRectangleWrap>(args[0]->ToObject())->GetWrapped());
 				}
 				else
 				{
@@ -298,11 +298,11 @@ namespace nofx
 			auto self = ObjectWrap::Unwrap<OfTextureWrap>(args.This())->GetWrapped();
 			if (args.Length() == 1)
 			{
-				self->loadData(*ObjectWrap::Unwrap<nofx::OfPixels::OfPixelsWrap>(args[0]->ToObject())->GetWrapped());
+				self->loadData(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfPixelsWrap>(args[0]->ToObject())->GetWrapped());
 			}
 			else if (args.Length() == 2)
 			{
-				self->loadData(*ObjectWrap::Unwrap<nofx::OfPixels::OfPixelsWrap>(args[0]->ToObject())->GetWrapped(), args[1]->Int32Value());
+				self->loadData(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfPixelsWrap>(args[0]->ToObject())->GetWrapped(), args[1]->Int32Value());
 			}
 			else
 			{
@@ -337,7 +337,7 @@ namespace nofx
 		NAN_METHOD(OfTextureWrap::ReadToPixels)
 		{
 			auto self = ObjectWrap::Unwrap<OfTextureWrap>(args.This())->GetWrapped();
-			self->readToPixels(*ObjectWrap::Unwrap<nofx::OfPixels::OfPixelsWrap>(args[0]->ToObject())->GetWrapped());
+			self->readToPixels(*ObjectWrap::Unwrap<nofx::ClassWrappers::OfPixelsWrap>(args[0]->ToObject())->GetWrapped());
 			NanReturnUndefined();
 		}
 

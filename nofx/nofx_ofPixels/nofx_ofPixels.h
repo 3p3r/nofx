@@ -10,7 +10,7 @@ using namespace v8;
 
 namespace nofx
 {
-	namespace OfPixels
+	namespace ClassWrappers
 	{
 		class OfPixelsWrap
 			: public nofx::ObjectWrap < ofPixels >
@@ -55,7 +55,7 @@ namespace nofx
 			static NAN_METHOD(SwapRgb);
 
 		}; // !class OfPixelsWrap
-	} //!namespace OfPixels
+	} //!namespace ClassWrappers
 } // !namespace nofx
 
 #endif // !_NOFX_OF_PIXELS_H_

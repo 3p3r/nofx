@@ -5,7 +5,7 @@ v8::Persistent<v8::Function> DEP_unsignedCharPtr;
 
 namespace nofx
 {
-    namespace OfPixels
+    namespace ClassWrappers
     {
         NAN_METHOD(nofx_dependencies)
         {
