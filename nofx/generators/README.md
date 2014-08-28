@@ -1,0 +1,1 @@
+You'll need Python 2.7+ on your path plus `jsonpickle` and `CppHeaderParser` modules installed for it for these scripts to work.
