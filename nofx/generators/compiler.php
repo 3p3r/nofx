@@ -221,14 +221,96 @@ TPL;
         /******************************
         * Return type
         ******************************/
-        //Determining the return type
+        $tmpl .= NOFX_PROCESS_RETURN_TYPE($return_type, $return_statement);
+        return $tmpl;
+    }
+    static function NOFX_GETTER_BODY_CC(
+        $className,
+        $propName,
+        $return_type
+    ) {
+        $tmpl = 'NAN_GETTER('.self::GET_CLASS_WRAPPED_NAME($className).'::Get'.self::GET_JS_METHOD_NAME($propName).') {'."\n";
+        $tmpl .= '    const auto self = '.self::NOFX_JS_UNWRAP($className, $className, 'args.This()').'->GetWrapped();';
+        $tmpl .= "\n";
+        $return_statement = '';
+        $tmpl .= '    ';
+        $callerObj = 'self->';
+        switch ($return_type) {
+            case 'ofRectangle':
+                $tmpl .= self::NOFX_JS_NEW_INSTANCE('ofRectangle', $className);
+                $tmpl .= '    ';
+                $tmpl .= self::NOFX_JS_UNWRAP('ofRectangle', $className).'->SetWrapped('.$callerObj.$propName.");\n";
+                $return_statement .= 'JsReturn';
+                break;
+            case 'ofPoint':
+            case 'ofVec3f':
+                $tmpl .= self::NOFX_JS_NEW_INSTANCE('ofVec3f', $className);
+                $tmpl .= '    ';
+                $tmpl .= self::NOFX_JS_UNWRAP('ofVec3f', $className).'->SetWrapped('.$callerObj.$propName.");\n";
+                $return_statement .= 'JsReturn';
+                break;
+            case 'bool':
+            case 'int':
+            case 'double':
+            case 'float':
+            case 'size_t':
+                $return_statement .= $callerObj.$propName;
+                break;
+            default:
+                throw new Exception('Return type for method body can\'t be recognized. Type is: ['.$return_type.']');
+                break;
+        }
+        $tmpl .= '    ';
+        $tmpl .= self::NOFX_PROCESS_RETURN_TYPE($return_type, $return_statement);
+        $tmpl .= "} //!Get".self::GET_JS_METHOD_NAME($propName)."\n";
+        return $tmpl;
+    }
+    static function NOFX_SETTER_BODY_CC(
+        $className,
+        $propName,
+        $return_type
+    ) {
+        $tmpl = 'NAN_SETTER('.self::GET_CLASS_WRAPPED_NAME($className).'::Set'.self::GET_JS_METHOD_NAME($propName).') {'."\n";
+        $tmpl .= '    auto self = '.self::NOFX_JS_UNWRAP($className, $className, 'args.This()').'->GetWrapped();';
+        $tmpl .= "\n";
+        $callerObj = '    self->';
+        switch ($return_type) {
+            case 'ofRectangle':
+                $tmpl .= $callerObj.$propName.'.set(*'.self::NOFX_JS_UNWRAP('ofRectangle', $className, 'args.This()').'->GetWrapped());'."\n";
+                break;
+            case 'ofPoint':
+            case 'ofVec3f':
+                $tmpl .= $callerObj.$propName.'.set(*'.self::NOFX_JS_UNWRAP('ofVec3f', $className, 'args.This()').'->GetWrapped());'."\n";
+                break;
+            case 'bool':
+                $tmpl .= $callerObj.$propName.' = value->BooleanValue();'."\n";
+                break;
+            case 'int':
+                $tmpl .= $callerObj.$propName.' = value->Int32Value();'."\n";
+                break;
+            case 'size_t':
+                $tmpl .= $callerObj.$propName.' = value->Uint32Value();'."\n";
+                break;
+            case 'double':
+            case 'float':
+                $tmpl .= $callerObj.$propName.' = value->NumberValue();'."\n";
+                break;
+            default:
+                throw new Exception('Return type for method body can\'t be recognized. Type is: ['.$return_type.']');
+                break;
+        }
+        $tmpl .= "} //!Set".self::GET_JS_METHOD_NAME($propName)."\n";
+        return $tmpl;
+    }
+    static function NOFX_PROCESS_RETURN_TYPE($return_type, $return_statement) {
+        $return = '';
         switch ($return_type)
         {
             case 'void':
-                $tmpl .= 'NanReturnUndefined();'."\n";
+                $return .= 'NanReturnUndefined();'."\n";
                 break;
             case 'string':
-                $tmpl .= 'NanReturnValue(*NanUtf8String('.$return_statement.'));'."\n";
+                $return .= 'NanReturnValue(*NanUtf8String('.$return_statement.'));'."\n";
                 break;
             case 'bool':
             case 'int':
@@ -238,13 +320,13 @@ TPL;
             case 'ofRectangle':
             case 'ofPoint':
             case 'ofVec3f':
-                $tmpl .= 'NanReturnValue('.$return_statement.');'."\n";
+                $return .= 'NanReturnValue('.$return_statement.');'."\n";
                 break;
             default:
                 throw new Exception('Return type can\'t be recognized. Type is: ['.$return_type.']');
                 break;
         }
-        return $tmpl;
+        return $return;
     }
     static function NOFX_GETTER_SIGNATURE_CC($className, $method_name, $semicolonAndEnter = false) {
         return 'NAN_GETTER('.self::GET_CLASS_WRAPPED_NAME($className).'::'.self::GET_JS_METHOD_NAME($method_name).')'.($semicolonAndEnter ? ";\n" : '');
@@ -347,7 +429,17 @@ TPL;
         $tmpl .= "} //!{$mangled_name} \n\n";
         return $tmpl;
     }
-
+    static function NOFX_JS_SETTER_IMPLEMENTATION_CC($className, $name, $return_type) {
+        /**
+        * THIS CLASS STILL NEEDS TO HANDLE OPTIONAL CTOR ARGUMENTS!
+        * TODO
+        * TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO!
+        */
+        $tmpl = 'NAN_SETTER('.self::GET_CLASS_WRAPPED_NAME($className).'::Set'.self::GET_JS_METHOD_NAME($name).') {'."\n";
+        $tmpl .= self::NOFX_SETTER_BODY_CC($className, $name, $return_type);
+        $tmpl .= '} //!Set'.self::GET_JS_METHOD_NAME($name)."\n";
+        return $tmpl;
+    }
     static function NOFX_JS_CTOR_IMPLEMENTATION_CC($className, $ctor_defs) {
         $classWrappedName = self::GET_CLASS_WRAPPED_NAME($className);
         $ctor_defs_temp = $ctor_defs;

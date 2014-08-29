@@ -38,8 +38,8 @@ if (isset($class['methods']['public']) && !empty($class['methods']['public']))
             array_push($methods_defs[$method['name']], $method);
         }
     }
-    
-    echo ParserUtils::NOFX_JS_CTOR_IMPLEMENTATION_CC($main_class, $ctor_defs);
+
+    //echo ParserUtils::NOFX_JS_CTOR_IMPLEMENTATION_CC($main_class, $ctor_defs);
     foreach($methods_defs as $method_name => $method_def) {
         foreach($method_def as $index => $def) {
             //echo ParserUtils::NOFX_SINGLE_METHOD_SIGNATURE_H($methods_defs,$method_name,$def,$main_class);
@@ -52,6 +52,18 @@ if (isset($class['properties']['public']) && !empty($class['properties']['public
 {
     //We have public props to deal with here
     $props = $class['properties']['public'];
+    $headerRawFile = file(OFROOT
+        .DIRECTORY_SEPARATOR .'openFrameworks'
+        .DIRECTORY_SEPARATOR .'libs'
+        .DIRECTORY_SEPARATOR .'openFrameworks'
+        .DIRECTORY_SEPARATOR .'types'
+        .DIRECTORY_SEPARATOR .'ofRectangle.h');
+
+    foreach($props as $prop) {
+        $name = end(explode(' ', rtrim(trim($headerRawFile[$prop['line_number'] - 1]), ";")));
+        echo ParserUtils::NOFX_GETTER_BODY_CC($main_class, $name, $prop['raw_type']);
+        echo ParserUtils::NOFX_SETTER_BODY_CC($main_class, $name, $prop['raw_type']);
+    }
 }
 
 ?>

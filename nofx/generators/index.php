@@ -1,4 +1,6 @@
 <?php
+    error_reporting(E_ALL ^ E_STRICT);
+    
     $OF_home = trim(`python parser.py getOF`);
     if ($OF_home == null || $OF_home == 'not found.') {
         if(!isset($_GET['OFROOT'])) {
