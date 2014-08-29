@@ -440,6 +440,33 @@ TPL;
         $tmpl .= '} //!Set'.self::GET_JS_METHOD_NAME($name)."\n";
         return $tmpl;
     }
+    static function NOFX_JS_INITIALIZER_CC($className, $props) {
+        $classNameWrapped = self::GET_CLASS_WRAPPED_NAME($className);
+        $tmpl = <<<TPL
+void {$classNameWrapped}::Initialize(v8::Handle<v8::Object> exports)
+{
+    auto tpl = NanNew<v8::FunctionTemplate>(New);
+    tpl->SetClassName(NanNew("{$className}"));
+
+    auto inst = tpl->InstanceTemplate();
+    inst->SetInternalFieldCount(1);
+
+
+    inst->SetAccessor(NanNew("height"), OfRectangleWrap::GetHeight, OfRectangleWrap::SetHeight);
+    inst->SetAccessor(NanNew("position"), OfRectangleWrap::GetPosition, OfRectangleWrap::SetPosition);
+    inst->SetAccessor(NanNew("width"), OfRectangleWrap::GetWidth, OfRectangleWrap::SetWidth);
+    inst->SetAccessor(NanNew("x"), OfRectangleWrap::GetX, OfRectangleWrap::SetX);
+    inst->SetAccessor(NanNew("y"), OfRectangleWrap::GetY, OfRectangleWrap::SetY);
+
+    NanSetPrototypeTemplate(tpl, NanNew("alignTo"), NanNew<v8::FunctionTemplate>(AlignTo), v8::ReadOnly);
+
+    NanSetPrototypeTemplate(tpl, NanNew("NOFX_TYPE"), NanNew(NOFX_TYPES::OFRECTANGLE), v8::ReadOnly);
+    NanAssignPersistent(constructor, tpl->GetFunction());
+    exports->Set(NanNew<String>("ofRectangle"), tpl->GetFunction());
+}
+
+TPL;
+    }
     static function NOFX_JS_CTOR_IMPLEMENTATION_CC($className, $ctor_defs) {
         $classWrappedName = self::GET_CLASS_WRAPPED_NAME($className);
         $ctor_defs_temp = $ctor_defs;
