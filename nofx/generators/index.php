@@ -10,7 +10,7 @@
         }
     }
     define('OFROOT', $OF_home);
-    define('NOFXSTRICT', false);
+    define('NOFXSTRICT', true);
     
     require_once('ofRectangle.php');
 ?>
