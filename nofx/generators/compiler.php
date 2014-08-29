@@ -29,8 +29,24 @@ class Parser {
     }
 }
 
-class ParserUtils {
-    static function IS_STRICT() { return defined('NOFXSTRICT') && NOFXSTRICT; }
+class Compiler {
+    /**
+    * Determines if the STRICT flag is on for code generation
+    */
+    static function IS_STRICT() {
+        return defined('NOFXSTRICT') && NOFXSTRICT;
+    }
+    
+    /**
+    * Generates documentation to go in header of the generated class
+    * 
+    * @param string $className
+    * @param string $method_name (mangled)
+    * @param int    $line_no
+    * @param string $sig
+    * @param string $doxygen
+    * @param string $padding
+    */
     static function NOFX_METHOD_DOCUMENTATION_H($className, $method_name, $line_no, $sig, $doxygen = "No Doxygen were found for this method.", $padding = '            ') {
         $doxygen = str_replace('///', "{$padding}///", $doxygen);
         $tmpl = <<<TPL
@@ -47,13 +63,32 @@ class ParserUtils {
 TPL;
         return $tmpl;
     }
-    static function GET_MANGLED_METHOD_NAME($input) {
-        //credits: http://stackoverflow.com/a/3198075/1055628
+    
+    /**
+    * Mangles the name of overloaded methods/functions
+    * 
+    * @param string $input (non-mangled)
+    * @link http://stackoverflow.com/a/3198075/1055628
+    */
+    static function MANGLE_NAME($input) {
         return substr(strtolower(preg_replace('/[0-9_\/]+/','',base64_encode(sha1($input)))),0,8);
     }
+    
+    /**
+    * Converts OF class name to Wrapped name
+    * 
+    * @param string $className
+    */
     static function GET_CLASS_WRAPPED_NAME($className) {
         return ucfirst($className).'Wrap';
     }
+    
+    /**
+    * Checks to see if a NOFX type is valid
+    * 
+    * @param int    $argIndex
+    * @param string $type
+    */
     static function NOFX_INTERNAL_TYPE_CHECK($argIndex, $type) {
         return 'args['.$argIndex.']->IsObject() && args[0]->ToObject()->Has(NanNew("NOFX_TYPE")) && args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::'.strtoupper($type);
     }
