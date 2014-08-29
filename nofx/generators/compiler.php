@@ -31,17 +31,18 @@ class Parser {
 
 class ParserUtils {
     static function IS_STRICT() { return defined('NOFXSTRICT') && NOFXSTRICT; }
-    static function NOFX_METHOD_DOCUMENTATION_H($className, $method_name, $line_no, $sig, $doxygen = "No Doxygen were found for this method.") {
+    static function NOFX_METHOD_DOCUMENTATION_H($className, $method_name, $line_no, $sig, $doxygen = "No Doxygen were found for this method.", $padding = '            ') {
+        $doxygen = str_replace('///', "{$padding}///", $doxygen);
         $tmpl = <<<TPL
-/**
-* {$className}::{$method_name}
-* Original signature: {$sig}
-* Corresponds to line no {$line_no}
-* Original OF doxygen:
-*
+{$padding}/**
+{$padding}* {$className}::{$method_name}
+{$padding}* Original signature: {$sig}
+{$padding}* Corresponds to line no {$line_no}
+{$padding}* Original OF doxygen:
+{$padding}*
 {$doxygen}
-*
-*/
+{$padding}*
+{$padding}*/
 
 TPL;
         return $tmpl;
@@ -357,8 +358,14 @@ TPL;
         }
         return $return;
     }
-    static function NOFX_GETTER_SIGNATURE_CC($className, $method_name, $semicolonAndEnter = false) {
-        return 'NAN_GETTER('.self::GET_CLASS_WRAPPED_NAME($className).'::'.self::GET_JS_METHOD_NAME($method_name).')'.($semicolonAndEnter ? ";\n" : '');
+    static function NOFX_GETTER_SIGNATURE_CC($className, $name, $semicolonAndEnter = false) {
+        return 'NAN_GETTER('.self::GET_CLASS_WRAPPED_NAME($className).'::Get'.self::GET_JS_METHOD_NAME($name).')'.($semicolonAndEnter ? ";\n" : '');
+    }
+    static function NOFX_GETTER_SIGNATURE_H($method_name, $semicolonAndEnter = false) {
+        return 'static NAN_GETTER(Get'.self::GET_JS_METHOD_NAME($method_name).')'.($semicolonAndEnter ? ";\n" : '');
+    }
+    static function NOFX_SETTER_SIGNATURE_H($method_name, $semicolonAndEnter = false) {
+        return 'static NAN_SETTER(Set'.self::GET_JS_METHOD_NAME($method_name).')'.($semicolonAndEnter ? ";\n" : '');
     }
     static function NOFX_PROCESS_CPP_ARGS($args, $methodName, $className) {
         $args_to_pass = '';
