@@ -92,7 +92,16 @@ TPL;
     static function NOFX_INTERNAL_TYPE_CHECK($argIndex, $type) {
         return 'args['.$argIndex.']->IsObject() && args[0]->ToObject()->Has(NanNew("NOFX_TYPE")) && args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::'.strtoupper($type);
     }
-    static function GENERATE_CPP_JSARG_TYPE_CHECK($type, $argIndex, $methodName, $justReturnConditionBlock = false) {
+    
+    /**
+    * Return a Cpp condition block to check for valid JS passed arguments
+    * 
+    * @param string $type
+    * @param int    $argIndex
+    * @param string $methodName
+    * @param bool   $justReturnConditionBlock
+    */
+    static function GENERATE_CPP_JSARG_TYPE_CHECK($type, $argIndex, $methodName, $justReturnConditionBlock = false, $padding = '    ') {
         $gaurd = '';
         switch($type)
         {
@@ -127,44 +136,105 @@ TPL;
             return "({$gaurd})";
         }
         $tmpl = <<<TPL
-    if(!({$gaurd})) {
-        NanThrowTypeError("Argument at index {$argIndex} is incompatible with {$methodName}'s prototype.\\nExpected type is {$type}.");
-    }
+{$padding}if(!({$gaurd})) {
+{$padding}{$gaurd}NanThrowTypeError("Argument at index {$argIndex} is incompatible with {$methodName}'s prototype.\\nExpected type is {$type}.");
+{$padding}}
 
 TPL;
         return $tmpl;
     }
-    static function GET_JS_METHOD_NAME($method_name) {
+    
+    /**
+    * Converts name to JS side (really a ucfirst fo now)
+    * 
+    * This is here really for future if I decide to change the naming conventions
+    * 
+    * @param string $method_name
+    */
+    static function GET_JS_NAME($method_name) {
         return ucfirst($method_name);
     }
-    static function GET_CPP_METHOD_NAME($method_name) {
+    
+    /**
+    * Converts name to CPP side (really a lcfirst fo now)
+    * 
+    * This is here really for future if I decide to change the naming conventions
+    * 
+    * @param string $method_name
+    */
+    static function GET_CPP_NAME($method_name) {
         return lcfirst($method_name);
     }
-    static function NOFX_METHOD_SIGNATURE_H($method_name, $semicolonAndEnter = false) {
-        return 'static NAN_METHOD('.$method_name.')'.($semicolonAndEnter ? ";\n" : '');
+    
+    /**
+    * CPP Method signature for bindings
+    * 
+    * @param string $method_name
+    * @param bool   $semicolonAndEnter
+    */
+    static function NOFX_METHOD_SIGNATURE_H($method_name, $semicolonAndEnter = false, $padding = '') {
+        return $padding.'static NAN_METHOD('.$method_name.')'.($semicolonAndEnter ? ";\n" : '');
     }
-    static function NOFX_METHOD_SIGNATURE_CC($className, $method_name, $bracketAndEnter = false) {
-        return 'NAN_METHOD('.self::GET_CLASS_WRAPPED_NAME($className).'::'.$method_name.')'.($bracketAndEnter ? " {\n" : '');
+    
+    /**
+    * CPP Method signature for bindings
+    * 
+    * @param string $className
+    * @param string $method_name
+    * @param bool   $bracketAndEnter
+    */
+    static function NOFX_METHOD_SIGNATURE_CC($className, $method_name, $bracketAndEnter = false, $padding = '') {
+        return $padding.'NAN_METHOD('.self::GET_CLASS_WRAPPED_NAME($className).'::'.$method_name.')'.($bracketAndEnter ? " {\n" : '');
     }
-    static function NOFX_JS_NEW_INSTANCE($desiredType, $className, &$dependencies) {
+    
+    /**
+    * Generates a new JS instance to be manipulated by CPP, also finds out what are the dependecnies
+    * for it. It fills the $dependencies array with a list of found dependencies
+    * 
+    * @param string $desiredType
+    * @param string $className
+    * @param array  $dependencies
+    */
+    static function NOFX_JS_NEW_INSTANCE($desiredType, $className, &$dependencies, $padding = '') {
         if ($desiredType == $className) {
-            return 'auto JsReturn = NanNew(Factory())->NewInstance();'."\n";
+            return $padding.'auto JsReturn = NanNew(Factory())->NewInstance();'."\n";
         } else {
             array_push($dependencies, $desiredType);
             $dependencies = array_unique($dependencies);
-            return 'auto JsReturn = DepNewInstance(DEP_'.self::GET_CPP_METHOD_NAME($desiredType).');'."\n";
+            return $padding.'auto JsReturn = DepNewInstance(DEP_'.self::GET_CPP_NAME($desiredType).');'."\n";
         }
     }
-    static function NOFX_JS_UNWRAP($desiredType, $className, $what = '') {
+    
+    /**
+    * Unwraps JsReturns or explicitly passed 'what' param
+    * 
+    * @param string $desiredType
+    * @param string $className
+    * @param string $what
+    * @param string $padding
+    */
+    static function NOFX_JS_UNWRAP($desiredType, $className, $what = '', $padding = '') {
         if (strlen($what) != 0) {
-            return 'nofx::ObjectWrap::Unwrap<nofx::ClassWrappers::'.self::GET_CLASS_WRAPPED_NAME($desiredType).'>('.$what.')';
+            return $padding.'nofx::ObjectWrap::Unwrap<nofx::ClassWrappers::'.self::GET_CLASS_WRAPPED_NAME($desiredType).'>('.$what.')';
         }
         if ($desiredType == $className) {
-            return 'nofx::ObjectWrap::Unwrap<nofx::ClassWrappers::'.self::GET_CLASS_WRAPPED_NAME($desiredType).'>(JsReturn)';
+            return $padding.'nofx::ObjectWrap::Unwrap<nofx::ClassWrappers::'.self::GET_CLASS_WRAPPED_NAME($desiredType).'>(JsReturn)';
         } else {
-            return 'nofx::ObjectWrap::Unwrap<nofx::ClassWrappers::'.self::GET_CLASS_WRAPPED_NAME($desiredType).'>(JsReturn->ToObject())';
+            return $padding.'nofx::ObjectWrap::Unwrap<nofx::ClassWrappers::'.self::GET_CLASS_WRAPPED_NAME($desiredType).'>(JsReturn->ToObject())';
         }
     }
+    
+    /**
+    * Generates a class method body for CPP
+    * 
+    * @param string $className
+    * @param string $methodName
+    * @param bool   $is_static
+    * @param bool   $is_const
+    * @param string $return_type
+    * @param array  $args
+    * @param array  $dependencies
+    */
     static function NOFX_METHOD_BODY_CC(
         $className,
         $methodName,
@@ -172,24 +242,9 @@ TPL;
         $is_const,
         $return_type,
         $args,
-        &$dependencies
+        &$dependencies,
+        $padding = ''
     ) {
-        /*
-        Things we care about:
-
-        'line_number' => int //original line no in source
-        'returns_pointer' => int
-        'rtnType' => string
-        'returns_reference' => boolean
-        'const' => boolean
-        'parameters' => array
-        'returns' => string
-        'doxygen' => string
-        'static' => boolean
-        'name' => string
-        'debug' => string //original signature
-        'inline' => boolean
-        */
         $tmpl = '';
         if ( !$is_static ) {
             /******************************
@@ -197,21 +252,22 @@ TPL;
             ******************************/
             //Method is not static. We need a pointer to self.
             if ($is_const) $tmpl .= 'const ';
+            $tmpl = $padding + $tmpl;
             $tmpl .= 'auto self = '.self::NOFX_JS_UNWRAP('ofRectangle', $className, 'args.This()').'->GetWrapped();';
             $tmpl .= "\n";
             //Pointer to self obtained, shall we check it?
-            if (self::IS_STRICT()):
+            if (self::IS_STRICT()) {
                 //checking if pointer got from ObjectWrap is empty or not. Ideally it should never happen
-                $name = self::GET_CPP_METHOD_NAME($methodName);
+                $name = self::GET_CPP_NAME($methodName);
                 $tmpl .= <<<TPL
 #if NOFX_STRICT
-    if(!self) {
-        NanThrowError("nofx pointer to self is empty @ {$name}");
-    }
+{$padding}if(!self) {
+{$padding}{$padding}NanThrowError("nofx pointer to self is empty @ {$name}");
+{$padding}}
 #endif
 
 TPL;
-                endif;
+            }
             //self pointer Checks are passed (if any)
         }
         /******************************
@@ -221,11 +277,11 @@ TPL;
         $args_to_pass = $processed_args['args_to_pass'];
         $args_guards = $processed_args['args_guards'];
 
-        if (self::IS_STRICT() && strlen($args_guards) != 0):
+        if (self::IS_STRICT() && strlen($args_guards) != 0) {
             $tmpl .= '#if NOFX_STRICT'."\n";
             $tmpl .= $args_guards;
             $tmpl .= '#endif'."\n";
-            endif;
+        }
         /******************************
         * Method body, operation
         ******************************/
@@ -233,17 +289,17 @@ TPL;
         $callerObj = $is_static ? $className.'::' : 'self->';
         switch ($return_type) {
             case 'void':
-                $tmpl .= $callerObj.self::GET_CPP_METHOD_NAME($methodName)."({$args_to_pass});\n";
+                $tmpl .= $callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass});\n";
                 break;
             case 'ofRectangle':
-                $tmpl .= self::NOFX_JS_NEW_INSTANCE('ofRectangle', $className, $dependencies);
-                $tmpl .= self::NOFX_JS_UNWRAP('ofRectangle', $className).'->SetWrapped('.$callerObj.self::GET_CPP_METHOD_NAME($methodName)."({$args_to_pass}));\n";
+                $tmpl .= self::NOFX_JS_NEW_INSTANCE('ofRectangle', $className, $dependencies, $padding);
+                $tmpl .= self::NOFX_JS_UNWRAP('ofRectangle', $className).'->SetWrapped('.$callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass}));\n";
                 $return_statement .= 'JsReturn';
                 break;
             case 'ofPoint':
             case 'ofVec3f':
-                $tmpl .= self::NOFX_JS_NEW_INSTANCE('ofVec3f', $className, $dependencies);
-                $tmpl .= self::NOFX_JS_UNWRAP('ofVec3f', $className).'->SetWrapped('.$callerObj.self::GET_CPP_METHOD_NAME($methodName)."({$args_to_pass}));\n";
+                $tmpl .= self::NOFX_JS_NEW_INSTANCE('ofVec3f', $className, $dependencies, $padding);
+                $tmpl .= self::NOFX_JS_UNWRAP('ofVec3f', $className).'->SetWrapped('.$callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass}));\n";
                 $return_statement .= 'JsReturn';
                 break;
             case 'bool':
@@ -251,7 +307,7 @@ TPL;
             case 'double':
             case 'float':
             case 'size_t':
-                $return_statement .= $callerObj.self::GET_CPP_METHOD_NAME($methodName)."({$args_to_pass})";
+                $return_statement .= $callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass})";
                 break;
             default:
                 throw new Exception('Return type for method body can\'t be recognized. Type is: ['.$return_type.']');
@@ -263,27 +319,37 @@ TPL;
         $tmpl .= self::NOFX_PROCESS_RETURN_TYPE($return_type, $return_statement);
         return $tmpl;
     }
+    
+    /**
+    * Getter body generator
+    * 
+    * @param string $className
+    * @param string $propName
+    * @param string $return_type
+    * @param array  $dependencies
+    */
     static function NOFX_GETTER_BODY_CC(
         $className,
         $propName,
         $return_type,
-        &$dependencies
+        &$dependencies,
+        $padding = ''
     ) {
-        $tmpl = 'NAN_GETTER('.self::GET_CLASS_WRAPPED_NAME($className).'::Get'.self::GET_JS_METHOD_NAME($propName).') {'."\n";
-        $tmpl .= '    const auto self = '.self::NOFX_JS_UNWRAP($className, $className, 'args.This()').'->GetWrapped();';
+        $tmpl = $padding.'NAN_GETTER('.self::GET_CLASS_WRAPPED_NAME($className).'::Get'.self::GET_JS_NAME($propName).') {'."\n";
+        $tmpl .= $padding.$padding.'const auto self = '.self::NOFX_JS_UNWRAP($className, $className, 'args.This()').'->GetWrapped();';
         $tmpl .= "\n";
         //Pointer to self obtained, shall we check it?
-        if (self::IS_STRICT()):
+        if (self::IS_STRICT()) {
             //checking if pointer got from ObjectWrap is empty or not. Ideally it should never happen
             $tmpl .= <<<TPL
 #if NOFX_STRICT
-    if(!self) {
-        NanReturnUndefined();
-    }
+{$padding}if(!self) {
+{$padding}{$padding}NanReturnUndefined();
+{$padding}}
 #endif
 
 TPL;
-            endif;
+        }
         //self pointer Checks are passed (if any)
         $return_statement = '';
         $tmpl .= '    ';
@@ -314,15 +380,23 @@ TPL;
                 break;
         }
         $tmpl .= self::NOFX_PROCESS_RETURN_TYPE($return_type, $return_statement);
-        $tmpl .= "} //!Get".self::GET_JS_METHOD_NAME($propName)."\n";
+        $tmpl .= "} //!Get".self::GET_JS_NAME($propName)."\n";
         return $tmpl;
     }
+    
+    /**
+    * Setter body generator
+    * 
+    * @param mixed $className
+    * @param mixed $propName
+    * @param mixed $return_type
+    */
     static function NOFX_SETTER_BODY_CC(
         $className,
         $propName,
         $return_type
     ) {
-        $tmpl = 'NAN_SETTER('.self::GET_CLASS_WRAPPED_NAME($className).'::Set'.self::GET_JS_METHOD_NAME($propName).') {'."\n";
+        $tmpl = 'NAN_SETTER('.self::GET_CLASS_WRAPPED_NAME($className).'::Set'.self::GET_JS_NAME($propName).') {'."\n";
         $tmpl .= '    auto self = '.self::NOFX_JS_UNWRAP($className, $className, 'args.This()').'->GetWrapped();';
         $tmpl .= "\n";
         //Pointer to self obtained, shall we check it?
@@ -364,9 +438,16 @@ TPL;
                 throw new Exception('Return type for method body can\'t be recognized. Type is: ['.$return_type.']');
                 break;
         }
-        $tmpl .= "} //!Set".self::GET_JS_METHOD_NAME($propName)."\n";
+        $tmpl .= "} //!Set".self::GET_JS_NAME($propName)."\n";
         return $tmpl;
     }
+    
+    /**
+    * Return type analyzer
+    * 
+    * @param mixed $return_type
+    * @param mixed $return_statement
+    */
     static function NOFX_PROCESS_RETURN_TYPE($return_type, $return_statement) {
         $return = '';
         switch ($return_type)
@@ -393,15 +474,45 @@ TPL;
         }
         return $return;
     }
+    
+    /**
+    * Getter sig for initializer
+    * 
+    * @param mixed $className
+    * @param mixed $name
+    * @param mixed $semicolonAndEnter
+    */
     static function NOFX_GETTER_SIGNATURE_CC($className, $name, $semicolonAndEnter = false) {
-        return 'NAN_GETTER('.self::GET_CLASS_WRAPPED_NAME($className).'::Get'.self::GET_JS_METHOD_NAME($name).')'.($semicolonAndEnter ? ";\n" : '');
+        return 'NAN_GETTER('.self::GET_CLASS_WRAPPED_NAME($className).'::Get'.self::GET_JS_NAME($name).')'.($semicolonAndEnter ? ";\n" : '');
     }
+    
+    /**
+    * Getter sig for header
+    * 
+    * @param mixed $method_name
+    * @param mixed $semicolonAndEnter
+    */
     static function NOFX_GETTER_SIGNATURE_H($method_name, $semicolonAndEnter = false) {
-        return 'static NAN_GETTER(Get'.self::GET_JS_METHOD_NAME($method_name).')'.($semicolonAndEnter ? ";\n" : '');
+        return 'static NAN_GETTER(Get'.self::GET_JS_NAME($method_name).')'.($semicolonAndEnter ? ";\n" : '');
     }
+    
+    /**
+    * setter sig for header
+    * 
+    * @param mixed $method_name
+    * @param mixed $semicolonAndEnter
+    */
     static function NOFX_SETTER_SIGNATURE_H($method_name, $semicolonAndEnter = false) {
-        return 'static NAN_SETTER(Set'.self::GET_JS_METHOD_NAME($method_name).')'.($semicolonAndEnter ? ";\n" : '');
+        return 'static NAN_SETTER(Set'.self::GET_JS_NAME($method_name).')'.($semicolonAndEnter ? ";\n" : '');
     }
+    
+    /**
+    * argument type analyzer
+    * 
+    * @param mixed $args
+    * @param mixed $methodName
+    * @param mixed $className
+    */
     static function NOFX_PROCESS_CPP_ARGS($args, $methodName, $className) {
         $args_to_pass = '';
         $args_guards = '';
@@ -458,6 +569,15 @@ TPL;
         }
         return array('args_to_pass' => $args_to_pass, 'args_guards' => $args_guards);
     }
+    
+    /**
+    * Method sig for header
+    * 
+    * @param mixed $methods_defs
+    * @param mixed $method_name
+    * @param mixed $def
+    * @param mixed $main_class
+    */
     static function NOFX_SINGLE_METHOD_SIGNATURE_H(
         $methods_defs,
         $method_name,
@@ -475,6 +595,16 @@ TPL;
         }
         return $tmpl;
     }
+    
+    /**
+    * Method sig for CPP
+    * 
+    * @param mixed $methods_defs
+    * @param mixed $method_name
+    * @param mixed $def
+    * @param mixed $main_class
+    * @param mixed $dependencies
+    */
     static function NOFX_SINGLE_METHOD_IMPLEMENTATION_CC(
         $methods_defs,
         $method_name,
@@ -502,17 +632,33 @@ TPL;
         $tmpl .= "} //!{$mangled_name} \n\n";
         return $tmpl;
     }
+    
+    /**
+    * JS ctor
+    * 
+    * @param mixed $className
+    * @param mixed $name
+    * @param mixed $return_type
+    */
     static function NOFX_JS_SETTER_IMPLEMENTATION_CC($className, $name, $return_type) {
         /**
         * THIS CLASS STILL NEEDS TO HANDLE OPTIONAL CTOR ARGUMENTS!
         * TODO
         * TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO!
         */
-        $tmpl = 'NAN_SETTER('.self::GET_CLASS_WRAPPED_NAME($className).'::Set'.self::GET_JS_METHOD_NAME($name).') {'."\n";
+        $tmpl = 'NAN_SETTER('.self::GET_CLASS_WRAPPED_NAME($className).'::Set'.self::GET_JS_NAME($name).') {'."\n";
         $tmpl .= self::NOFX_SETTER_BODY_CC($className, $name, $return_type);
-        $tmpl .= '} //!Set'.self::GET_JS_METHOD_NAME($name)."\n";
+        $tmpl .= '} //!Set'.self::GET_JS_NAME($name)."\n";
         return $tmpl;
     }
+    
+    /**
+    * initializer template generator
+    * 
+    * @param mixed $className
+    * @param mixed $methods
+    * @param mixed $props
+    */
     static function NOFX_JS_INITIALIZER_CC($className, $methods, $props = array()) {
         $classNameWrapped = self::GET_CLASS_WRAPPED_NAME($className);
         $classUname = strtoupper($className);
@@ -559,6 +705,13 @@ void {$classNameWrapped}::Initialize(v8::Handle<v8::Object> exports)
 TPL;
     return $tmpl;
     }
+    
+    /**
+    * JS ctor implementation
+    * 
+    * @param mixed $className
+    * @param mixed $ctor_defs
+    */
     static function NOFX_JS_CTOR_IMPLEMENTATION_CC($className, $ctor_defs) {
         $classWrappedName = self::GET_CLASS_WRAPPED_NAME($className);
         $ctor_defs_temp = $ctor_defs;
