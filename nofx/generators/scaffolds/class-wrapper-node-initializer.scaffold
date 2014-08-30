@@ -1,0 +1,2 @@
+		// Initialize the ##NOFX_CLASS_NAME## for Node.js
+		ClassWrappers::##NOFX_CLASS_NAME##Wrap::Initialize(target);

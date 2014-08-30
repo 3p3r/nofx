@@ -1,0 +1,8 @@
+
+		//Dependency setters in the form of:
+		// if(args[0]->ToObject->Has(NanNew("[dependency name]"))) {
+		//     NanAssignPersistent(DEP_[dependency name], v8::Handle<v8::Function>::Cast(
+		//         args[0]->ToObject()->Get(NanNew("[dependency name]"))));
+		//     isset_DEP_[dependency name] = true;
+		// }
+##BLOB##

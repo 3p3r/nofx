@@ -1,0 +1,12 @@
+#ifndef _NOFX_##ALL_CAPS_MODULE_NAME##_GLOBALS_H_
+#define _NOFX_##ALL_CAPS_MODULE_NAME##_GLOBALS_H_
+
+// Always including node.h first. Otherwise we'll
+// get random weird errors about mixing C/C++ routines.
+
+#include "node.h"
+#include "v8.h"
+#include "nan.h"
+#include "..\nofx\nofx_types.h"
+##NOFX_MODULE_EXTERN_DEPENDENCY_LIST##
+#endif // !_NOFX_##ALL_CAPS_MODULE_NAME##_GLOBALS_H_

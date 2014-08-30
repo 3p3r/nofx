@@ -1,0 +1,4 @@
+			
+			// Property getters in the form of:
+			// static NAN_GETTER(Get[ucfirst Property name]);
+##BLOB##

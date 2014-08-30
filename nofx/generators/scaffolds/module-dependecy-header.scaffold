@@ -1,0 +1,13 @@
+#ifndef _NOFX_##ALL_CAPS_MODULE_NAME##_DEPENENCIES_H_
+#define _NOFX_##ALL_CAPS_MODULE_NAME##_DEPENENCIES_H_
+
+#include "nofx_##MODULE_NAME##_globals.h"
+
+namespace nofx
+{
+    
+	NAN_METHOD(nofx_##MODULE_NAME##_dependencies);
+	
+} //!namespace nofx
+
+#endif // !_NOFX_##ALL_CAPS_MODULE_NAME##_DEPENENCIES_H_

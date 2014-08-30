@@ -1,0 +1,5 @@
+
+// Dependency list for ##MODULE_NAME##, in the form of:
+// v8::Persistent<v8::Function> DEP_[name of dependency here];
+// bool isset_DEP_[name of dependency here] = false;
+##BLOB##

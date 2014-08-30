@@ -1,0 +1,5 @@
+			
+			// Public class methods in the form of:
+			// static NAN_GETTER([ucfirst (mangled if overloaded) Method name]);
+			// mangled overloaded functions are in form of: [c++ name]_[no of arguments]_[original c++ signature hash]
+##BLOB##

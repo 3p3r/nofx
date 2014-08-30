@@ -1,0 +1,3 @@
+target->Set( //##MODULE_NAME## dependency setter, should be called in JS land
+			NanNew<v8::String>("dependencies"),
+			NanNew<v8::FunctionTemplate>(nofx_##MODULE_NAME##_dependencies)->GetFunction());

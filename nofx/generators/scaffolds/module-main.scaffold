@@ -1,0 +1,21 @@
+#include "nofx_##MODULE_NAME##_globals.h"
+##NOFX_MODULE_DEPENDENCY_INCLUDE##
+##NOFX_CLASS_WRAPPER_INCLUDE##
+##NOFX_NON_MEMBER_FUNCTIONS_INCLUDES##
+
+namespace nofx
+{
+	void Initialize##MODULE_NAME##(
+		v8::Handle<v8::Object>	target,
+		v8::Handle<v8::Value>	unused,
+		v8::Handle<v8::Context> context)
+	{
+		##NOFX_MODULE_DEPENDENCY_NODE_INITIALIZER##
+		##NOFX_CLASS_WRAPPER_NODE_INITIALIZER##
+		##NOFX_NON_MEMBER_FUNCTIONS_NODE_INITIALIZER##
+	} //!Initialize##MODULE_NAME##
+} //!namespace nofx
+
+// Initializing the ##MODULE_NAME## module. This will make the ##MODULE_NAME## class
+// and all of its global non-class-member functions (if any) available in JS side.
+NODE_MODULE_CONTEXT_AWARE(nofx_##MODULE_NAME##, nofx::Initialize##MODULE_NAME##)

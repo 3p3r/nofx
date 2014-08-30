@@ -1,0 +1,2 @@
+// The class wrapper for ##OF_CLASS_NAME##
+#include "nofx_##OF_CLASS_NAME##.h"

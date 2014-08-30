@@ -1,0 +1,16 @@
+#include "nofx_##OF_CLASS_NAME##.h"
+##DEPENDENCY_INCLUDES##
+namespace nofx
+{
+	namespace ClassWrappers
+	{
+		Persistent<Function> ##NOFX_CLASS_NAME##Wrap::constructor;
+##JS_CTOR##
+##CLASS_INITIALIZER##
+##GETTERS_IMPL##
+##SETTERS_IMPL##
+##INDEXAG_IMPL##
+##INDEXAS_IMPL##
+##METHODS_IMPL##
+	} //!namespace ClassWrappers
+} //!namespace nofx

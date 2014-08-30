@@ -1,0 +1,4 @@
+			
+			// Property setters in the form of:
+			// static NAN_SETTER(Set[ucfirst Property name]);
+##BLOB##

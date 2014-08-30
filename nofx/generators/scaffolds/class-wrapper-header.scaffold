@@ -1,0 +1,29 @@
+#ifndef _NOFX_##ALL_CAPS_CLASS_NAME##_H_
+#define _NOFX_##ALL_CAPS_CLASS_NAME##_H_
+
+#include "nofx_##MODULE_NAME##globals.h"
+#include <memory>
+#include "##OF_INCLUDE_FILE_NAME##.h"
+#include "..\nofx\nofx_objectWrap.h"
+
+using namespace v8;
+
+namespace nofx
+{
+	namespace ClassWrappers
+	{
+		class ##NOFX_CLASS_NAME##Wrap
+			: public nofx::ObjectWrap < ##OF_CLASS_NAME## >
+		{
+
+			DeclareObjectRoutines(##OF_TRIMMED_CLASS_NAME##);
+##CLASS_GETTERS_HEADER_SIG##
+##CLASS_SETTERS_HEADER_SIG##
+##CLASS_INDEXAG_HEADER_SIG##
+##CLASS_INDEXAS_HEADER_SIG##
+##CLASS_METHODS_HEADER_SIG##
+		}; // !class ##NOFX_CLASS_NAME##Wrap
+	} //!namespace ClassWrappers
+} // !namespace nofx
+
+#endif // !_NOFX_##ALL_CAPS_CLASS_NAME##_H_

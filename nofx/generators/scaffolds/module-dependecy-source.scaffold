@@ -1,0 +1,17 @@
+#include "nofx_##MODULE_NAME##_dependencies.h"
+##MODULE_DEPENDENCY_LIST##
+namespace nofx
+{
+	NAN_METHOD(nofx_##MODULE_NAME##_dependencies)
+	{
+
+#if NOFX_STRICT
+		if (args.Length() < 1 || !args[0]->IsObject())
+		{
+			NanThrowTypeError("You do not meet the requirements of ##MODULE_NAME##'s dependencies.");
+		}
+#endif
+##DEPENDECY_SETTER_BLOCK##
+		NanReturnValue(args.This());
+	} // !nofx_##MODULE_NAME##_dependencies
+} // !namespace nofx

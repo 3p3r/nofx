@@ -1,0 +1,2 @@
+// module dependencies for ##MODULE_NAME##
+#include "nofx_##MODULE_NAME##_dependencies.h"
