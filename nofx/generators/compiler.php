@@ -3,13 +3,122 @@ require_once('messages.php');
 require_once('parser.php');
 
 class Compiler {
+
+    /**
+    * This function basically converts the output of Python's CPPHeaderParser to a NOFX friendly array
+    * 
+    * @param mixed $absoluteHeaderPath
+    * @param mixed $className
+    */
+    static function SANITIZED_HEADER_DATA($absoluteHeaderPath, $className = '') {
+        $header = new Parser($absoluteHeaderPath);
+        $parsedFileName = basename($absoluteHeaderPath);
+        $json = $header->getParsedJson();
+        $className = strlen($className) == 0 ? str_replace('.h', '', $parsedFileName) : $className;
+        $class = $json['classes'][$className];
+        $methods_defs = [];
+        $ctor_defs = [];
+        $props = [];
+
+        if (isset($class['methods']['public']) && !empty($class['methods']['public']))
+        {
+            //We have public methods to deal with here
+            $methods = $class['methods']['public'];
+
+            foreach ($methods as $method) {
+                if ($method['constructor']) {
+                    //we should deal with constructor overload here
+                    array_push($ctor_defs, $method);
+                } else if($method['destructor']) {
+                    continue; //we don't care about deconstructors
+                } else if ($method['operator'] != false) {
+                    //this is an operator overload
+                    continue; //for now
+                } else {
+                    //this is a general method
+                    if(!isset($methods_defs[$method['name']]) || !is_array($methods_defs[$method['name']])) {
+                        $methods_defs[$method['name']] = [];
+                    }
+                    array_push($methods_defs[$method['name']], $method);
+                }
+            }
+        }
+
+        if (isset($class['properties']['public']) && !empty($class['properties']['public']))
+        {
+            //We have public props to deal with here
+            $props = $class['properties']['public'];
+            $headerRawFile = file($absoluteHeaderPath);
+
+            foreach($props as &$prop) {
+                $name = end(explode(' ', rtrim(trim($headerRawFile[$prop['line_number'] - 1]), ";")));
+                $prop['name'] = $name;
+                $prop['has_setter'] = true;
+            }
+        }
+        
+        return array(
+            'filename' => $parsedFileName,
+            'methods' => $methods_defs,
+            'properties' => $props,
+            'constructors' => $ctor_defs,
+            'target' => $className
+        );
+    }
+    
+    /**
+    * Finds dependencies of a module based on its methods/getters definitions
+    * and filles the $deps array
+    * 
+    * @param mixed $className
+    * @param mixed $properties
+    * @param mixed $methods
+    * @param mixed $deps
+    */
+    static function PRE_DETERMINE_DEPENDENCIES($className, $properties, $methods, &$deps) {
+        foreach($properties as $prop) {
+            self::NOFX_GETTER_BODY_CC($className, $prop['name'], $prop['raw_type'], $deps);
+        }
+        foreach($methods as $method_name => $method_defs) {
+            foreach($method_defs as $method_def) {
+                self::NOFX_METHOD_BODY_CC($className, '', false, false, $method_def['returns'], $method_def['parameters'], $deps);
+            }
+        }
+    }
+    
+    static function PROPERTIES_ITERATOR($props, $cb_getter, &$getter_template, $cb_setter = null, &$setter_template = null)
+    {
+        foreach($props as $prop) {
+            $cb_getter($prop['name'], $getter_template);
+            if($prop['has_setter'] && $cb_setter != null) {
+                $cb_setter($prop['name'], $setter_template);
+            }
+        }
+    }
+    
+    static function METHOD_ITERATOR($className, $methods, $cb, &$template)
+    {
+        $mangled_name = '';
+        foreach($methods as $method_name => $method_defs) {
+            if (count($methods[$method_name]) > 1) {
+                foreach($method_defs as $method_def) {
+                    $mangled_name = self::GET_JS_NAME($method_name).'_'.count($methods[$method_name]).'_'.self::MANGLE_NAME($method_def['debug']);
+                    $cb($mangled_name, $method_def, $template);
+                }
+            } else {
+                $mangled_name = self::GET_JS_NAME($method_name);
+                $cb($mangled_name, $method_defs[0], $template);
+            }
+        }
+    }
+
     /**
     * Determines if the STRICT flag is on for code generation
     */
     static function IS_STRICT() {
         return defined('NOFXSTRICT') && NOFXSTRICT;
     }
-    
+
     /**
     * Generates documentation to go in header of the generated class
     * 
@@ -34,7 +143,7 @@ class Compiler {
 TPL;
         return $tmpl;
     }
-    
+
     /**
     * Mangles the name of overloaded methods/functions
     * 
@@ -44,7 +153,7 @@ TPL;
     static function MANGLE_NAME($input) {
         return substr(strtolower(preg_replace('/[0-9_\/]+/','',base64_encode(sha1($input)))),0,8);
     }
-    
+
     /**
     * Converts OF class name to Wrapped name
     * 
@@ -53,7 +162,7 @@ TPL;
     static function GET_CLASS_WRAPPED_NAME($className) {
         return ucfirst($className).'Wrap';
     }
-    
+
     /**
     * Checks to see if a NOFX type is valid
     * 
@@ -63,7 +172,7 @@ TPL;
     static function NOFX_INTERNAL_TYPE_CHECK($argIndex, $type) {
         return 'args['.$argIndex.']->IsObject() && args[0]->ToObject()->Has(NanNew("NOFX_TYPE")) && args[0]->ToObject()->Get(NanNew("NOFX_TYPE"))->Uint32Value() & NOFX_TYPES::'.strtoupper($type);
     }
-    
+
     /**
     * Return a Cpp condition block to check for valid JS passed arguments
     * 
@@ -119,7 +228,7 @@ if(!({$gaurd})) {
 TPL;
         return $tmpl;
     }
-    
+
     /**
     * Converts name to JS side (really a ucfirst fo now)
     * 
@@ -130,7 +239,7 @@ TPL;
     static function GET_JS_NAME($method_name) {
         return ucfirst($method_name);
     }
-    
+
     /**
     * Converts name to CPP side (really a lcfirst fo now)
     * 
@@ -141,7 +250,7 @@ TPL;
     static function GET_CPP_NAME($method_name) {
         return lcfirst($method_name);
     }
-    
+
     /**
     * CPP Method signature for bindings
     * 
@@ -151,7 +260,7 @@ TPL;
     static function NOFX_METHOD_SIGNATURE_H($method_name, $semicolonAndEnter = false) {
         return 'static NAN_METHOD('.$method_name.')'.($semicolonAndEnter ? ";\n" : '');
     }
-    
+
     /**
     * CPP Method signature for bindings
     * 
@@ -162,7 +271,7 @@ TPL;
     static function NOFX_METHOD_SIGNATURE_CC($className, $method_name, $bracketAndEnter = false) {
         return 'NAN_METHOD('.self::GET_CLASS_WRAPPED_NAME($className).'::'.$method_name.')'.($bracketAndEnter ? " {\n" : '');
     }
-    
+
     /**
     * Generates a new JS instance to be manipulated by CPP, also finds out what are the dependecnies
     * for it. It fills the $dependencies array with a list of found dependencies
@@ -180,7 +289,7 @@ TPL;
             return 'auto JsReturn = DepNewInstance(DEP_'.self::GET_CPP_NAME($desiredType).');'."\n";
         }
     }
-    
+
     /**
     * Unwraps JsReturns or explicitly passed 'what' param
     * 
@@ -198,7 +307,7 @@ TPL;
             return 'nofx::ObjectWrap::Unwrap<nofx::ClassWrappers::'.self::GET_CLASS_WRAPPED_NAME($desiredType).'>(JsReturn->ToObject())';
         }
     }
-    
+
     /**
     * Generates a class method body for CPP
     * 
@@ -296,7 +405,7 @@ TPL;
         $tmpl .= self::NOFX_PROCESS_RETURN_TYPE($return_type, $return_statement);
         return $tmpl;
     }
-    
+
     /**
     * Getter body generator
     * 
@@ -357,7 +466,7 @@ TPL;
         $tmpl .= self::NOFX_PROCESS_RETURN_TYPE($return_type, $return_statement);
         return $tmpl;
     }
-    
+
     /**
     * Setter body generator
     * 
@@ -417,7 +526,7 @@ TPL;
         }
         return $tmpl;
     }
-    
+
     /**
     * Return type analyzer
     * 
@@ -450,7 +559,7 @@ TPL;
         }
         return $return;
     }
-    
+
     /**
     * Getter sig for initializer
     * 
@@ -461,7 +570,7 @@ TPL;
     static function NOFX_GETTER_SIGNATURE_CC($className, $name, $bracketAndEnter = false) {
         return 'NAN_GETTER('.self::GET_CLASS_WRAPPED_NAME($className).'::Get'.self::GET_JS_NAME($name).')'.($bracketAndEnter ? " {\n" : '');
     }
-    
+
     /**
     * Generates getter for CC files
     * 
@@ -477,7 +586,7 @@ TPL;
         $tmpl .= "} //!Get".self::GET_JS_NAME($name)."\n";
         return $tmpl;
     }
-    
+
     /**
     * Getter sig for header
     * 
@@ -487,7 +596,7 @@ TPL;
     static function NOFX_GETTER_SIGNATURE_H($method_name, $semicolonAndEnter = false) {
         return 'static NAN_GETTER(Get'.self::GET_JS_NAME($method_name).')'.($semicolonAndEnter ? ";\n" : '');
     }
-    
+
     /**
     * setter sig for header
     * 
@@ -497,7 +606,7 @@ TPL;
     static function NOFX_SETTER_SIGNATURE_H($method_name, $semicolonAndEnter = false) {
         return 'static NAN_SETTER(Set'.self::GET_JS_NAME($method_name).')'.($semicolonAndEnter ? ";\n" : '');
     }
-    
+
     /**
     * argument type analyzer
     * 
@@ -561,7 +670,7 @@ TPL;
         }
         return array('args_to_pass' => $args_to_pass, 'args_guards' => $args_guards);
     }
-    
+
     /**
     * Method sig for header
     * 
@@ -587,7 +696,7 @@ TPL;
         }
         return $tmpl;
     }
-    
+
     /**
     * Method sig for CPP
     * 
@@ -624,7 +733,7 @@ TPL;
         $tmpl .= "} //!{$mangled_name} \n\n";
         return $tmpl;
     }
-    
+
     /**
     * Setter sig for header
     * 
@@ -634,7 +743,7 @@ TPL;
     static function NOFX_SETTER_SIGNATURE_CC($className, $name, $bracketAndEnter = false) {
         return 'NAN_GETTER('.self::GET_CLASS_WRAPPED_NAME($className).'::Set'.self::GET_JS_NAME($name).')'.($bracketAndEnter ? " {\n" : '');
     }
-    
+
     /**
     * JS ctor
     * 
@@ -648,7 +757,7 @@ TPL;
         $tmpl .= '} //!Set'.self::GET_JS_NAME($name)."\n";
         return $tmpl;
     }
-    
+
     /**
     * initializer template generator
     * 
@@ -668,7 +777,7 @@ TPL;
                 $mutators .= ");\n";
             }
         }
-        
+
         $method_tmpl = '';
         foreach($methods as $method_name => $method_defs) {
             if (count($methods[$method_name]) > 1) {
@@ -681,7 +790,7 @@ TPL;
                 $method_tmpl .= "NanSetPrototypeTemplate(tpl, NanNew(\"".lcfirst($mangled_name)."\"), NanNew<v8::FunctionTemplate>(".$mangled_name."), v8::ReadOnly);\n";
             }
         }
-        
+
         $tmpl = <<<TPL
 void {$classNameWrapped}::Initialize(v8::Handle<v8::Object> exports)
 {
@@ -700,9 +809,9 @@ void {$classNameWrapped}::Initialize(v8::Handle<v8::Object> exports)
 }
 
 TPL;
-    return $tmpl;
+        return $tmpl;
     }
-    
+
     /**
     * JS ctor implementation
     * 
