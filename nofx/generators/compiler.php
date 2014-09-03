@@ -1,6 +1,7 @@
 <?php
 require_once('messages.php');
 require_once('parser.php');
+require_once('cunit.php');
 
 class Compiler {
 
