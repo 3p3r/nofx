@@ -224,10 +224,13 @@ TPL;
     }
     
     function writeSource($filename, $source) {
-        if(!is_dir($this->getClassName())) {
-            mkdir($this->getClassName());
+        if(!is_dir('build')) {
+            mkdir('build');
         }
-        file_put_contents($this->getClassName().DIRECTORY_SEPARATOR.$filename, $this->formatSource($source, true));
+        if(!is_dir('build'.DIRECTORY_SEPARATOR.$this->getClassName())) {
+            mkdir('build'.DIRECTORY_SEPARATOR.$this->getClassName());
+        }
+        file_put_contents('build'.DIRECTORY_SEPARATOR.$this->getClassName().DIRECTORY_SEPARATOR.$filename, $this->formatSource($source, true));
         echo 'Wrote '.$filename.'<br />';
     }
     
