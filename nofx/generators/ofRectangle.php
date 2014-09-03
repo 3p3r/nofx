@@ -16,14 +16,13 @@ $json = $header->getParsedJson();
 $class = $json['classes'][$main_class];
 $dependencies = [];
 $methods_defs = [];
+$ctor_defs = [];
 $props = [];
 
 if (isset($class['methods']['public']) && !empty($class['methods']['public']))
 {
     //We have public methods to deal with
     $methods = $class['methods']['public'];
-
-    $ctor_defs = [];
 
     foreach ($methods as $method) {
         if ($method['constructor']) {
@@ -43,11 +42,11 @@ if (isset($class['methods']['public']) && !empty($class['methods']['public']))
         }
     }
 
-    //echo ParserUtils::NOFX_JS_CTOR_IMPLEMENTATION_CC($main_class, $ctor_defs);
+    //echo Compiler::NOFX_JS_CTOR_IMPLEMENTATION_CC($main_class, $ctor_defs);
     foreach($methods_defs as $method_name => $method_def) {
         foreach($method_def as $index => $def) {
-            //echo ParserUtils::NOFX_SINGLE_METHOD_SIGNATURE_H($methods_defs,$method_name,$def,$main_class);
-            ParserUtils::NOFX_SINGLE_METHOD_IMPLEMENTATION_CC($methods_defs,$method_name,$def,$main_class, $dependencies);
+            //echo Compiler::NOFX_SINGLE_METHOD_SIGNATURE_H($methods_defs,$method_name,$def,$main_class);
+            //Compiler::NOFX_METHOD_IMPLEMENTATION_CC($methods_defs,$method_name,$def,$main_class, $dependencies);
         }
     }
 }
@@ -62,14 +61,14 @@ if (isset($class['properties']['public']) && !empty($class['properties']['public
         $name = end(explode(' ', rtrim(trim($headerRawFile[$prop['line_number'] - 1]), ";")));
         $prop['name'] = $name;
         $prop['has_setter'] = true;
-        ParserUtils::NOFX_GETTER_BODY_CC($main_class, $prop['name'], $prop['raw_type'],$dependencies);
+        Compiler::NOFX_GETTER_BODY_CC($main_class, $prop['name'], $prop['raw_type'],$dependencies);
         //echo "\n";
-        //echo ParserUtils::NOFX_SETTER_BODY_CC($main_class, $prop['name'], $prop['raw_type']);
+        //echo Compiler::NOFX_SETTER_BODY_CC($main_class, $prop['name'], $prop['raw_type']);
         //echo "//--------------------------------------------------------\n";
     }
 }
 
-//echo ParserUtils::NOFX_JS_INITIALIZER_CC($main_class, $methods_defs, $props);
+//echo Compiler::NOFX_JS_INITIALIZER_CC($main_class, $methods_defs, $props);
 
 class GEN {
     private $className = false;
@@ -87,11 +86,11 @@ class GEN {
         $this->dependencies;
 
         foreach($this->props as $prop) {
-            ParserUtils::NOFX_GETTER_BODY_CC($this->className, $prop['name'], $prop['raw_type'], $this->dependencies);
+            Compiler::NOFX_GETTER_BODY_CC($this->className, $prop['name'], $prop['raw_type'], $this->dependencies);
         }
         foreach($this->methods as $method_name => $method_defs) {
             foreach($method_defs as $method_def) {
-                ParserUtils::NOFX_METHOD_BODY_CC($this->className, '', false, false, $method_def['returns'], $method_def['parameters'], $this->dependencies);
+                Compiler::NOFX_METHOD_BODY_CC($this->className, '', false, false, $method_def['returns'], $method_def['parameters'], $this->dependencies);
             }
         }
     }
@@ -143,17 +142,17 @@ TMP;
         foreach($this->methods as $method_name => $method_defs) {
             if (count($this->methods[$method_name]) > 1) {
                 foreach($method_defs as $method_def) {
-                    $methodsTmpl .= ParserUtils::NOFX_METHOD_DOCUMENTATION_H($this->className, $method_name, $method_def['line_number'], $method_def['debug'], isset($method_def['doxygen']) ? $method_def['doxygen'] : "/// \\brief Doxygen could not be found.");
+                    $methodsTmpl .= Compiler::NOFX_METHOD_DOCUMENTATION_H($this->className, $method_name, $method_def['line_number'], $method_def['debug'], isset($method_def['doxygen']) ? $method_def['doxygen'] : "/// \\brief Doxygen could not be found.");
                     $methodsTmpl .= '            ';
-                    $mangled_name = ParserUtils::GET_JS_METHOD_NAME($method_name).'_'.count($this->methods[$method_name]).'_'.ParserUtils::GET_MANGLED_METHOD_NAME($method_def['debug']);
-                    $methodsTmpl .= ParserUtils::NOFX_METHOD_SIGNATURE_H($mangled_name, true);
+                    $mangled_name = Compiler::GET_JS_NAME($method_name).'_'.count($this->methods[$method_name]).'_'.Compiler::MANGLE_NAME($method_def['debug']);
+                    $methodsTmpl .= Compiler::NOFX_METHOD_SIGNATURE_H($mangled_name, true);
                     $methodsTmpl .= "\n";
                 }
             } else {
-                $methodsTmpl .= ParserUtils::NOFX_METHOD_DOCUMENTATION_H($this->className, $method_name, $method_defs[0]['line_number'], $method_defs[0]['debug'], isset($method_defs[0]['doxygen']) ? $method_defs[0]['doxygen'] : "/// \\brief Doxygen could not be found.");
+                $methodsTmpl .= Compiler::NOFX_METHOD_DOCUMENTATION_H($this->className, $method_name, $method_defs[0]['line_number'], $method_defs[0]['debug'], isset($method_defs[0]['doxygen']) ? $method_defs[0]['doxygen'] : "/// \\brief Doxygen could not be found.");
                 $methodsTmpl .= '            ';
-                $mangled_name = ParserUtils::GET_JS_METHOD_NAME($method_name);
-                $methodsTmpl .= ParserUtils::NOFX_METHOD_SIGNATURE_H($mangled_name, true);
+                $mangled_name = Compiler::GET_JS_NAME($method_name);
+                $methodsTmpl .= Compiler::NOFX_METHOD_SIGNATURE_H($mangled_name, true);
                 $methodsTmpl .= "\n";
             }
         }
@@ -162,10 +161,10 @@ TMP;
         $setters = "";
         foreach($this->props as $prop) {
             $getters .= '            ';
-            $getters .= ParserUtils::NOFX_GETTER_SIGNATURE_H($prop['name'], true);
+            $getters .= Compiler::NOFX_GETTER_SIGNATURE_H($prop['name'], true);
             if($prop['has_setter']) {
                 $setters .= '            ';
-                $setters .= ParserUtils::NOFX_SETTER_SIGNATURE_H($prop['name'], true);
+                $setters .= Compiler::NOFX_SETTER_SIGNATURE_H($prop['name'], true);
             }
         }
 
@@ -208,6 +207,7 @@ TMP;
         $uClassName = ucfirst($this->className);
         $uuClassName = strtoupper($this->className);
         $depHeader = "";
+        $methodsTmpl = "";
 
         if(count($this->dependencies) > 0) {
             foreach($this->dependencies as $dep) {
@@ -215,8 +215,25 @@ TMP;
             }
         }
         
-        $initializer = ParserUtils::NOFX_JS_INITIALIZER_CC($this->className, $this->methods, $this->props);
-        $ctor = ParserUtils::NOFX_JS_CTOR_IMPLEMENTATION_CC($this->className, $this->ctor_defs);
+        foreach($this->methods as $method_name => $method_def) {
+            foreach($method_def as $index => $def) {
+                $methodsTmpl .= Compiler::NOFX_METHOD_IMPLEMENTATION_CC($this->methods, $method_name, $def, $this->className, $this->dependencies);
+            }
+        }
+        
+        $getters = "";
+        $setters = "";
+        foreach($this->props as $prop) {
+            $getters .= '            ';
+            $getters .= Compiler::NOFX_GETTER_IMPLEMENTATION_CC($this->className, $prop['name'],$prop['raw_type'] ,$this->dependencies);
+            if($prop['has_setter']) {
+                $setters .= '            ';
+                $setters .= Compiler::NOFX_SETTER_IMPLEMENTATION_CC($this->className, $prop['name'],$prop['raw_type']);
+            }
+        }
+        
+        $initializer = Compiler::NOFX_JS_INITIALIZER_CC($this->className, $this->methods, $this->props);
+        $ctor = Compiler::NOFX_JS_CTOR_IMPLEMENTATION_CC($this->className, $this->ctor_defs);
 
         $template = <<<TMP
 #include "nofx_{$lClassName}.h"
@@ -226,57 +243,11 @@ namespace nofx
 {
     namespace ClassWrappers
     {
-        using node::ObjectWrap;
+        using nofx::ObjectWrap;
     
         Persistent<Function> {$uClassName}Wrap::constructor;
-
-        NAN_METHOD({$uClassName}Wrap::New)
-        {
-            NanScope();
-            if (args.IsConstructCall()) {
-                {$uClassName}Wrap* obj;
-                if (args[0]->IsNull())
-                {
-                    obj = new {$uClassName}Wrap(nullptr);
-                }
-                else if (args.Length() == 0)
-                {
-                    obj = new {$uClassName}Wrap();
-                }
-                else
-                {
-                    //copy constructor
-                    obj = new {$uClassName}Wrap(ObjectWrap::Unwrap<{$uClassName}Wrap>(args[0]->ToObject())->GetWrapped());
-                }
-                obj->Wrap(args.This());
-                NanReturnValue(args.This());
-            }
-            else
-            {
-                // Invoked as plain function `MyObject(...)`, turn into construct call.
-                std::vector<v8::Handle<v8::Value>> lArgvVec;
-                for (int i = 0; i < args.Length(); ++i) { lArgvVec.push_back(args[i]); }
-                NanReturnValue(NanNew<v8::Function>(constructor)->NewInstance(lArgvVec.size(), (lArgvVec.size() == 0) ? nullptr : &lArgvVec[0]));
-            }
-        }
-
-        //--------------------------------------------------------------
-        void {$uClassName}Wrap::Initialize(v8::Handle<Object> exports)
-        {
-            auto tpl = NanNew<v8::FunctionTemplate>(New);
-            tpl->SetClassName(NanNew("{$lClassName}"));
-
-            auto inst = tpl->InstanceTemplate();
-            inst->SetInternalFieldCount(1);
-
-{$mutators}
-{$protoTmpl}
-
-            NanSetPrototypeTemplate(tpl, NanNew("NOFX_TYPE"), NanNew(NOFX_TYPES::{$uuClassName}), v8::ReadOnly);
-            NanAssignPersistent(constructor, tpl->GetFunction());
-            exports->Set(NanNew<String>("{$lClassName}"), tpl->GetFunction());
-        }
-
+        {$ctor}
+        {$initializer}
         {$getters}
         {$setters}
         {$methodsTmpl}
@@ -296,7 +267,7 @@ TMP;
     }
 }
 
-$generator = new GEN('ofRectangle', $methods_defs, $props, $parsedFileName);
-echo $generator->H();
+$generator = new GEN('ofRectangle', $methods_defs, $props, $parsedFileName, $ctor_defs);
+echo $generator->CC();
 
 ?>
