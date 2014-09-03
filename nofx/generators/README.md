@@ -1,1 +1,1 @@
-You'll need Python 2.7+ on your path plus `jsonpickle`, `ply`, and `CppHeaderParser` modules installed for it for these scripts to work.
+You'll need Python 2.7+ on your path plus `jsonpickle`, `ply`, and `CppHeaderParser` modules installed for it for these scripts to work. Also you need `artistic style`'s executable on your path under the name of `astyle`
