@@ -127,7 +127,7 @@ class Compiler {
         }
         foreach($methods as $method_name => $method_defs) {
             foreach($method_defs as $method_def) {
-                self::NOFX_METHOD_BODY_CC($className, '', false, false, $method_def['returns'], $method_def['parameters'], $deps);
+                self::NOFX_METHOD_BODY_CC($className, '', false, false, $method_def['rtnType'], $method_def['parameters'], $deps);
             }
         }
     }
@@ -439,6 +439,8 @@ TPL;
                 break;
             case 'ofPoint':
             case 'ofVec3f':
+            case 'ofVec3f &':
+            case 'static ofVec3f':
                 $tmpl .= self::NOFX_JS_NEW_INSTANCE('ofVec3f', $className, $dependencies);
                 $tmpl .= self::NOFX_JS_UNWRAP('ofVec3f', $className).'->SetWrapped('.$callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass}));\n";
                 $return_statement .= 'JsReturn';
@@ -449,6 +451,10 @@ TPL;
             case 'float':
             case 'size_t':
                 $return_statement .= $callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass})";
+                break;
+            case 'const float *':
+            case 'float *':
+                $tmpl .= self::NOFX_JS_NEW_INSTANCE('floatPtr', $className, $dependencies);
                 break;
             default:
                 throw new Exception('Return type for method body can\'t be recognized. Type is: ['.$return_type.']');
@@ -606,6 +612,10 @@ TPL;
             case 'ofRectangle':
             case 'ofPoint':
             case 'ofVec3f':
+            case 'ofVec3f &':
+            case 'static ofVec3f':
+            case 'float *':
+            case 'const float *':
                 $return .= 'NanReturnValue('.$return_statement.');'."\n";
                 break;
             default:
@@ -789,7 +799,7 @@ TPL;
             $method_name,
             isset($def['static']) ? $def['static'] : false,
             isset($def['const']) ? $def['const'] : false,
-            $def['returns'],
+            $def['rtnType'],
             $def['parameters'],
             $dependencies);
         $tmpl .= "} //!{$mangled_name} \n\n";

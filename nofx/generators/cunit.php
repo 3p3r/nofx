@@ -92,9 +92,15 @@ TPL;
     
     protected function getNofxDependencyHeaderFiles() {
         $depHeader = "";
+        $nofx_ptr_included = false;
         if(count($this->getDependencies()) > 0) {
             foreach($this->getDependencies() as $dep) {
-                $depHeader .= '#include "..\nofx_'.$dep.'\nofx_'.$dep.'.h"'."\n";
+                if (strstr($dep, 'Ptr') != false && !$nofx_ptr_included) {
+                    $depHeader .= '#include "..\nofx_pointer\nofx_pointer.h"'."\n";
+                    $nofx_ptr_included = true;
+                } else {
+                    $depHeader .= '#include "..\nofx_'.$dep.'\nofx_'.$dep.'.h"'."\n";
+                }
             }
         }
         return $depHeader;
