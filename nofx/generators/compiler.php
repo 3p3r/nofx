@@ -817,7 +817,7 @@ TPL;
     * @param mixed $semicolonAndEnter
     */
     static function NOFX_SETTER_SIGNATURE_CC($className, $name, $bracketAndEnter = false) {
-        return 'NAN_GETTER('.self::GET_CLASS_WRAPPED_NAME($className).'::Set'.self::GET_JS_NAME($name).')'.($bracketAndEnter ? " {\n" : '');
+        return 'NAN_SETTER('.self::GET_CLASS_WRAPPED_NAME($className).'::Set'.self::GET_JS_NAME($name).')'.($bracketAndEnter ? " {\n" : '');
     }
 
     /**
@@ -849,6 +849,8 @@ TPL;
             $mutators .= "inst->SetAccessor(NanNew(\"".$prop['name']."\"), {$classNameWrapped}::Get".ucfirst($prop['name']);
             if ($prop['has_setter']) {
                 $mutators .= ", {$classNameWrapped}::Set".ucfirst($prop['name']).");\n";
+            } else if(isset($prop['static']) && $prop['static']) {
+                $mutators .= ", 0, v8::Handle<v8::Value>(), v8::PROHIBITS_OVERWRITING);\n";
             } else {
                 $mutators .= ");\n";
             }
@@ -913,7 +915,7 @@ TPL;
             foreach($ctor_def as $ctor_overload) {
                 if ($shouldBeANestedLoop) {
                     //No need for argument guards here. We should check them anyway
-                    $conditionLoop .= Messages::SINGLE_ARG_NOTE."\n";
+                    //Arguments with length == 1 must be always type checked. They can be easilly confused with copy constructors.
                     $conditionLoop .= 'if (';
                     foreach($ctor_overload['parameters'] as $index => $arg) {
                         $conditionLoop .= self::GENERATE_CPP_JSARG_TYPE_CHECK($arg['type'], $index, $className.' constructor', true).' &&';
