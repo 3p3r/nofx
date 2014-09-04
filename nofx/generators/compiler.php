@@ -49,24 +49,69 @@ class Compiler {
         {
             //We have public props to deal with here
             $props = $class['properties']['public'];
+            $props_clean = array();
+            $processed_names = array();
             $headerRawFile = file($absoluteHeaderPath);
 
-            foreach($props as &$prop) {
-                $name = end(explode(' ', rtrim(trim($headerRawFile[$prop['line_number'] - 1]), ";")));
-                $prop['name'] = $name;
-                $prop['has_setter'] = true;
+            foreach($props as $index => $prop) {
+                if (isset($prop['static']) && $prop['static']) {
+                    $lvalue = trim(explode('=', $headerRawFile[$prop['line_number'] - 1])[0]);
+                    $names = trim(end(explode(' ', $lvalue)));
+                    if(in_array($names, $processed_names)) {
+                        continue;
+                    }
+                    $props_clean[] = $prop;
+                    $props_clean[count($props_clean) - 1]['name'] = $names;
+                    $processed_names[] = $names;
+                    if(isset($prop['constant']) && !$prop['constant']) {
+                        $props_clean[count($props_clean) - 1]['has_setter'] = true;
+                    } else {
+                        $props_clean[count($props_clean) - 1]['has_setter'] = false;
+                    }
+                    continue;
+                }
+                $names = end(explode(' ', rtrim(trim($headerRawFile[$prop['line_number'] - 1]), ";")));
+                //for properties separated with ","
+                if(strstr($names, ',') != false) {
+                    $temp_names = explode(',',$names);
+                    foreach($temp_names as $index2 => $prop2) {
+                        if(in_array(trim($prop2), $processed_names)) {
+                            continue;
+                        }
+                        $props_clean[] = $prop;
+                        $props_clean[count($props_clean) - 1]['name'] = trim($prop2);
+                        $processed_names[] = trim($prop2);
+                        if(isset($prop['constant']) && !$prop['constant']) {
+                            $props_clean[count($props_clean) - 1]['has_setter'] = true;
+                        } else {
+                            $props_clean[count($props_clean) - 1]['has_setter'] = false;
+                        }                        
+                    }
+                } else {
+                    if(in_array($names, $processed_names)) {
+                        continue;
+                    }
+                    $props_clean[] = $prop;
+                    $props_clean[count($props_clean) - 1]['name'] = $names;
+                    $processed_names[] = $names;
+                    if(isset($prop['constant']) && !$prop['constant']) {
+                        $props_clean[count($props_clean) - 1]['has_setter'] = true;
+                    } else {
+                        $props_clean[count($props_clean) - 1]['has_setter'] = false;
+                    }
+                }
             }
         }
-        
+
         return array(
             'filename' => $parsedFileName,
             'methods' => $methods_defs,
-            'properties' => $props,
+            'properties' => $props_clean,
             'constructors' => $ctor_defs,
             'target' => $className
         );
     }
-    
+
     /**
     * Finds dependencies of a module based on its methods/getters definitions
     * and filles the $deps array
@@ -86,7 +131,7 @@ class Compiler {
             }
         }
     }
-    
+
     static function PROPERTIES_ITERATOR($props, $cb_getter, &$getter_template, $cb_setter = null, &$setter_template = null)
     {
         foreach($props as $prop) {
@@ -96,7 +141,7 @@ class Compiler {
             }
         }
     }
-    
+
     static function METHOD_ITERATOR($className, $methods, $cb, &$template)
     {
         $mangled_name = '';
@@ -198,7 +243,16 @@ TPL;
                 break;
             case 'ofPoint':
             case 'ofVec3f':
+            case '::ofVec3f':
                 $gaurd = self::NOFX_INTERNAL_TYPE_CHECK($argIndex, 'ofVec3f');
+                break;
+            case 'const ofVec2f &':
+            case 'ofVec2f':
+                $gaurd = self::NOFX_INTERNAL_TYPE_CHECK($argIndex, 'ofVec2f');
+                break;
+            case 'const ofVec4f &':
+            case 'ofVec4f':
+                $gaurd = self::NOFX_INTERNAL_TYPE_CHECK($argIndex, 'ofVec4f');
                 break;
             case '::ofRectangle':
             case 'const ofRectangle &':
@@ -639,7 +693,14 @@ TPL;
                     break;
                 case 'ofPoint':
                 case 'ofVec3f':
+                case '::ofVec3f':
                     $current_arg_str .= "*".self::NOFX_JS_UNWRAP('ofVec3f', $className, "args[{$index}]->ToObject()")."->GetWrapped(),";
+                    break;
+                case 'ofVec2f':
+                    $current_arg_str .= "*".self::NOFX_JS_UNWRAP('ofVec2f', $className, "args[{$index}]->ToObject()")."->GetWrapped(),";
+                    break;
+                case 'ofVec4f':
+                    $current_arg_str .= "*".self::NOFX_JS_UNWRAP('ofVec4f', $className, "args[{$index}]->ToObject()")."->GetWrapped(),";
                     break;
                 case 'ofRectangle':
                 case '::ofRectangle': //reference
