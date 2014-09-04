@@ -32,7 +32,7 @@ abstract class CompilerUnit
     protected function getAllCapsClassName()    {return strtoupper($this->getClassName());}
     protected function getNoCapsClassName()     {return strtolower($this->getClassName());}
 
-    static protected function camelCasedToUnderScored($input)
+    static public function camelCasedToUnderScored($input)
     {return strtoupper(preg_replace('/(?<=\\w)(?=[A-Z])/',"_$1", $input));}
 
     static protected function trimOfPrefix($input)

@@ -358,6 +358,8 @@ TPL;
         }
         if ($desiredType == $className) {
             return 'nofx::ObjectWrap::Unwrap<nofx::ClassWrappers::'.self::GET_CLASS_WRAPPED_NAME($desiredType).'>(JsReturn)';
+        } else if(strstr($desiredType, 'Ptr') != false) {
+            return 'ObjectWrap::Unwrap<nofx::Pointer::RawPointerWrap<'.str_replace('_', ' ', strtolower(CompilerUnit::camelCasedToUnderScored(str_replace('Ptr', '', $desiredType)))).'>>(JsReturn->ToObject())';
         } else {
             return 'nofx::ObjectWrap::Unwrap<nofx::ClassWrappers::'.self::GET_CLASS_WRAPPED_NAME($desiredType).'>(JsReturn->ToObject())';
         }
@@ -434,7 +436,7 @@ TPL;
                 break;
             case 'ofRectangle':
                 $tmpl .= self::NOFX_JS_NEW_INSTANCE('ofRectangle', $className, $dependencies);
-                $tmpl .= self::NOFX_JS_UNWRAP('ofRectangle', $className).'->SetWrapped('.$callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass}));\n";
+                $tmpl .= self::NOFX_JS_UNWRAP('ofRectangle', $className).'->SetWrapped(*'.$callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass}));\n";
                 $return_statement .= 'JsReturn';
                 break;
             case 'ofPoint':
@@ -442,7 +444,7 @@ TPL;
             case 'ofVec3f &':
             case 'static ofVec3f':
                 $tmpl .= self::NOFX_JS_NEW_INSTANCE('ofVec3f', $className, $dependencies);
-                $tmpl .= self::NOFX_JS_UNWRAP('ofVec3f', $className).'->SetWrapped('.$callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass}));\n";
+                $tmpl .= self::NOFX_JS_UNWRAP('ofVec3f', $className).'->SetWrapped(*'.$callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass}));\n";
                 $return_statement .= 'JsReturn';
                 break;
             case 'bool':
@@ -455,6 +457,8 @@ TPL;
             case 'const float *':
             case 'float *':
                 $tmpl .= self::NOFX_JS_NEW_INSTANCE('floatPtr', $className, $dependencies);
+                $tmpl .= self::NOFX_JS_UNWRAP('floatPtr', $className).'->SetWrapped('.$callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass}));\n";
+                $return_statement .= 'JsReturn';
                 break;
             default:
                 throw new Exception('Return type for method body can\'t be recognized. Type is: ['.$return_type.']');
