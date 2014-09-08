@@ -20,6 +20,7 @@ class Compiler {
         $methods_defs = [];
         $ctor_defs = [];
         $props = [];
+        $index_mutators = [];
 
         if (isset($class['methods']['public']) && !empty($class['methods']['public']))
         {
@@ -34,6 +35,12 @@ class Compiler {
                     continue; //we don't care about deconstructors
                 } else if ($method['operator'] != false) {
                     //this is an operator overload
+                    if ($method['operator'] == "[]") {
+                        $index_mutators['getter'] = array('type' => $method['rtnType']);
+                        if ($method['returns_reference']) {
+                            $index_mutators['setter'] = array('type' => $method['rtnType']);
+                        }
+                    }
                     continue; //for now
                 } else {
                     //this is a general method
@@ -108,8 +115,130 @@ class Compiler {
             'methods' => $methods_defs,
             'properties' => $props_clean,
             'constructors' => $ctor_defs,
-            'target' => $className
+            'target' => $className,
+            'index_mutators' => $index_mutators
         );
+    }
+    
+    static function NOFX_INDEX_GETTER_SIGNATURE_H($semicolonAndEnter = false) {
+        return 'static NAN_INDEX_GETTER(IndexGetter)'.($semicolonAndEnter ? ";\n" : '');
+    }
+    static function NOFX_INDEX_GETTER_SIGNATURE_CC($className, $enterAndBracket = false) {
+        return "NAN_INDEX_GETTER(".self::GET_CLASS_WRAPPED_NAME($className)."::IndexGetter)".($enterAndBracket ? "\n{" : '');
+    }
+    static function NOFX_INDEX_GETTER_BODY_CC($className, $index_type, &$dependencies, &$cpp_dependencies) {        
+        $tmpl = 'const auto self = '.self::NOFX_JS_UNWRAP($className, $className, 'args.This()', $cpp_dependencies).'->GetWrapped();';
+        $tmpl .= "\n";
+        //Pointer to self obtained, shall we check it?
+        if (self::IS_STRICT()) {
+            //checking if pointer got from ObjectWrap is empty or not. Ideally it should never happen
+            $tmpl .= <<<TPL
+#if NOFX_STRICT
+if(!self) {
+    NanReturnUndefined();
+}
+#endif
+
+TPL;
+        }
+        //self pointer Checks are passed (if any)
+        $return_statement = '';
+        $tmpl .= '    ';
+        $callerObj = '*self[index]';
+        switch ($index_type) {
+            case 'ofRectangle':
+                $tmpl .= self::NOFX_JS_NEW_INSTANCE('ofRectangle', $className, $dependencies);
+                $tmpl .= '    ';
+                $tmpl .= self::NOFX_JS_UNWRAP('ofRectangle', $className, '', $cpp_dependencies).'->SetWrapped('.$callerObj.");\n";
+                $return_statement .= 'JsReturn';
+                break;
+            case 'ofPoint':
+            case 'ofVec3f':
+                $tmpl .= self::NOFX_JS_NEW_INSTANCE('ofVec3f', $className, $dependencies);
+                $tmpl .= '    ';
+                $tmpl .= self::NOFX_JS_UNWRAP('ofVec3f', $className, '', $cpp_dependencies).'->SetWrapped('.$callerObj.");\n";
+                $return_statement .= 'JsReturn';
+                break;
+            case 'bool':
+            case 'int':
+            case 'double':
+            case 'float':
+            case 'size_t':
+                $return_statement .= $callerObj;
+                break;
+            default:
+                throw new Exception('Return type for index getter body can\'t be recognized. Type is: ['.$index_type.']');
+                break;
+        }
+        $tmpl .= self::NOFX_PROCESS_RETURN_TYPE($index_type, $return_statement);
+        return $tmpl;
+    }
+    static function NOFX_INDEX_SETTER_SIGNATURE_H($semicolonAndEnter = false) {
+        return 'static NAN_INDEX_SETTER(IndexSetter)'.($semicolonAndEnter ? ";\n" : '');
+    }
+    static function NOFX_INDEX_SETTER_SIGNATURE_CC($className, $enterAndBracket = false) {
+        return "NAN_INDEX_SETTER(".self::GET_CLASS_WRAPPED_NAME($className)."::IndexSetter)".($enterAndBracket ? "\n{" : '');
+    }
+    static function NOFX_INDEX_SETTER_IMPLEMENTATION_CC($className, $index_type, &$cpp_deps = null) {
+        $tmpl = self::NOFX_INDEX_SETTER_SIGNATURE_CC($className, true);
+        $tmpl .= self::NOFX_INDEX_SETTER_BODY_CC($className, $index_type, $cpp_deps);
+        $tmpl .= "\n}";
+        return $tmpl;
+    }
+    static function NOFX_INDEX_GETTER_IMPLEMENTATION_CC($className, $index_type,&$js_deps = null, &$cpp_deps = null) {
+        $tmpl = self::NOFX_INDEX_GETTER_SIGNATURE_CC($className, true);
+        $tmpl .= self::NOFX_INDEX_GETTER_BODY_CC($className, $index_type,$js_deps, $cpp_deps);
+        $tmpl .= "\n}";
+        return $tmpl;
+    }
+    static function NOFX_INDEX_SETTER_BODY_CC($className, $index_type, &$cpp_dependencies) {
+        $tmpl = 'auto self = '.self::NOFX_JS_UNWRAP($className, $className, 'args.This()', $cpp_dependencies).'->GetWrapped();';
+        $tmpl .= "\n";
+        //Pointer to self obtained, shall we check it?
+        if (self::IS_STRICT()):
+            //checking if pointer got from ObjectWrap is empty or not. Ideally it should never happen
+            $msg = Messages::Format(Messages::NULL_SELF_ACCESS, array(
+                'name' => "indexed setter",
+                'type' => $className
+            ));
+            $tmpl .= <<<TPL
+#if NOFX_STRICT
+if(!self) {
+    NanThrowError("{$msg}");
+}
+#endif
+
+TPL;
+            endif;
+        //self pointer Checks are passed (if any)
+        $callerObj = '    *self[index]';
+        switch ($index_type) {
+            case 'ofRectangle':
+                $tmpl .= $callerObj.'.set(*'.self::NOFX_JS_UNWRAP('ofRectangle', $className, 'args.This()', $cpp_dependencies).'->GetWrapped());'."\n";
+                break;
+            case 'ofPoint':
+            case 'ofVec3f':
+                $tmpl .= $callerObj.'.set(*'.self::NOFX_JS_UNWRAP('ofVec3f', $className, 'args.This()', $cpp_dependencies).'->GetWrapped());'."\n";
+                break;
+            case 'bool':
+                $tmpl .= $callerObj.' = value->BooleanValue();'."\n";
+                break;
+            case 'int':
+                $tmpl .= $callerObj.' = value->Int32Value();'."\n";
+                break;
+            case 'size_t':
+                $tmpl .= $callerObj.' = value->Uint32Value();'."\n";
+                break;
+            case 'double':
+            case 'float':
+            case 'float &':
+                $tmpl .= $callerObj.' = value->NumberValue();'."\n";
+                break;
+            default:
+                throw new Exception('Return type for index setter body can\'t be recognized. Type is: ['.$index_type.']');
+                break;
+        }
+        return $tmpl;
     }
 
     /**
@@ -121,7 +250,11 @@ class Compiler {
     * @param mixed $methods
     * @param mixed $deps
     */
-    static function PRE_DETERMINE_DEPENDENCIES($className, $properties, $methods, $ctors, &$deps, &$cpp_deps) {
+    static function PRE_DETERMINE_DEPENDENCIES($className, $properties, $methods, $ctors, $index_mutators, &$deps, &$cpp_deps) {
+        if (!empty($index_mutators)) {
+            if (isset($index_mutators['getter'])) self::NOFX_INDEX_GETTER_BODY_CC($className, $index_mutators['getter']['type'], $deps, $cpp_deps);
+            if (isset($index_mutators['setter'])) self::NOFX_INDEX_SETTER_BODY_CC($className, $index_mutators['getter']['type'], $cpp_deps);
+        }
         foreach($properties as $prop) {
             self::NOFX_GETTER_BODY_CC($className, $prop['name'], $prop['raw_type'], $deps, $cpp_deps);
             if ($prop['has_setter'])
@@ -850,7 +983,7 @@ TPL;
     * @param mixed $methods
     * @param mixed $props
     */
-    static function NOFX_JS_INITIALIZER_CC($className, $methods, $props = array()) {
+    static function NOFX_JS_INITIALIZER_CC($className, $methods, $props = array(), $index_mutators = array()) {
         $classNameWrapped = self::GET_CLASS_WRAPPED_NAME($className);
         $classUname = strtoupper($className);
         $mutators = '';        
@@ -860,6 +993,15 @@ TPL;
                 $mutators .= ", {$classNameWrapped}::Set".ucfirst($prop['name']).");\n";
             } else if(isset($prop['static']) && $prop['static']) {
                 $mutators .= ", 0, v8::Handle<v8::Value>(), v8::PROHIBITS_OVERWRITING);\n";
+            } else {
+                $mutators .= ");\n";
+            }
+        }
+        
+        if(!empty($index_mutators) && isset($index_mutators['getter'])) {
+            $mutators .= "inst->SetIndexedPropertyHandler(".self::GET_CLASS_WRAPPED_NAME($className)."::IndexGetter";
+            if (isset($index_mutators['setter'])) {
+                $mutators .= ", OfVec3fWrap::IndexSetter);\n";
             } else {
                 $mutators .= ");\n";
             }

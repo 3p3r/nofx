@@ -4,6 +4,7 @@ abstract class CompilerUnit
     private $class_name   = '';
     private $methods      = array();
     private $properties   = array();
+    private $index_mutators   = array();
     private $header_name  = '';
     private $constructors = array();
     private $dependencies = array();
@@ -16,7 +17,10 @@ abstract class CompilerUnit
     protected function setMethods($methods)     {$this->methods = $methods;}
 
     protected function getProperties()          {return $this->properties;}
-    protected function setProperties($props)    {$this->properties = $props;}    
+    protected function setProperties($props)    {$this->properties = $props;}
+
+    protected function getIndexMutators()       {return $this->index_mutators;}
+    protected function setIndexMutators($val)   {$this->index_mutators = $val;}
 
     protected function getHeaderName()          {return $this->header_name;}
     protected function setHeaderName($name)     {$this->header_name = $name;}
@@ -50,8 +54,9 @@ abstract class CompilerUnit
         $this->setProperties($data['properties']);
         $this->setHeaderName($data['filename']);
         $this->setConstructor($data['constructors']);
+        $this->setIndexMutators($data['index_mutators']);
 
-        Compiler::PRE_DETERMINE_DEPENDENCIES($this->getclassname(), $this->getProperties(), $this->getMethods(), $this->getConstructor(), $this->getDependencies(), $this->getCppDependencies());
+        Compiler::PRE_DETERMINE_DEPENDENCIES($this->getclassname(), $this->getProperties(), $this->getMethods(), $this->getConstructor(), $this->getIndexMutators(), $this->getDependencies(), $this->getCppDependencies());
     }
 
     public abstract function main();
@@ -140,6 +145,10 @@ TPL;
             function($name, &$tmpl) {
                 $tmpl .= Compiler::NOFX_SETTER_SIGNATURE_H($name, true);
             }, $setters);
+            
+        if(!empty($this->getIndexMutators()) && isset($this->getIndexMutators()['getter'])) {
+            $getters .= Compiler::NOFX_INDEX_GETTER_SIGNATURE_H(true);
+        }
         
         return $getters;
     }
@@ -154,6 +163,10 @@ TPL;
             function($name, &$tmpl) {
                 $tmpl .= Compiler::NOFX_SETTER_SIGNATURE_H($name, true);
             }, $setters);
+            
+        if(!empty($this->getIndexMutators()) && isset($this->getIndexMutators()['setter'])) {
+            $setters .= Compiler::NOFX_INDEX_SETTER_SIGNATURE_H(true);
+        }
         
         return $setters;
     }
@@ -161,6 +174,11 @@ TPL;
     protected function getClassGettersForWrapperSource() {
         $getters = "";
         $setters = "";
+        
+        if(!empty($this->getIndexMutators()) && isset($this->getIndexMutators()['getter'])) {
+            $getters .= Compiler::NOFX_INDEX_GETTER_IMPLEMENTATION_CC($this->getClassName(), $this->getIndexMutators()['getter']['type']);
+        }
+        
         foreach($this->getProperties() as $prop) {
             $getters .= Compiler::NOFX_GETTER_IMPLEMENTATION_CC($this->getClassName(), $prop['name'],$prop['raw_type'] ,$this->getDependencies());
             if($prop['has_setter']) {
@@ -174,6 +192,11 @@ TPL;
     protected function getClassSettersForWrapperSource() {
         $getters = "";
         $setters = "";
+        
+        if(!empty($this->getIndexMutators()) && isset($this->getIndexMutators()['setter'])) {
+            $getters .= Compiler::NOFX_INDEX_SETTER_IMPLEMENTATION_CC($this->getClassName(), $this->getIndexMutators()['setter']['type']);
+        }
+        
         foreach($this->getProperties() as $prop) {
             $getters .= Compiler::NOFX_GETTER_IMPLEMENTATION_CC($this->getClassName(), $prop['name'],$prop['raw_type'] ,$this->getDependencies());
             if($prop['has_setter']) {
@@ -185,7 +208,7 @@ TPL;
     }
     
     protected function getClassInitializer() {
-        return Compiler::NOFX_JS_INITIALIZER_CC($this->getClassName(), $this->getMethods(), $this->getProperties());
+        return Compiler::NOFX_JS_INITIALIZER_CC($this->getClassName(), $this->getMethods(), $this->getProperties(), $this->getIndexMutators());
     }
     
     protected function getConstructorImplementation() {
