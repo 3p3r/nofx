@@ -9,7 +9,7 @@ $OF_header = OFROOT
 .DIRECTORY_SEPARATOR .'math'
 .DIRECTORY_SEPARATOR .'ofVec3f.h';
 
-class OfRectangleUnit extends CompilerUnit {
+class OfVec3fUnit extends CompilerUnit {
 
     public function __construct() {
         global $OF_header;
@@ -162,6 +162,6 @@ TPL;
     }
 }
 
-$generator = new OfRectangleUnit();
+$generator = new OfVec3fUnit();
 $generator->compile();
 ?>

@@ -580,6 +580,7 @@ TPL;
                 $return_statement .= 'JsReturn';
                 break;
             case 'ofPoint':
+            case 'ofPoint &':
             case 'ofVec3f':
             case 'ofVec3f &':
             case 'static ofVec3f':
@@ -757,6 +758,7 @@ TPL;
             case 'size_t':
             case 'ofRectangle':
             case 'ofPoint':
+            case 'ofPoint &':
             case 'ofVec3f':
             case 'ofVec3f &':
             case 'static ofVec3f':
