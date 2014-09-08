@@ -12,6 +12,7 @@
     define('OFROOT', $OF_home);
     define('NOFXSTRICT', true);
     
-    require_once('ofRectangle.php');
-    require_once('ofVec3f.php');
+    //require_once('ofRectangle.php');
+    //require_once('ofVec3f.php');
+    require_once('ofVec2f.php');
 ?>

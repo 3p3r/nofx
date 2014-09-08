@@ -77,7 +77,8 @@ class Compiler {
                     }
                     continue;
                 }
-                $names = end(explode(' ', rtrim(trim($headerRawFile[$prop['line_number'] - 1]), ";")));
+
+                $names = preg_replace('/[a-zA-Z0-9]+\s/', '', rtrim(trim($headerRawFile[$prop['line_number'] - 1]), ";"));
                 //for properties separated with ","
                 if(strstr($names, ',') != false) {
                     $temp_names = explode(',',$names);
@@ -379,11 +380,13 @@ TPL;
                 break;
             case 'ofPoint':
             case 'ofVec3f':
+            case 'const ofVec3f &':
             case '::ofVec3f':
                 $gaurd = self::NOFX_INTERNAL_TYPE_CHECK($argIndex, 'ofVec3f');
                 break;
             case 'const ofVec2f &':
             case 'ofVec2f':
+            case '::ofVec2f':
                 $gaurd = self::NOFX_INTERNAL_TYPE_CHECK($argIndex, 'ofVec2f');
                 break;
             case 'const ofVec4f &':
@@ -588,6 +591,13 @@ TPL;
                 $tmpl .= self::NOFX_JS_UNWRAP('ofVec3f', $className, '', $cpp_dependencies).'->SetWrapped(*'.$callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass}));\n";
                 $return_statement .= 'JsReturn';
                 break;
+            case 'ofVec2f':
+            case 'ofVec2f &':
+            case 'static ofVec2f':
+                $tmpl .= self::NOFX_JS_NEW_INSTANCE('ofVec2f', $className, $dependencies);
+                $tmpl .= self::NOFX_JS_UNWRAP('ofVec2f', $className, '', $cpp_dependencies).'->SetWrapped(*'.$callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass}));\n";
+                $return_statement .= 'JsReturn';
+                break;
             case 'bool':
             case 'int':
             case 'double':
@@ -757,6 +767,9 @@ TPL;
             case 'float':
             case 'size_t':
             case 'ofRectangle':
+            case 'static ofVec2f':
+            case 'ofVec2f':
+            case 'ofVec2f &':
             case 'ofPoint':
             case 'ofPoint &':
             case 'ofVec3f':
@@ -855,6 +868,7 @@ TPL;
                     $current_arg_str .= "*".self::NOFX_JS_UNWRAP('ofVec3f', $className, "args[{$index}]->ToObject()", $cpp_dependencies)."->GetWrapped(),";
                     break;
                 case 'ofVec2f':
+                case '::ofVec2f':
                     $current_arg_str .= "*".self::NOFX_JS_UNWRAP('ofVec2f', $className, "args[{$index}]->ToObject()", $cpp_dependencies)."->GetWrapped(),";
                     break;
                 case 'ofVec4f':
