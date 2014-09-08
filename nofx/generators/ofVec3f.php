@@ -95,7 +95,7 @@ namespace nofx
         {$this->getClassGettersForWrapperSource()}
         {$this->getClassSettersForWrapperSource()}
         {$this->getClassMethodsForWrapperSource()}
-    } //!namespace {$this->getUClassName()}
+    } //!namespace ClassWrappers
 } //!namespace nofx
 TMP;
         $this->writeSource("nofx_{$this->getLClassName()}.cc", $template);

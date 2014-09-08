@@ -164,6 +164,7 @@ TPL;
             case 'int':
             case 'double':
             case 'float':
+            case 'inline float':
             case 'size_t':
                 $return_statement .= $callerObj;
                 break;
@@ -183,13 +184,13 @@ TPL;
     static function NOFX_INDEX_SETTER_IMPLEMENTATION_CC($className, $index_type, &$cpp_deps = null) {
         $tmpl = self::NOFX_INDEX_SETTER_SIGNATURE_CC($className, true);
         $tmpl .= self::NOFX_INDEX_SETTER_BODY_CC($className, $index_type, $cpp_deps);
-        $tmpl .= "\n}";
+        $tmpl .= "\n}\n";
         return $tmpl;
     }
     static function NOFX_INDEX_GETTER_IMPLEMENTATION_CC($className, $index_type,&$js_deps = null, &$cpp_deps = null) {
         $tmpl = self::NOFX_INDEX_GETTER_SIGNATURE_CC($className, true);
         $tmpl .= self::NOFX_INDEX_GETTER_BODY_CC($className, $index_type,$js_deps, $cpp_deps);
-        $tmpl .= "\n}";
+        $tmpl .= "\n}\n";
         return $tmpl;
     }
     static function NOFX_INDEX_SETTER_BODY_CC($className, $index_type, &$cpp_dependencies) {
@@ -232,6 +233,8 @@ TPL;
                 break;
             case 'double':
             case 'float':
+            case 'inline float':
+            case 'inline float &':
             case 'float &':
                 $tmpl .= $callerObj.' = value->NumberValue();'."\n";
                 break;
@@ -399,6 +402,12 @@ TPL;
             case 'ofRectangle':
                 $gaurd = self::NOFX_INTERNAL_TYPE_CHECK($argIndex, 'ofRectangle');
                 break;
+            case 'ofMatrix4x4':
+                $gaurd = self::NOFX_INTERNAL_TYPE_CHECK($argIndex, 'ofMatrix4x4');
+                break;
+            case '::ofQuaternion':
+                $gaurd = self::NOFX_INTERNAL_TYPE_CHECK($argIndex, 'ofQuaternion');
+                break;
             case 'float':
             case 'double':
                 $gaurd = 'args['.$argIndex.']->IsNumber()';
@@ -527,7 +536,8 @@ TPL;
         $return_type,
         $args,
         &$dependencies,
-        &$cpp_dependencies = null //this is a list of headers needed to be included in C++ land. not actual dependecies
+        &$cpp_dependencies = null, //this is a list of headers needed to be included in C++ land. not actual dependecies
+        $original_def = array()
     ) {
         $tmpl = '';
         if ( !$is_static ) {
@@ -574,42 +584,57 @@ TPL;
         ******************************/
         $return_statement = '';
         $callerObj = $is_static ? $className.'::' : 'self->';
+        $should_derefrence = false;
+        if (!empty($original_def)) {$should_derefrence = $original_def['returns_pointer'];}
         switch ($return_type) {
+            case 'inline void':
             case 'void':
                 $tmpl .= $callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass});\n";
                 break;
             case 'ofRectangle':
                 $tmpl .= self::NOFX_JS_NEW_INSTANCE('ofRectangle', $className, $dependencies);
-                $tmpl .= self::NOFX_JS_UNWRAP('ofRectangle', $className, '', $cpp_dependencies).'->SetWrapped('.($is_static ? '' : '*').$callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass}));\n";
+                $tmpl .= self::NOFX_JS_UNWRAP('ofRectangle', $className, '', $cpp_dependencies).'->SetWrapped('.($should_derefrence ? '*' : '').$callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass}));\n";
                 $return_statement .= 'JsReturn';
                 break;
             case 'ofPoint':
             case 'ofPoint &':
+            case 'inline ofVec3f':
             case 'ofVec3f':
             case 'ofVec3f &':
             case 'static ofVec3f':
                 $tmpl .= self::NOFX_JS_NEW_INSTANCE('ofVec3f', $className, $dependencies);
-                $tmpl .= self::NOFX_JS_UNWRAP('ofVec3f', $className, '', $cpp_dependencies).'->SetWrapped('.($is_static ? '' : '*').$callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass}));\n";
+                $tmpl .= self::NOFX_JS_UNWRAP('ofVec3f', $className, '', $cpp_dependencies).'->SetWrapped('.($should_derefrence ? '*' : '').$callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass}));\n";
                 $return_statement .= 'JsReturn';
                 break;
             case 'ofVec2f':
             case 'ofVec2f &':
             case 'static ofVec2f':
                 $tmpl .= self::NOFX_JS_NEW_INSTANCE('ofVec2f', $className, $dependencies);
-                $tmpl .= self::NOFX_JS_UNWRAP('ofVec2f', $className, '', $cpp_dependencies).'->SetWrapped('.($is_static ? '' : '*').$callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass}));\n";
+                $tmpl .= self::NOFX_JS_UNWRAP('ofVec2f', $className, '', $cpp_dependencies).'->SetWrapped('.($should_derefrence ? '*' : '').$callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass}));\n";
                 $return_statement .= 'JsReturn';
                 break;
             case 'ofVec4f':
+            case 'inline ofVec4f':
             case 'ofVec4f &':
             case 'static ofVec4f':
                 $tmpl .= self::NOFX_JS_NEW_INSTANCE('ofVec4f', $className, $dependencies);
-                $tmpl .= self::NOFX_JS_UNWRAP('ofVec4f', $className, '', $cpp_dependencies).'->SetWrapped('.($is_static ? '' : '*').$callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass}));\n";
+                $tmpl .= self::NOFX_JS_UNWRAP('ofVec4f', $className, '', $cpp_dependencies).'->SetWrapped('.($should_derefrence ? '*' : '').$callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass}));\n";
                 $return_statement .= 'JsReturn';
                 break;
+            case 'inline const ofQuaternion':
+            case 'inline ofQuaternion':
+            case 'ofQuaternion':
+                $tmpl .= self::NOFX_JS_NEW_INSTANCE('ofQuaternion', $className, $dependencies);
+                $tmpl .= self::NOFX_JS_UNWRAP('ofQuaternion', $className, '', $cpp_dependencies).'->SetWrapped('.($should_derefrence ? '*' : '').$callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass}));\n";
+                $return_statement .= 'JsReturn';
+                break;
+            case 'inline bool':
             case 'bool':
             case 'int':
             case 'double':
             case 'float':
+            case 'inline float &':
+            case 'inline float':
             case 'size_t':
                 $return_statement .= $callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass})";
                 break;
@@ -677,6 +702,12 @@ TPL;
                 $tmpl .= self::NOFX_JS_UNWRAP('ofVec3f', $className, '', $cpp_dependencies).'->SetWrapped('.$callerObj.$propName.");\n";
                 $return_statement .= 'JsReturn';
                 break;
+            case 'ofVec4f':
+                $tmpl .= self::NOFX_JS_NEW_INSTANCE('ofVec4f', $className, $dependencies);
+                $tmpl .= '    ';
+                $tmpl .= self::NOFX_JS_UNWRAP('ofVec4f', $className, '', $cpp_dependencies).'->SetWrapped('.$callerObj.$propName.");\n";
+                $return_statement .= 'JsReturn';
+                break;
             case 'bool':
             case 'int':
             case 'double':
@@ -733,6 +764,9 @@ TPL;
             case 'ofVec3f':
                 $tmpl .= $callerObj.$propName.'.set(*'.self::NOFX_JS_UNWRAP('ofVec3f', $className, 'args.This()', $cpp_dependencies).'->GetWrapped());'."\n";
                 break;
+            case 'ofVec4f':
+                $tmpl .= $callerObj.$propName.'.set(*'.self::NOFX_JS_UNWRAP('ofVec4f', $className, 'args.This()', $cpp_dependencies).'->GetWrapped());'."\n";
+                break;
             case 'bool':
                 $tmpl .= $callerObj.$propName.' = value->BooleanValue();'."\n";
                 break;
@@ -747,7 +781,7 @@ TPL;
                 $tmpl .= $callerObj.$propName.' = value->NumberValue();'."\n";
                 break;
             default:
-                throw new Exception('Return type for method body can\'t be recognized. Type is: ['.$return_type.']');
+                throw new Exception('Return type for setter body can\'t be recognized. Type is: ['.$return_type.']');
                 break;
         }
         return $tmpl;
@@ -763,6 +797,7 @@ TPL;
         $return = '';
         switch ($return_type)
         {
+            case 'inline void':
             case 'void':
                 $return .= 'NanReturnUndefined();'."\n";
                 break;
@@ -770,22 +805,30 @@ TPL;
                 $return .= 'NanReturnValue(*NanUtf8String('.$return_statement.'));'."\n";
                 break;
             case 'bool':
+            case 'inline bool':
             case 'int':
             case 'double':
             case 'float':
+            case 'inline float &':
+            case 'inline float':
             case 'size_t':
             case 'ofRectangle':
             case 'static ofVec2f':
             case 'ofVec2f':
             case 'ofVec2f &':
             case 'static ofVec4f':
+            case 'inline ofVec4f':
             case 'ofVec4f':
             case 'ofVec4f &':
             case 'ofPoint':
             case 'ofPoint &':
+            case 'inline ofVec3f':
             case 'ofVec3f':
             case 'ofVec3f &':
             case 'static ofVec3f':
+            case 'ofQuaternion':
+            case 'inline ofQuaternion':
+            case 'inline const ofQuaternion':
             case 'float *':
             case 'const float *':
                 $return .= 'NanReturnValue('.$return_statement.');'."\n";
@@ -886,9 +929,15 @@ TPL;
                 case '::ofVec4f':
                     $current_arg_str .= "*".self::NOFX_JS_UNWRAP('ofVec4f', $className, "args[{$index}]->ToObject()", $cpp_dependencies)."->GetWrapped(),";
                     break;
+                case 'ofMatrix4x4':
+                    $current_arg_str .= "*".self::NOFX_JS_UNWRAP('ofMatrix4x4', $className, "args[{$index}]->ToObject()", $cpp_dependencies)."->GetWrapped(),";
+                    break;
                 case 'ofRectangle':
                 case '::ofRectangle': //reference
                     $current_arg_str .= "*".self::NOFX_JS_UNWRAP('ofRectangle', $className, "args[{$index}]->ToObject()", $cpp_dependencies)."->GetWrapped(),";
+                    break;
+                case '::ofQuaternion': //reference
+                    $current_arg_str .= "*".self::NOFX_JS_UNWRAP('ofQuaternion', $className, "args[{$index}]->ToObject()", $cpp_dependencies)."->GetWrapped(),";
                     break;
                 case 'ofScaleMode':
                     $current_arg_str .= "static_cast<ofScaleMode>(args[{$index}]->Int32Value()),";
@@ -968,6 +1017,7 @@ TPL;
             $mangled_name = Compiler::GET_JS_NAME($method_name);
             $tmpl .= Compiler::NOFX_METHOD_SIGNATURE_CC($main_class, $mangled_name, true);
         }
+        $dummy = array();
         $tmpl .= Compiler::NOFX_METHOD_BODY_CC(
             $main_class,
             $method_name,
@@ -975,7 +1025,7 @@ TPL;
             isset($def['const']) ? $def['const'] : false,
             $def['rtnType'],
             $def['parameters'],
-            $dependencies);
+            $dependencies,$dummy,$def);
         $tmpl .= "} //!{$mangled_name} \n\n";
         return $tmpl;
     }

@@ -7,9 +7,9 @@ $OF_header = OFROOT
 .DIRECTORY_SEPARATOR .'libs'
 .DIRECTORY_SEPARATOR .'openFrameworks'
 .DIRECTORY_SEPARATOR .'math'
-.DIRECTORY_SEPARATOR .'ofVec2f.h';
+.DIRECTORY_SEPARATOR .'ofQuaternion.h';
 
-class OfVec2fUnit extends CompilerUnit {
+class OfQuaternionUnit extends CompilerUnit {
 
     public function __construct() {
         global $OF_header;
@@ -162,6 +162,6 @@ TPL;
     }
 }
 
-$generator = new OfVec2fUnit();
+$generator = new OfQuaternionUnit();
 $generator->compile();
 ?>

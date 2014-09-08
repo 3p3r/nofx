@@ -13,7 +13,8 @@
     define('NOFXSTRICT', true);
     
     //require_once('ofRectangle.php');
-    require_once('ofVec4f.php');
+    //require_once('ofVec4f.php');
     //require_once('ofVec2f.php');
     //require_once('ofVec2f.php');
+    //require_once('ofQuaternion.php');
 ?>
