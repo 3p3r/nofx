@@ -37,7 +37,7 @@ namespace nofx
     } //!Initialize{$this->getUClassName()}
 } //!namespace nofx
 
-NODE_MODULE_CONTEXT_AWARE(nofx_{$this->getLClassName()}, nofx::ClassWrappers::Initialize{$this->getUClassName()})
+NODE_MODULE_CONTEXT_AWARE(nofx_{$this->getLClassName()}, nofx::Initialize{$this->getUClassName()})
 TMP;
         $this->writeSource("nofx_{$this->getLClassName()}_main.cc", $template);
     }
