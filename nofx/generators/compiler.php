@@ -121,15 +121,18 @@ class Compiler {
     * @param mixed $methods
     * @param mixed $deps
     */
-    static function PRE_DETERMINE_DEPENDENCIES($className, $properties, $methods, &$deps) {
+    static function PRE_DETERMINE_DEPENDENCIES($className, $properties, $methods, $ctors, &$deps, &$cpp_deps) {
         foreach($properties as $prop) {
-            self::NOFX_GETTER_BODY_CC($className, $prop['name'], $prop['raw_type'], $deps);
+            self::NOFX_GETTER_BODY_CC($className, $prop['name'], $prop['raw_type'], $deps, $cpp_deps);
+            if ($prop['has_setter'])
+                self::NOFX_SETTER_BODY_CC($className, $prop['name'], $prop['raw_type'], $deps, $cpp_deps);
         }
         foreach($methods as $method_name => $method_defs) {
             foreach($method_defs as $method_def) {
-                self::NOFX_METHOD_BODY_CC($className, '', false, false, $method_def['rtnType'], $method_def['parameters'], $deps);
+                self::NOFX_METHOD_BODY_CC($className, '', false, false, $method_def['rtnType'], $method_def['parameters'], $deps, $cpp_deps);
             }
         }
+        self::NOFX_JS_CTOR_IMPLEMENTATION_CC($className, $ctors, $cpp_deps);
     }
 
     static function PROPERTIES_ITERATOR($props, $cb_getter, &$getter_template, $cb_setter = null, &$setter_template = null)
@@ -352,15 +355,18 @@ TPL;
     * @param string $className
     * @param string $what
     */
-    static function NOFX_JS_UNWRAP($desiredType, $className, $what = '') {
+    static function NOFX_JS_UNWRAP($desiredType, $className, $what = '', &$CPP_dependencies = null) {
         if (strlen($what) != 0) {
+            if ($desiredType != $className) {$CPP_dependencies[] = $desiredType; $CPP_dependencies = array_unique($CPP_dependencies);}
             return 'nofx::ObjectWrap::Unwrap<nofx::ClassWrappers::'.self::GET_CLASS_WRAPPED_NAME($desiredType).'>('.$what.')';
         }
         if ($desiredType == $className) {
             return 'nofx::ObjectWrap::Unwrap<nofx::ClassWrappers::'.self::GET_CLASS_WRAPPED_NAME($desiredType).'>(JsReturn)';
         } else if(strstr($desiredType, 'Ptr') != false) {
+            $CPP_dependencies[] = 'nofx_pointer'; $CPP_dependencies = array_unique($CPP_dependencies);
             return 'ObjectWrap::Unwrap<nofx::Pointer::RawPointerWrap<'.str_replace('_', ' ', strtolower(CompilerUnit::camelCasedToUnderScored(str_replace('Ptr', '', $desiredType)))).'>>(JsReturn->ToObject())';
         } else {
+            $CPP_dependencies[] = $desiredType; $CPP_dependencies = array_unique($CPP_dependencies);
             return 'nofx::ObjectWrap::Unwrap<nofx::ClassWrappers::'.self::GET_CLASS_WRAPPED_NAME($desiredType).'>(JsReturn->ToObject())';
         }
     }
@@ -383,7 +389,8 @@ TPL;
         $is_const,
         $return_type,
         $args,
-        &$dependencies
+        &$dependencies,
+        &$cpp_dependencies = null //this is a list of headers needed to be included in C++ land. not actual dependecies
     ) {
         $tmpl = '';
         if ( !$is_static ) {
@@ -392,7 +399,7 @@ TPL;
             ******************************/
             //Method is not static. We need a pointer to self.
             if ($is_const) $tmpl .= 'const ';
-            $tmpl .= 'auto self = '.self::NOFX_JS_UNWRAP('ofRectangle', $className, 'args.This()').'->GetWrapped();';
+            $tmpl .= 'auto self = '.self::NOFX_JS_UNWRAP($className, $className, 'args.This()', $cpp_dependencies).'->GetWrapped();';
             $tmpl .= "\n";
             //Pointer to self obtained, shall we check it?
             if (self::IS_STRICT()) {
@@ -416,7 +423,7 @@ TPL;
         /******************************
         * Method body, arguments
         ******************************/
-        $processed_args = self::NOFX_PROCESS_CPP_ARGS($args, $methodName, $className);
+        $processed_args = self::NOFX_PROCESS_CPP_ARGS($args, $methodName, $className, $cpp_dependencies);
         $args_to_pass = $processed_args['args_to_pass'];
         $args_guards = $processed_args['args_guards'];
 
@@ -436,7 +443,7 @@ TPL;
                 break;
             case 'ofRectangle':
                 $tmpl .= self::NOFX_JS_NEW_INSTANCE('ofRectangle', $className, $dependencies);
-                $tmpl .= self::NOFX_JS_UNWRAP('ofRectangle', $className).'->SetWrapped(*'.$callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass}));\n";
+                $tmpl .= self::NOFX_JS_UNWRAP('ofRectangle', $className, '', $cpp_dependencies).'->SetWrapped(*'.$callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass}));\n";
                 $return_statement .= 'JsReturn';
                 break;
             case 'ofPoint':
@@ -444,7 +451,7 @@ TPL;
             case 'ofVec3f &':
             case 'static ofVec3f':
                 $tmpl .= self::NOFX_JS_NEW_INSTANCE('ofVec3f', $className, $dependencies);
-                $tmpl .= self::NOFX_JS_UNWRAP('ofVec3f', $className).'->SetWrapped(*'.$callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass}));\n";
+                $tmpl .= self::NOFX_JS_UNWRAP('ofVec3f', $className, '', $cpp_dependencies).'->SetWrapped(*'.$callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass}));\n";
                 $return_statement .= 'JsReturn';
                 break;
             case 'bool':
@@ -457,7 +464,7 @@ TPL;
             case 'const float *':
             case 'float *':
                 $tmpl .= self::NOFX_JS_NEW_INSTANCE('floatPtr', $className, $dependencies);
-                $tmpl .= self::NOFX_JS_UNWRAP('floatPtr', $className).'->SetWrapped('.$callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass}));\n";
+                $tmpl .= self::NOFX_JS_UNWRAP('floatPtr', $className, '', $cpp_dependencies).'->SetWrapped('.$callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass}));\n";
                 $return_statement .= 'JsReturn';
                 break;
             default:
@@ -483,9 +490,10 @@ TPL;
         $className,
         $propName,
         $return_type,
-        &$dependencies
+        &$dependencies,
+        &$cpp_dependencies = null //this is a list of headers needed to be included in C++ land. not actual dependecies
     ) {
-        $tmpl = 'const auto self = '.self::NOFX_JS_UNWRAP($className, $className, 'args.This()').'->GetWrapped();';
+        $tmpl = 'const auto self = '.self::NOFX_JS_UNWRAP($className, $className, 'args.This()', $cpp_dependencies).'->GetWrapped();';
         $tmpl .= "\n";
         //Pointer to self obtained, shall we check it?
         if (self::IS_STRICT()) {
@@ -507,14 +515,14 @@ TPL;
             case 'ofRectangle':
                 $tmpl .= self::NOFX_JS_NEW_INSTANCE('ofRectangle', $className, $dependencies);
                 $tmpl .= '    ';
-                $tmpl .= self::NOFX_JS_UNWRAP('ofRectangle', $className).'->SetWrapped('.$callerObj.$propName.");\n";
+                $tmpl .= self::NOFX_JS_UNWRAP('ofRectangle', $className, '', $cpp_dependencies).'->SetWrapped('.$callerObj.$propName.");\n";
                 $return_statement .= 'JsReturn';
                 break;
             case 'ofPoint':
             case 'ofVec3f':
                 $tmpl .= self::NOFX_JS_NEW_INSTANCE('ofVec3f', $className, $dependencies);
                 $tmpl .= '    ';
-                $tmpl .= self::NOFX_JS_UNWRAP('ofVec3f', $className).'->SetWrapped('.$callerObj.$propName.");\n";
+                $tmpl .= self::NOFX_JS_UNWRAP('ofVec3f', $className, '', $cpp_dependencies).'->SetWrapped('.$callerObj.$propName.");\n";
                 $return_statement .= 'JsReturn';
                 break;
             case 'bool':
@@ -542,9 +550,10 @@ TPL;
     static function NOFX_SETTER_BODY_CC(
         $className,
         $propName,
-        $return_type
+        $return_type,
+        &$cpp_dependencies = null //this is a list of headers needed to be included in C++ land. not actual dependecies
     ) {
-        $tmpl = 'auto self = '.self::NOFX_JS_UNWRAP($className, $className, 'args.This()').'->GetWrapped();';
+        $tmpl = 'auto self = '.self::NOFX_JS_UNWRAP($className, $className, 'args.This()', $cpp_dependencies).'->GetWrapped();';
         $tmpl .= "\n";
         //Pointer to self obtained, shall we check it?
         if (self::IS_STRICT()):
@@ -566,11 +575,11 @@ TPL;
         $callerObj = '    self->';
         switch ($return_type) {
             case 'ofRectangle':
-                $tmpl .= $callerObj.$propName.'.set(*'.self::NOFX_JS_UNWRAP('ofRectangle', $className, 'args.This()').'->GetWrapped());'."\n";
+                $tmpl .= $callerObj.$propName.'.set(*'.self::NOFX_JS_UNWRAP('ofRectangle', $className, 'args.This()', $cpp_dependencies).'->GetWrapped());'."\n";
                 break;
             case 'ofPoint':
             case 'ofVec3f':
-                $tmpl .= $callerObj.$propName.'.set(*'.self::NOFX_JS_UNWRAP('ofVec3f', $className, 'args.This()').'->GetWrapped());'."\n";
+                $tmpl .= $callerObj.$propName.'.set(*'.self::NOFX_JS_UNWRAP('ofVec3f', $className, 'args.This()', $cpp_dependencies).'->GetWrapped());'."\n";
                 break;
             case 'bool':
                 $tmpl .= $callerObj.$propName.' = value->BooleanValue();'."\n";
@@ -651,7 +660,7 @@ TPL;
     static function NOFX_GETTER_IMPLEMENTATION_CC($className, $name, $returnType, &$deps) {
         $tmpl = '';
         $tmpl .= self::NOFX_GETTER_SIGNATURE_CC($className, $name, true);
-        $tmpl .= self::NOFX_GETTER_BODY_CC($className, $name, $returnType, $deps, '    ');
+        $tmpl .= self::NOFX_GETTER_BODY_CC($className, $name, $returnType, $deps);
         $tmpl .= "} //!Get".self::GET_JS_NAME($name)."\n";
         return $tmpl;
     }
@@ -683,7 +692,7 @@ TPL;
     * @param mixed $methodName
     * @param mixed $className
     */
-    static function NOFX_PROCESS_CPP_ARGS($args, $methodName, $className) {
+    static function NOFX_PROCESS_CPP_ARGS($args, $methodName, $className, &$cpp_dependencies /*this is a list of headers needed to be included in C++ land. not actual dependecies*/) {
         $args_to_pass = '';
         $args_guards = '';
         foreach($args as $index => $arg) {
@@ -708,17 +717,17 @@ TPL;
                 case 'ofPoint':
                 case 'ofVec3f':
                 case '::ofVec3f':
-                    $current_arg_str .= "*".self::NOFX_JS_UNWRAP('ofVec3f', $className, "args[{$index}]->ToObject()")."->GetWrapped(),";
+                    $current_arg_str .= "*".self::NOFX_JS_UNWRAP('ofVec3f', $className, "args[{$index}]->ToObject()", $cpp_dependencies)."->GetWrapped(),";
                     break;
                 case 'ofVec2f':
-                    $current_arg_str .= "*".self::NOFX_JS_UNWRAP('ofVec2f', $className, "args[{$index}]->ToObject()")."->GetWrapped(),";
+                    $current_arg_str .= "*".self::NOFX_JS_UNWRAP('ofVec2f', $className, "args[{$index}]->ToObject()", $cpp_dependencies)."->GetWrapped(),";
                     break;
                 case 'ofVec4f':
-                    $current_arg_str .= "*".self::NOFX_JS_UNWRAP('ofVec4f', $className, "args[{$index}]->ToObject()")."->GetWrapped(),";
+                    $current_arg_str .= "*".self::NOFX_JS_UNWRAP('ofVec4f', $className, "args[{$index}]->ToObject()", $cpp_dependencies)."->GetWrapped(),";
                     break;
                 case 'ofRectangle':
                 case '::ofRectangle': //reference
-                    $current_arg_str .= "*".self::NOFX_JS_UNWRAP('ofRectangle', $className, "args[{$index}]->ToObject()")."->GetWrapped(),";
+                    $current_arg_str .= "*".self::NOFX_JS_UNWRAP('ofRectangle', $className, "args[{$index}]->ToObject()", $cpp_dependencies)."->GetWrapped(),";
                     break;
                 case 'ofScaleMode':
                     $current_arg_str .= "static_cast<ofScaleMode>(args[{$index}]->Int32Value()),";
@@ -896,7 +905,7 @@ TPL;
     * @param mixed $className
     * @param mixed $ctor_defs
     */
-    static function NOFX_JS_CTOR_IMPLEMENTATION_CC($className, $ctor_defs) {
+    static function NOFX_JS_CTOR_IMPLEMENTATION_CC($className, $ctor_defs, &$cpp_dependencies = null) {
         $classWrappedName = self::GET_CLASS_WRAPPED_NAME($className);
         $ctor_defs_temp = $ctor_defs;
         $ctor_defs = [];
@@ -922,14 +931,14 @@ TPL;
                     }
                     $conditionLoop = rtrim($conditionLoop, " &&");
                     $conditionLoop .= ') {'."\n";
-                    $processed_args = self::NOFX_PROCESS_CPP_ARGS($ctor_overload['parameters'], $className.' constructor', $className);
+                    $processed_args = self::NOFX_PROCESS_CPP_ARGS($ctor_overload['parameters'], $className.' constructor', $className, $cpp_dependencies);
                     $args_to_pass = $processed_args['args_to_pass'];
                     $conditionLoop .= "                ";
                     $conditionLoop .= "obj = new {$classWrappedName}(new {$className}({$args_to_pass}));\n";
                     $conditionLoop .= "            ";
                     $conditionLoop .= "}\n";
                 } else {
-                    $processed_args = self::NOFX_PROCESS_CPP_ARGS($ctor_overload['parameters'], $className.' constructor', $className);
+                    $processed_args = self::NOFX_PROCESS_CPP_ARGS($ctor_overload['parameters'], $className.' constructor', $className, $cpp_dependencies);
                     $args_to_pass = $processed_args['args_to_pass'];
                     $args_guards = $processed_args['args_guards'];
                     if (self::IS_STRICT() && strlen($args_guards) != 0):

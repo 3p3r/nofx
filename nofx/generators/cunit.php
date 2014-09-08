@@ -7,6 +7,7 @@ abstract class CompilerUnit
     private $header_name  = '';
     private $constructors = array();
     private $dependencies = array();
+    private $cpp_dependencies = array();
 
     protected function getClassName()           {return $this->class_name;}
     protected function setClassName($name)      {$this->class_name = $name;}
@@ -25,6 +26,9 @@ abstract class CompilerUnit
 
     protected function &getDependencies()       {return $this->dependencies;}
     protected function setDependencies($deps)   {$this->dependencies = $deps;}
+
+    protected function &getCppDependencies()    {return $this->cpp_dependencies;}
+    protected function setCppDependencies($deps){$this->cpp_dependencies = $deps;}
 
     protected function getLClassName()          {return lcfirst($this->getClassName());}
     protected function getUClassName()          {return ucfirst($this->getClassName());}
@@ -47,7 +51,7 @@ abstract class CompilerUnit
         $this->setHeaderName($data['filename']);
         $this->setConstructor($data['constructors']);
 
-        Compiler::PRE_DETERMINE_DEPENDENCIES($this->getclassname(), $this->getProperties(), $this->getMethods(), $this->getDependencies());
+        Compiler::PRE_DETERMINE_DEPENDENCIES($this->getclassname(), $this->getProperties(), $this->getMethods(), $this->getConstructor(), $this->getDependencies(), $this->getCppDependencies());
     }
 
     public abstract function main();
@@ -93,9 +97,9 @@ TPL;
     protected function getNofxDependencyHeaderFiles() {
         $depHeader = "";
         $nofx_ptr_included = false;
-        if(count($this->getDependencies()) > 0) {
-            foreach($this->getDependencies() as $dep) {
-                if (strstr($dep, 'Ptr') != false && !$nofx_ptr_included) {
+        if(count($this->getCppDependencies()) > 0) {
+            foreach($this->getCppDependencies() as $dep) {
+                if (strstr($dep, 'pointer') != false && !$nofx_ptr_included) {
                     $depHeader .= '#include "..\nofx_pointer\nofx_pointer.h"'."\n";
                     $nofx_ptr_included = true;
                 } else {
