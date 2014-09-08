@@ -402,11 +402,18 @@ TPL;
             case 'ofRectangle':
                 $gaurd = self::NOFX_INTERNAL_TYPE_CHECK($argIndex, 'ofRectangle');
                 break;
+            case '::ofMatrix4x4':
             case 'ofMatrix4x4':
+            case 'const ofMatrix4x4 &':
                 $gaurd = self::NOFX_INTERNAL_TYPE_CHECK($argIndex, 'ofMatrix4x4');
                 break;
+            case 'const ofQuaternion &':
+            case 'ofQuaternion':
             case '::ofQuaternion':
                 $gaurd = self::NOFX_INTERNAL_TYPE_CHECK($argIndex, 'ofQuaternion');
+                break;
+            case 'float const * const':
+                $gaurd = self::NOFX_INTERNAL_TYPE_CHECK($argIndex, 'floatPtr');
                 break;
             case 'float':
             case 'double':
@@ -598,6 +605,7 @@ TPL;
                 break;
             case 'ofPoint':
             case 'ofPoint &':
+            case 'inline static ofVec3f':
             case 'inline ofVec3f':
             case 'ofVec3f':
             case 'ofVec3f &':
@@ -626,6 +634,14 @@ TPL;
             case 'ofQuaternion':
                 $tmpl .= self::NOFX_JS_NEW_INSTANCE('ofQuaternion', $className, $dependencies);
                 $tmpl .= self::NOFX_JS_UNWRAP('ofQuaternion', $className, '', $cpp_dependencies).'->SetWrapped('.($should_derefrence ? '*' : '').$callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass}));\n";
+                $return_statement .= 'JsReturn';
+                break;
+            case 'inline const ofMatrix4x4':
+            case 'inline static ofMatrix4x4':
+            case 'inline ofMatrix4x4':
+            case 'ofMatrix4x4':
+                $tmpl .= self::NOFX_JS_NEW_INSTANCE('ofMatrix4x4', $className, $dependencies);
+                $tmpl .= self::NOFX_JS_UNWRAP('ofMatrix4x4', $className, '', $cpp_dependencies).'->SetWrapped('.($should_derefrence ? '*' : '').$callerObj.self::GET_CPP_NAME($methodName)."({$args_to_pass}));\n";
                 $return_statement .= 'JsReturn';
                 break;
             case 'inline bool':
@@ -816,6 +832,10 @@ TPL;
             case 'static ofVec2f':
             case 'ofVec2f':
             case 'ofVec2f &':
+            case 'inline static ofMatrix4x4':
+            case 'static ofMatrix4x4':
+            case 'ofMatrix4x4':
+            case 'ofMatrix4x4 &':
             case 'static ofVec4f':
             case 'inline ofVec4f':
             case 'ofVec4f':
@@ -823,6 +843,7 @@ TPL;
             case 'ofPoint':
             case 'ofPoint &':
             case 'inline ofVec3f':
+            case 'inline static ofVec3f':
             case 'ofVec3f':
             case 'ofVec3f &':
             case 'static ofVec3f':
@@ -897,6 +918,7 @@ TPL;
     static function NOFX_PROCESS_CPP_ARGS($args, $methodName, $className, &$cpp_dependencies /*this is a list of headers needed to be included in C++ land. not actual dependecies*/) {
         $args_to_pass = '';
         $args_guards = '';
+        if (count($args) == 1 && $args[0]['raw_type'] == 'void') {return array('args_to_pass' => $args_to_pass, 'args_guards' => $args_guards);}
         foreach($args as $index => $arg) {
             if($methodName != null) {
                 $args_guards .= self::GENERATE_CPP_JSARG_TYPE_CHECK($arg['raw_type'], $index, $methodName);
@@ -930,6 +952,7 @@ TPL;
                     $current_arg_str .= "*".self::NOFX_JS_UNWRAP('ofVec4f', $className, "args[{$index}]->ToObject()", $cpp_dependencies)."->GetWrapped(),";
                     break;
                 case 'ofMatrix4x4':
+                case '::ofMatrix4x4':
                     $current_arg_str .= "*".self::NOFX_JS_UNWRAP('ofMatrix4x4', $className, "args[{$index}]->ToObject()", $cpp_dependencies)."->GetWrapped(),";
                     break;
                 case 'ofRectangle':
@@ -937,6 +960,7 @@ TPL;
                     $current_arg_str .= "*".self::NOFX_JS_UNWRAP('ofRectangle', $className, "args[{$index}]->ToObject()", $cpp_dependencies)."->GetWrapped(),";
                     break;
                 case '::ofQuaternion': //reference
+                case 'ofQuaternion':
                     $current_arg_str .= "*".self::NOFX_JS_UNWRAP('ofQuaternion', $className, "args[{$index}]->ToObject()", $cpp_dependencies)."->GetWrapped(),";
                     break;
                 case 'ofScaleMode':

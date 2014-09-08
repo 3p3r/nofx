@@ -17,4 +17,5 @@
     //require_once('ofVec2f.php');
     //require_once('ofVec2f.php');
     //require_once('ofQuaternion.php');
+    require_once('ofMatrix4x4.php');
 ?>
