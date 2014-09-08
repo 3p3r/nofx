@@ -39,7 +39,7 @@ namespace nofx
 
 NODE_MODULE_CONTEXT_AWARE(nofx_{$this->getLClassName()}, nofx::ClassWrappers::Initialize{$this->getUClassName()})
 TMP;
-        $this->writeSource("main.cc", $template);
+        $this->writeSource("nofx_{$this->getLClassName()}_main.cc", $template);
     }
     public function H() {
         $guard = self::camelCasedToUnderScored($this->getClassName());
