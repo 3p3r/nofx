@@ -110,6 +110,15 @@ class Compiler {
                 }
             }
         }
+        
+        //fixing array_size here
+        foreach($props_clean as &$prop) {
+            if (isset($prop) && $prop['array']) {
+                if (preg_match_all('/\[/', $prop['name']) > 1) throw new Exception("This is a multidimensional array");
+                $prop['array_size'] = intval(end(explode('[',rtrim($prop['name'], ']'))));
+                $prop['name'] = explode('[',rtrim($prop['name'], ']'))[0];
+            }
+        }
 
         return array(
             'filename' => $parsedFileName,
