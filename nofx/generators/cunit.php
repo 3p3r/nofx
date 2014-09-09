@@ -174,9 +174,8 @@ TPL;
     protected function getClassGettersForWrapperSource() {
         $getters = "";
         $setters = "";
-        
         if(!empty($this->getIndexMutators()) && isset($this->getIndexMutators()['getter'])) {
-            $getters .= Compiler::NOFX_INDEX_GETTER_IMPLEMENTATION_CC($this->getClassName(), $this->getIndexMutators()['getter']['type']);
+            $getters .= Compiler::NOFX_INDEX_GETTER_IMPLEMENTATION_CC($this->getClassName(), $this->getIndexMutators()['getter']['type'], $this->getIndexMutators()['count']);
         }
         
         foreach($this->getProperties() as $prop) {
@@ -184,6 +183,10 @@ TPL;
             if($prop['has_setter']) {
                 $setters .= Compiler::NOFX_SETTER_IMPLEMENTATION_CC($this->getClassName(), $prop['name'],$prop['raw_type']);
             }
+        }
+        
+        if($this->getClassName() == "ofMatrix4x4") {
+            $getters = str_replace("*self", "self->_mat", $getters);
         }
         
         return $getters;
@@ -194,7 +197,7 @@ TPL;
         $setters = "";
         
         if(!empty($this->getIndexMutators()) && isset($this->getIndexMutators()['setter'])) {
-            $getters .= Compiler::NOFX_INDEX_SETTER_IMPLEMENTATION_CC($this->getClassName(), $this->getIndexMutators()['setter']['type']);
+            $setters .= Compiler::NOFX_INDEX_SETTER_IMPLEMENTATION_CC($this->getClassName(), $this->getIndexMutators()['setter']['type']);
         }
         
         foreach($this->getProperties() as $prop) {
@@ -202,6 +205,10 @@ TPL;
             if($prop['has_setter']) {
                 $setters .= Compiler::NOFX_SETTER_IMPLEMENTATION_CC($this->getClassName(), $prop['name'],$prop['raw_type']);
             }
+        }
+        
+        if($this->getClassName() == "ofMatrix4x4") {
+            $setters = str_replace("*self", "self->_mat", $setters);
         }
         
         return $setters;

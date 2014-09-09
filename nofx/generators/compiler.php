@@ -36,6 +36,14 @@ class Compiler {
                 } else if ($method['operator'] != false) {
                     //this is an operator overload
                     if ($method['operator'] == "[]") {
+                        switch($className) {
+                            case 'ofMatrix4x4':
+                            $index_mutators['count'] = 4;
+                            break;
+                            default:
+                            throw new Exception("Indexed operator has unknown count.");
+                            break;
+                        }
                         $index_mutators['getter'] = array('type' => $method['rtnType']);
                         if ($method['returns_reference']) {
                             $index_mutators['setter'] = array('type' => $method['rtnType']);
@@ -111,15 +119,29 @@ class Compiler {
             }
         }
         
+        $array_members_count = 0;
+        
         //fixing array_size here
         foreach($props_clean as &$prop) {
-            if (isset($prop) && $prop['array']) {
+            if (isset($prop['array']) && $prop['array']) {
+                $array_members_count++;
                 if (preg_match_all('/\[/', $prop['name']) > 1) throw new Exception("This is a multidimensional array");
                 $prop['array_size'] = intval(end(explode('[',rtrim($prop['name'], ']'))));
                 $prop['name'] = explode('[',rtrim($prop['name'], ']'))[0];
             }
         }
-
+        
+        if ($className == 'ofMatrix4x4') {
+            foreach($props_clean as $index => $prop) {
+                if (isset($prop['array']) && $prop['array']) {
+                    $index_mutators['getter'] = array('type' => $prop['raw_type']);
+                    $index_mutators['setter'] = array('type' => $prop['raw_type']);
+                    $index_mutators['count'] = $prop['array_size'];
+                    unset($props_clean[$index]);
+                }
+            }
+        } else if ($array_members_count > 0) throw new Exception("more than one array member, OMG WTF!");
+        
         return array(
             'filename' => $parsedFileName,
             'methods' => $methods_defs,
@@ -131,7 +153,9 @@ class Compiler {
     }
     
     static function NOFX_INDEX_GETTER_SIGNATURE_H($semicolonAndEnter = false) {
-        return 'static NAN_INDEX_GETTER(IndexGetter)'.($semicolonAndEnter ? ";\n" : '');
+        $tmpl = "static NAN_INDEX_ENUMERATOR(IndexEnum);\nstatic NAN_INDEX_QUERY(IndexQuery);\n";
+        $tmpl .= 'static NAN_INDEX_SETTER(IndexGetter)'.($semicolonAndEnter ? ";\n" : '');
+        return $tmpl;
     }
     static function NOFX_INDEX_GETTER_SIGNATURE_CC($className, $enterAndBracket = false) {
         return "NAN_INDEX_GETTER(".self::GET_CLASS_WRAPPED_NAME($className)."::IndexGetter)".($enterAndBracket ? "\n{" : '');
@@ -169,6 +193,12 @@ TPL;
                 $tmpl .= self::NOFX_JS_UNWRAP('ofVec3f', $className, '', $cpp_dependencies).'->SetWrapped('.$callerObj.");\n";
                 $return_statement .= 'JsReturn';
                 break;
+            case 'ofVec4f':
+                $tmpl .= self::NOFX_JS_NEW_INSTANCE('ofVec4f', $className, $dependencies);
+                $tmpl .= '    ';
+                $tmpl .= self::NOFX_JS_UNWRAP('ofVec4f', $className, '', $cpp_dependencies).'->SetWrapped('.$callerObj.");\n";
+                $return_statement .= 'JsReturn';
+                break;
             case 'bool':
             case 'int':
             case 'double':
@@ -185,7 +215,8 @@ TPL;
         return $tmpl;
     }
     static function NOFX_INDEX_SETTER_SIGNATURE_H($semicolonAndEnter = false) {
-        return 'static NAN_INDEX_SETTER(IndexSetter)'.($semicolonAndEnter ? ";\n" : '');
+        $tmpl = 'static NAN_INDEX_SETTER(IndexSetter)'.($semicolonAndEnter ? ";\n" : '');
+        return $tmpl;
     }
     static function NOFX_INDEX_SETTER_SIGNATURE_CC($className, $enterAndBracket = false) {
         return "NAN_INDEX_SETTER(".self::GET_CLASS_WRAPPED_NAME($className)."::IndexSetter)".($enterAndBracket ? "\n{" : '');
@@ -196,10 +227,28 @@ TPL;
         $tmpl .= "\n}\n";
         return $tmpl;
     }
-    static function NOFX_INDEX_GETTER_IMPLEMENTATION_CC($className, $index_type,&$js_deps = null, &$cpp_deps = null) {
+    static function NOFX_INDEX_GETTER_IMPLEMENTATION_CC($className, $index_type, $count, &$js_deps = null, &$cpp_deps = null) {
         $tmpl = self::NOFX_INDEX_GETTER_SIGNATURE_CC($className, true);
         $tmpl .= self::NOFX_INDEX_GETTER_BODY_CC($className, $index_type,$js_deps, $cpp_deps);
         $tmpl .= "\n}\n";
+        
+        $loop = '';
+        for($i = 0; $i < $count; ++$i) {
+            $loop .= "    JsArr->Set({$i}, NanNew({$i}));\n";
+        }
+        
+        $tmpl .= <<<TPL
+NAN_INDEX_ENUMERATOR(OfMatrix4x4Wrap::IndexEnum) {
+    auto JsArr = NanNew<v8::Array>({$count});
+{$loop}
+    NanReturnValue(JsArr);
+}
+NAN_INDEX_QUERY(OfMatrix4x4Wrap::IndexQuery) {
+    NanReturnValue({$count});
+}
+
+TPL;
+        
         return $tmpl;
     }
     static function NOFX_INDEX_SETTER_BODY_CC($className, $index_type, &$cpp_dependencies) {
@@ -226,6 +275,9 @@ TPL;
         switch ($index_type) {
             case 'ofRectangle':
                 $tmpl .= $callerObj.'.set(*'.self::NOFX_JS_UNWRAP('ofRectangle', $className, 'args.This()', $cpp_dependencies).'->GetWrapped());'."\n";
+                break;
+            case 'ofVec4f':
+                $tmpl .= $callerObj.'.set(*'.self::NOFX_JS_UNWRAP('ofVec4f', $className, 'args.This()', $cpp_dependencies).'->GetWrapped());'."\n";
                 break;
             case 'ofPoint':
             case 'ofVec3f':
@@ -504,8 +556,10 @@ TPL;
         if ($desiredType == $className) {
             return 'auto JsReturn = NanNew(Factory())->NewInstance();'."\n";
         } else {
-            array_push($dependencies, $desiredType);
-            $dependencies = array_unique($dependencies);
+            if(is_array($dependencies))
+                array_push($dependencies, $desiredType);
+            if(!empty($dependencies))
+                $dependencies = array_unique($dependencies);
             return 'auto JsReturn = DepNewInstance(DEP_'.self::GET_CPP_NAME($desiredType).');'."\n";
         }
     }
@@ -1112,9 +1166,9 @@ TPL;
         if(!empty($index_mutators) && isset($index_mutators['getter'])) {
             $mutators .= "inst->SetIndexedPropertyHandler(".self::GET_CLASS_WRAPPED_NAME($className)."::IndexGetter";
             if (isset($index_mutators['setter'])) {
-                $mutators .= ", OfVec3fWrap::IndexSetter);\n";
+                $mutators .= ", ".self::GET_CLASS_WRAPPED_NAME($className)."::IndexSetter, ".self::GET_CLASS_WRAPPED_NAME($className)."::IndexQuery, 0, ".self::GET_CLASS_WRAPPED_NAME($className)."::IndexEnum);\n";
             } else {
-                $mutators .= ");\n";
+                $mutators .= ", 0, ".self::GET_CLASS_WRAPPED_NAME($className)."::IndexQuery, 0, ".self::GET_CLASS_WRAPPED_NAME($className)."::IndexEnum);\n";
             }
         }
 
