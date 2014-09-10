@@ -223,7 +223,7 @@ namespace nofx
 		NAN_METHOD(OfAppBaseWindowWrap::SetupOpenGL)
 		{
 			auto self = node::ObjectWrap::Unwrap<OfAppBaseWindowWrap>(args.This())->GetWrapped();
-			self->setupOpenGL(args[0]->Int32Value(), args[1]->Int32Value(), args[2]->Int32Value());
+			self->setupOpenGL(args[0]->Int32Value(), args[1]->Int32Value(), static_cast<ofWindowMode>(args[2]->Int32Value()));
 		}
 
 		//---------------------------------------------------------
