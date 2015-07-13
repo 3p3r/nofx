@@ -1,3 +1,6 @@
+NOTE: this project is abandoned and I am using the module-injection dependency of it and its semi-compiler technology to build something better and more powerful, targeting new Vulkan API. You may go ahead and use it but do know that it's: - complex to build - incomplete at some points - has a memory leak when you try to construct a float / int64_t pointer in Node side. I am not liable for anything / any damage if you go ahead and use this code base! :D
+------------------------------------------------------------------------
+
 ![nofx](/nofx/nofx.png?raw=true "Openframeworks Node bindings")
 
 ----------
